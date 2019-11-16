@@ -1,4 +1,4 @@
-{
+do{
   "presets": [
     ["env", {
       "modules": false,
