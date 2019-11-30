@@ -13,8 +13,6 @@ const service = axios.create({
 service.interceptors.request.use(config => {
   if (store.getters.token) {
     config.headers['Authorization'] = getToken(); // 让每个请求携带自定义token 请根据实际情况自行修改
-    config.headers["huangjin-test"] = '1';
-    config.headers['Cookie'] = 'Authorization=1111;';
   }
   return config
 }, error => {

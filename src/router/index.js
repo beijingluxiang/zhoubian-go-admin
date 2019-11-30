@@ -36,6 +36,7 @@ export const constantRouterMap = [
     path: '/pms',
     component: Layout,
     redirect: '/pms/product',
+    alwaysShow: true,
     name: 'pms',
     meta: {title: '商品', icon: 'product'},
     children: [{
@@ -172,8 +173,8 @@ export const constantRouterMap = [
         name: 'orderSetting',
         component: () => import('@/views/oms/order/setting'),
         meta: {title: '订单设置', icon: 'order-setting'}
-      },
-      {
+      }
+/*      {
         path: 'returnApply',
         name: 'returnApply',
         component: () => import('@/views/oms/apply/index'),
@@ -191,10 +192,10 @@ export const constantRouterMap = [
         component: () => import('@/views/oms/apply/applyDetail'),
         meta: {title: '退货原因详情'},
         hidden:true
-      }
+      }*/
     ]
   },
-  {
+  /*{
     path:'/sms',
     component: Layout,
     redirect: '/sms/coupon',
@@ -300,7 +301,7 @@ export const constantRouterMap = [
         hidden:true
       }
     ]
-  },
+  },*/
   {path: '*', redirect: '/404', hidden: true}
 ]
 
