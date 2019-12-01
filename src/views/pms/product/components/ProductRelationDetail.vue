@@ -132,9 +132,6 @@
       },
       handlePrev(){
         this.$emit('prevStep')
-      },
-      handleFinishCommit(){
-        this.$emit('finishCommit',this.isEdit);
       }
     }
   }

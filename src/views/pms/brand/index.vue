@@ -22,7 +22,7 @@
     </el-card>
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
-      <span>数据列表</span>
+      <span>供应商列表</span>
       <el-button
         class="btn-add"
         @click="addBrand()"
@@ -41,51 +41,51 @@
         <el-table-column label="编号" width="100" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="品牌名称" align="center">
+        <el-table-column label="供应商名称" align="center">
           <template slot-scope="scope">{{scope.row.name}}</template>
         </el-table-column>
-        <el-table-column label="品牌首字母" width="100" align="center">
+        <el-table-column label="供应商首字母" width="100" align="center">
           <template slot-scope="scope">{{scope.row.firstLetter}}</template>
         </el-table-column>
-        <el-table-column label="排序" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.sort}}</template>
-        </el-table-column>
-        <el-table-column label="品牌制造商" width="100" align="center">
-          <template slot-scope="scope">
-            <el-switch
-              @change="handleFactoryStatusChange(scope.$index, scope.row)"
-              :active-value="1"
-              :inactive-value="0"
-              v-model="scope.row.factoryStatus">
-            </el-switch>
-          </template>
-        </el-table-column>
-        <el-table-column label="是否显示" width="100" align="center">
-          <template slot-scope="scope">
-            <el-switch
-              @change="handleShowStatusChange(scope.$index, scope.row)"
-              :active-value="1"
-              :inactive-value="0"
-              v-model="scope.row.showStatus">
-            </el-switch>
-          </template>
-        </el-table-column>
-        <el-table-column label="相关" width="220" align="center">
-          <template slot-scope="scope">
-            <span>商品：</span>
-            <el-button
-              size="mini"
-              type="text"
-              @click="getProductList(scope.$index, scope.row)">100
-            </el-button>
-            <span>评价：</span>
-            <el-button
-              size="mini"
-              type="text"
-              @click="getProductCommentList(scope.$index, scope.row)">1000
-            </el-button>
-          </template>
-        </el-table-column>
+<!--        <el-table-column label="排序" width="100" align="center">-->
+<!--          <template slot-scope="scope">{{// scope.row.sort}}</template>-->
+<!--        </el-table-column>-->
+<!--        <el-table-column label="品牌制造商" width="100" align="center">-->
+<!--          <template slot-scope="scope">-->
+<!--            <el-switch-->
+<!--              @change="handleFactoryStatusChange(scope.$index, scope.row)"-->
+<!--              :active-value="1"-->
+<!--              :inactive-value="0"-->
+<!--              v-model="scope.row.factoryStatus">-->
+<!--            </el-switch>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+<!--        <el-table-column label="是否显示" width="100" align="center">-->
+<!--          <template slot-scope="scope">-->
+<!--            <el-switch-->
+<!--              @change="handleShowStatusChange(scope.$index, scope.row)"-->
+<!--              :active-value="1"-->
+<!--              :inactive-value="0"-->
+<!--              v-model="scope.row.showStatus">-->
+<!--            </el-switch>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+<!--        <el-table-column label="相关" width="220" align="center">-->
+<!--          <template slot-scope="scope">-->
+<!--            <span>商品：</span>-->
+<!--            <el-button-->
+<!--              size="mini"-->
+<!--              type="text"-->
+<!--              @click="getProductList(scope.$index, scope.row)">100-->
+<!--            </el-button>-->
+<!--            <span>评价：</span>-->
+<!--            <el-button-->
+<!--              size="mini"-->
+<!--              type="text"-->
+<!--              @click="getProductCommentList(scope.$index, scope.row)">1000-->
+<!--            </el-button>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
         <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">
             <el-button

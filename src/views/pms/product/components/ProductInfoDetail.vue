@@ -13,11 +13,11 @@
       <el-form-item label="副标题：" prop="subTitle">
         <el-input v-model="value.subTitle"></el-input>
       </el-form-item>
-      <el-form-item label="商品品牌：" prop="brandId">
+      <el-form-item label="供应商：" prop="brandId">
         <el-select
           v-model="value.brandId"
           @change="handleBrandChange"
-          placeholder="请选择品牌">
+          placeholder="请选择供应商">
           <el-option
             v-for="item in brandOptions"
             :key="item.value"
@@ -33,9 +33,9 @@
           type="textarea"
           placeholder="请输入内容"></el-input>
       </el-form-item>
-      <el-form-item label="商品货号：">
+      <!--<el-form-item label="商品货号：">
         <el-input v-model="value.productSn"></el-input>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item label="商品售价：">
         <el-input v-model="value.price"></el-input>
       </el-form-item>
@@ -45,7 +45,7 @@
       <el-form-item label="商品库存：">
         <el-input v-model="value.stock"></el-input>
       </el-form-item>
-      <el-form-item label="计量单位：">
+      <!--<el-form-item label="计量单位：">
         <el-input v-model="value.unit"></el-input>
       </el-form-item>
       <el-form-item label="商品重量：">
@@ -54,7 +54,7 @@
       </el-form-item>
       <el-form-item label="排序">
         <el-input v-model="value.sort"></el-input>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item style="text-align: center">
         <el-button type="primary" size="medium" @click="handleNext('productInfoForm')">下一步，填写商品促销</el-button>
       </el-form-item>

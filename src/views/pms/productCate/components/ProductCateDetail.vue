@@ -18,41 +18,41 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="数量单位：">
-        <el-input v-model="productCate.productUnit"></el-input>
-      </el-form-item>
-      <el-form-item label="排序：">
-        <el-input v-model="productCate.sort"></el-input>
-      </el-form-item>
-      <el-form-item label="是否显示：">
-        <el-radio-group v-model="productCate.showStatus">
-          <el-radio :label="1">是</el-radio>
-          <el-radio :label="0">否</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="是否显示在导航栏：">
-        <el-radio-group v-model="productCate.navStatus">
-          <el-radio :label="1">是</el-radio>
-          <el-radio :label="0">否</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="分类图标：">
-        <single-upload v-model="productCate.icon"></single-upload>
-      </el-form-item>
-      <el-form-item v-for="(filterProductAttr, index) in filterProductAttrList"
-                    :label="index | filterLabelFilter"
-                    :key="filterProductAttr.key"
-      >
-        <el-cascader
-          clearable
-          v-model="filterProductAttr.value"
-          :options="filterAttrs">
-        </el-cascader>
-        <el-button style="margin-left: 20px" @click.prevent="removeFilterAttr(filterProductAttr)">删除</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button size="small" type="primary" @click="handleAddFilterAttr()">新增</el-button>
-      </el-form-item>
+<!--      <el-form-item label="数量单位：">-->
+<!--        <el-input v-model="productCate.productUnit"></el-input>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="排序：">-->
+<!--        <el-input v-model="productCate.sort"></el-input>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="是否显示：">-->
+<!--        <el-radio-group v-model="productCate.showStatus">-->
+<!--          <el-radio :label="1">是</el-radio>-->
+<!--          <el-radio :label="0">否</el-radio>-->
+<!--        </el-radio-group>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="是否显示在导航栏：">-->
+<!--        <el-radio-group v-model="productCate.navStatus">-->
+<!--          <el-radio :label="1">是</el-radio>-->
+<!--          <el-radio :label="0">否</el-radio>-->
+<!--        </el-radio-group>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="分类图标：">-->
+<!--        <single-upload v-model="productCate.icon"></single-upload>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item v-for="(filterProductAttr, index) in filterProductAttrList"-->
+<!--                    :label="index | filterLabelFilter"-->
+<!--                    :key="filterProductAttr.key"-->
+<!--      >-->
+<!--        <el-cascader-->
+<!--          clearable-->
+<!--          v-model="filterProductAttr.value"-->
+<!--          :options="filterAttrs">-->
+<!--        </el-cascader>-->
+<!--        <el-button style="margin-left: 20px" @click.prevent="removeFilterAttr(filterProductAttr)">删除</el-button>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item>-->
+<!--        <el-button size="small" type="primary" @click="handleAddFilterAttr()">新增</el-button>-->
+<!--      </el-form-item>-->
       <el-form-item label="关键词：">
         <el-input v-model="productCate.keywords"></el-input>
       </el-form-item>

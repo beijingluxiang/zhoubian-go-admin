@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets" style="margin-top: 5px"></i>
-      <span style="margin-top: 5px">数据列表</span>
+      <span style="margin-top: 5px">分类列表</span>
       <el-button
         class="btn-add"
         @click="handleAddProductCate()"
@@ -24,35 +24,35 @@
         <el-table-column label="级别" width="100" align="center">
           <template slot-scope="scope">{{scope.row.level | levelFilter}}</template>
         </el-table-column>
-        <el-table-column label="商品数量" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.productCount }}</template>
-        </el-table-column>
-        <el-table-column label="数量单位" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.productUnit }}</template>
-        </el-table-column>
-        <el-table-column label="导航栏" width="100" align="center">
-          <template slot-scope="scope">
-            <el-switch
-              @change="handleNavStatusChange(scope.$index, scope.row)"
-              :active-value="1"
-              :inactive-value="0"
-              v-model="scope.row.navStatus">
-            </el-switch>
-          </template>
-        </el-table-column>
-        <el-table-column label="是否显示" width="100" align="center">
-          <template slot-scope="scope">
-            <el-switch
-              @change="handleShowStatusChange(scope.$index, scope.row)"
-              :active-value="1"
-              :inactive-value="0"
-              v-model="scope.row.showStatus">
-            </el-switch>
-          </template>
-        </el-table-column>
-        <el-table-column label="排序" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.sort }}</template>
-        </el-table-column>
+<!--        <el-table-column label="商品数量" width="100" align="center">-->
+<!--          <template slot-scope="scope">{{scope.row.productCount }}</template>-->
+<!--        </el-table-column>-->
+<!--        <el-table-column label="数量单位" width="100" align="center">-->
+<!--          <template slot-scope="scope">{{scope.row.productUnit }}</template>-->
+<!--        </el-table-column>-->
+<!--        <el-table-column label="导航栏" width="100" align="center">-->
+<!--          <template slot-scope="scope">-->
+<!--            <el-switch-->
+<!--              @change="handleNavStatusChange(scope.$index, scope.row)"-->
+<!--              :active-value="1"-->
+<!--              :inactive-value="0"-->
+<!--              v-model="scope.row.navStatus">-->
+<!--            </el-switch>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+<!--        <el-table-column label="是否显示" width="100" align="center">-->
+<!--          <template slot-scope="scope">-->
+<!--            <el-switch-->
+<!--              @change="handleShowStatusChange(scope.$index, scope.row)"-->
+<!--              :active-value="1"-->
+<!--              :inactive-value="0"-->
+<!--              v-model="scope.row.showStatus">-->
+<!--            </el-switch>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+<!--        <el-table-column label="排序" width="100" align="center">-->
+<!--          <template slot-scope="scope">{{scope.row.sort }}</template>-->
+<!--        </el-table-column>-->
         <el-table-column label="设置" width="200" align="center">
           <template slot-scope="scope">
             <el-button
@@ -60,10 +60,10 @@
               :disabled="scope.row.level | disableNextLevel"
               @click="handleShowNextLevel(scope.$index, scope.row)">查看下级
             </el-button>
-            <el-button
-              size="mini"
-              @click="handleTransferProduct(scope.$index, scope.row)">转移商品
-            </el-button>
+<!--            <el-button-->
+<!--              size="mini"-->
+<!--              @click="handleTransferProduct(scope.$index, scope.row)">转移商品-->
+<!--            </el-button>-->
           </template>
         </el-table-column>
         <el-table-column label="操作" width="200" align="center">
