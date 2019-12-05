@@ -26,17 +26,17 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="商品介绍：">
-        <el-input
-          :autoSize="true"
-          v-model="value.description"
-          type="textarea"
-          placeholder="请输入内容"></el-input>
-      </el-form-item>
+<!--      <el-form-item label="商品介绍：">-->
+<!--        <el-input-->
+<!--          :autoSize="true"-->
+<!--          v-model="value.description"-->
+<!--          type="textarea"-->
+<!--          placeholder="请输入内容"></el-input>-->
+<!--      </el-form-item>-->
       <!--<el-form-item label="商品货号：">
         <el-input v-model="value.productSn"></el-input>
       </el-form-item>-->
-      <el-form-item label="商品售价：">
+      <el-form-item label="商品售价：" prop="price">
         <el-input v-model="value.price"></el-input>
       </el-form-item>
       <el-form-item label="市场价：">
@@ -91,7 +91,8 @@
           subTitle: [{required: true, message: '请输入商品副标题', trigger: 'blur'}],
           productCategoryId: [{required: true, message: '请选择商品分类', trigger: 'blur'}],
           brandId: [{required: true, message: '请选择商品品牌', trigger: 'blur'}],
-          description: [{required: true, message: '请输入商品介绍', trigger: 'blur'}],
+          description: [{required: false, message: '请输入商品介绍', trigger: 'blur'}],
+          price: [{required: true, message: '请输入商品价格', trigger: 'blur'}],
           requiredProp: [{required: true, message: '该项为必填项', trigger: 'blur'}]
         }
       };

@@ -45,12 +45,12 @@
 <!--          <el-checkbox :label="3">免费包邮</el-checkbox>-->
 <!--        </el-checkbox-group>-->
 <!--      </el-form-item>-->
-      <el-form-item label="详细页标题：">
-        <el-input v-model="value.detailTitle"></el-input>
-      </el-form-item>
-      <el-form-item label="详细页描述：">
-        <el-input v-model="value.detailDesc"></el-input>
-      </el-form-item>
+<!--      <el-form-item label="详细页标题：">-->
+<!--        <el-input v-model="value.detailTitle"></el-input>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="详细页描述：">-->
+<!--        <el-input v-model="value.detailDesc"></el-input>-->
+<!--      </el-form-item>-->
       <el-form-item label="商品关键字：">
         <el-input v-model="value.keywords"></el-input>
       </el-form-item>

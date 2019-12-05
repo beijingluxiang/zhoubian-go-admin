@@ -131,9 +131,9 @@
       </el-form-item>
       <el-form-item label="规格参数：">
         <el-tabs v-model="activeHtmlName" type="card">
-          <el-tab-pane label="电脑端详情" name="pc">
-            <tinymce :width="595" :height="300" v-model="value.detailHtml"></tinymce>
-          </el-tab-pane>
+<!--          <el-tab-pane label="电脑端详情" name="pc">-->
+<!--            <tinymce :width="595" :height="300" v-model="value.detailHtml"></tinymce>-->
+<!--          </el-tab-pane>-->
           <el-tab-pane label="移动端详情" name="mobile">
             <tinymce :width="595" :height="300" v-model="value.detailMobileHtml"></tinymce>
           </el-tab-pane>
@@ -179,7 +179,7 @@
         //可手动添加的商品属性
         addProductAttrValue: '',
         //商品富文本详情激活类型
-        activeHtmlName: 'pc'
+        activeHtmlName: 'mobile'
       }
     },
     computed: {
@@ -206,9 +206,12 @@
             return pics;
           }
           let albumPics = this.value.albumPics.split(',');
-          for(let i=0;i<albumPics.length;i++){
-            pics.push(albumPics[i]);
+          if (albumPics.length > 1) {
+            for(let i=1;i<albumPics.length;i++){
+              pics.push(albumPics[i]);
+            }
           }
+
           return pics;
         },
         set:function (newValue) {
@@ -218,8 +221,8 @@
           } else {
             this.value.pic = newValue[0];
             this.value.albumPics = '';
-            if (newValue.length > 1) {
-              for (let i = 1; i < newValue.length; i++) {
+            if (newValue.length > 0) {
+              for (let i = 0; i < newValue.length; i++) {
                 this.value.albumPics += newValue[i];
                 if (i !== newValue.length - 1) {
                   this.value.albumPics += ',';
