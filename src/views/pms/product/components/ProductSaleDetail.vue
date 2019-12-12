@@ -57,6 +57,27 @@
       <el-form-item label="商品备注：">
         <el-input v-model="value.note" type="textarea" :autoSize="true"></el-input>
       </el-form-item>
+      <el-form-item label="分佣比例 Z1 (0-100的数字，例如15表示15%)">
+        <el-input v-model="value.vipZ"></el-input>
+      </el-form-item>
+      <el-form-item label="分佣比例 Y1 (0-100的数字，例如15表示15%)">
+        <el-input v-model="value.vipY"></el-input>
+      </el-form-item>
+      <el-form-item label="分佣比例 X1 (0-100的数字，例如15表示15%)">
+        <el-input v-model="value.vipX"></el-input>
+      </el-form-item>
+      <el-form-item label="分佣比例 F2 (0-100的数字，例如15表示15%)">
+        <el-input v-model="value.normalF"></el-input>
+      </el-form-item>
+      <el-form-item label="分佣比例 X2 (0-100的数字，例如15表示15%)">
+        <el-input v-model="value.normalX"></el-input>
+      </el-form-item>
+      <el-form-item label="分佣比例 Y2 (0-100的数字，例如15表示15%)">
+        <el-input v-model="value.normalY"></el-input>
+      </el-form-item>
+      <el-form-item label="分佣比例 Z2 (0-100的数字，例如15表示15%)">
+        <el-input v-model="value.normalZ"></el-input>
+      </el-form-item>
       <el-form-item label="选择优惠方式：">
         <el-radio-group v-model="value.promotionType" size="small">
           <el-radio-button :label="0">无优惠</el-radio-button>
