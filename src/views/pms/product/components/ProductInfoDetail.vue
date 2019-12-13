@@ -36,11 +36,11 @@
       <!--<el-form-item label="商品货号：">
         <el-input v-model="value.productSn"></el-input>
       </el-form-item>-->
-      <el-form-item label="商品售价：" prop="price">
+      <el-form-item label="商品售价(展示用，实际下单用sku价格)" prop="price">
         <el-input v-model="value.price"></el-input>
       </el-form-item>
-      <el-form-item label="市场价：">
-        <el-input v-model="value.originalPrice"></el-input>
+      <el-form-item label="商品VIP价格（展示用，实际下单用sku价格）" prop="price">
+        <el-input v-model="value.vipPrice"></el-input>
       </el-form-item>
       <el-form-item label="商品库存：">
         <el-input v-model="value.stock"></el-input>

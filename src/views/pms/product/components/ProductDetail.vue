@@ -101,7 +101,15 @@
     unit: '',
     usePointLimit: 0,
     verifyStatus: 0,
-    weight: 0
+    weight: 0,
+	  vipZ: 0,
+	  vipY: 0,
+	  vipX: 0,
+	  normalF: 0,
+	  normalX: 0,
+	  normalY: 0,
+	  normalZ: 0,
+	  vipPrice: 0
   };
   export default {
     name: 'ProductDetail',
