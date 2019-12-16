@@ -55,7 +55,7 @@
             :to="item.path + '/' + child.path"
             :key="child.name"
           >
-            <el-menu-item :index="item.path + '/' + child.path">
+            <el-menu-item :index="child.index">
               <i :class="child.meta.icon"></i>
               <span v-if="child.meta && child.meta.title" slot="title">{{
                 child.meta.title

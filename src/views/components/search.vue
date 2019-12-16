@@ -1,59 +1,40 @@
 <template>
-  <el-card class="filter-container" shadow="never">
+  <el-card shadow="never">
     <div>
-      <i class="el-icon-search"></i>
-      <span>筛选搜索</span>
-      <el-button
-        style="float:right"
-        type="primary"
-        @click="handleSearchList()"
-        size="small"
-      >
-        查询搜索
-      </el-button>
-      <el-button
-        style="float:right;margin-right: 15px"
-        @click="handleResetSearch()"
-        size="small"
-      >
-        重置
-      </el-button>
-    </div>
-    <div style="margin-top: 15px">
       <el-form
         :inline="true"
-        :model="listQuery"
+        :model="searchParams"
         size="small"
-        label-width="80px"
+        label-width="90px"
       >
-        <el-form-item label="订单编号：">
+        <el-form-item v-if="searchFields.orderSn" label="订单编号：">
           <el-input
-            v-model="listQuery.orderSn"
-            class="input-width"
+            v-model="searchParams.orderSn"
+            style="width: 150px;"
             placeholder="订单编号"
           ></el-input>
         </el-form-item>
-        <el-form-item label="收货人：">
+        <el-form-item v-if="searchFields.receiverKeyword" label="收货人：">
           <el-input
-            v-model="listQuery.receiverKeyword"
-            class="input-width"
+            v-model="searchParams.receiverKeyword"
+            style="width: 150px;"
             placeholder="收货人姓名/手机号码"
           ></el-input>
         </el-form-item>
-        <el-form-item label="提交时间：">
+        <el-form-item v-if="searchFields.createTime" label="提交时间：">
           <el-date-picker
-            class="input-width"
-            v-model="listQuery.createTime"
+            style="width: 150px;"
+            v-model="searchParams.createTime"
             value-format="yyyy-MM-dd"
             type="date"
             placeholder="请选择时间"
           >
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="订单状态：">
+        <el-form-item v-if="searchFields.status" label="订单状态：">
           <el-select
-            v-model="listQuery.status"
-            class="input-width"
+            v-model="searchParams.status"
+            style="width: 150px;"
             placeholder="全部"
             clearable
           >
@@ -68,6 +49,23 @@
         </el-form-item>
       </el-form>
     </div>
+    <div style="padding-bottom: 30px;">
+      <el-button
+        style="float:right"
+        type="primary"
+        @click="handleSearchList()"
+        size="small"
+      >
+        查询搜索
+      </el-button>
+      <el-button
+        style="float:right; margin-right: 15px"
+        @click="handleResetSearch()"
+        size="small"
+      >
+        重置
+      </el-button>
+    </div>
   </el-card>
 </template>
 
@@ -75,9 +73,21 @@
 export default {
   name: "SidebarItem",
   props: {
-    listQuery: {
-      type: Object
+    searchFieldsList: {
+      type: Array
     }
+  },
+  data: () => {
+    return {
+      searchParams: {},
+      searchFields: {
+        orderSn: true,
+        receiverKeyword: true,
+        createTime: true,
+        status: true
+      },
+      statusOptions: []
+    };
   },
   methods: {
     hasOneShowingChildren(children) {

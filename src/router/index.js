@@ -50,12 +50,14 @@ export const constantRouterMap = [
       {
         path: "orderSetting",
         name: "orderSetting",
+        index: "2-1",
         component: () => import("@/views/order/order/setting"),
         meta: { title: "订单概况", icon: "el-icon-tickets" }
       },
       {
         path: "order",
         name: "order",
+        index: "2-2",
         component: () => import("@/views/order/order/index"),
         meta: { title: "订单管理", icon: "el-icon-tickets" }
       }
@@ -72,31 +74,36 @@ export const constantRouterMap = [
     children: [
       {
         path: "addProduct",
-        name: "addProduct",
+        name: "publishProduct",
+        index: "3-1",
         component: () => import("@/views/product/product/add"),
         meta: { title: "发布商品", icon: "el-icon-tickets" }
       },
       {
         path: "product",
-        name: "product",
+        name: "onSelling",
+        index: "3-2",
         component: () => import("@/views/product/product/index"),
         meta: { title: "出售中的商品", icon: "el-icon-tickets" }
       },
       {
         path: "product",
-        name: "product",
+        name: "inStore",
+        index: "3-3",
         component: () => import("@/views/product/product/index"),
         meta: { title: "仓库中的商品", icon: "el-icon-tickets" }
       },
       {
         path: "productCate",
-        name: "productCate",
+        name: "productType",
+        index: "3-4",
         component: () => import("@/views/product/productCate/index"),
         meta: { title: "商品分类", icon: "el-icon-tickets" }
       },
       {
         path: "product",
-        name: "product",
+        name: "freeProduct",
+        index: "3-5",
         component: () => import("@/views/product/product/index"),
         meta: { title: "会员半年免费", icon: "el-icon-tickets" }
       }
@@ -112,13 +119,15 @@ export const constantRouterMap = [
     children: [
       {
         path: "order",
-        name: "order",
+        name: "userManagement",
+        index: "4-1",
         component: () => import("@/views/user/order/index"),
         meta: { title: "用户管理", icon: "el-icon-tickets" }
       },
       {
         path: "orderSetting",
-        name: "orderSetting",
+        name: "vipShareSetting",
+        index: "4-2",
         component: () => import("@/views/user/order/setting"),
         meta: { title: "会员分佣设置", icon: "el-icon-tickets" }
       }
@@ -134,29 +143,33 @@ export const constantRouterMap = [
     children: [
       {
         path: "order",
-        name: "order",
+        name: "finacial",
+        index: "5-1",
         component: () => import("@/views/finacial/order/index"),
         meta: { title: "财务概况", icon: "el-icon-tickets" }
       },
       {
         path: "orderDetail",
-        name: "orderDetail",
+        name: "billDetail",
+        index: "5-2",
         component: () => import("@/views/finacial/order/orderDetail"),
         meta: { title: "资金明细" },
         hidden: true
       },
       {
         path: "deliverOrderList",
-        name: "deliverOrderList",
+        name: "vipBill",
+        index: "5-3",
         component: () => import("@/views/finacial/order/deliverOrderList"),
         meta: { title: "会员对账" },
         hidden: true
       },
       {
         path: "orderSetting",
-        name: "orderSetting",
+        name: "withdrawSetting",
+        index: "5-4",
         component: () => import("@/views/finacial/order/setting"),
-        meta: { title: "体现设置", icon: "el-icon-tickets" }
+        meta: { title: "提现设置", icon: "el-icon-tickets" }
       }
     ]
   },

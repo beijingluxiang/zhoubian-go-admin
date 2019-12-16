@@ -6,7 +6,7 @@
       background-color="#304156"
       text-color="#bfcbd9"
       active-text-color="#409EFF"
-      default-active="3-1"
+      default-active="2-2"
       :collapse="isCollapse"
     >
       <sidebar-item :routes="routes"></sidebar-item>
@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       isCollapse: false,
-      defaultOpen: [3, 4, 5, 6]
+      defaultOpen: ["1", "2", "3", "4"]
     };
   },
   computed: {
