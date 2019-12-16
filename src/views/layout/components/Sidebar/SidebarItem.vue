@@ -14,7 +14,7 @@
         :key="item.children[0].name"
       >
         <el-menu-item
-          :index="index"
+          :index="item.index"
           :class="{ 'submenu-title-noDropdown': !isNest }"
         >
           <svg-icon
@@ -29,7 +29,7 @@
         </el-menu-item>
       </router-link>
 
-      <el-submenu v-else :index="index" :key="item.name">
+      <el-submenu v-else :index="item.index" :key="item.name">
         <template slot="title">
           <!-- <svg-icon
             v-if="item.meta && item.meta.icon"

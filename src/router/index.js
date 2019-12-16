@@ -28,6 +28,7 @@ export const constantRouterMap = [
   {
     path: "",
     component: Layout,
+    index: "1",
     redirect: "/home",
     children: [
       {
@@ -43,6 +44,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: "/order/order",
     name: "order",
+    index: "2",
     meta: { title: "订单", icon: "el-icon-goods" },
     children: [
       {
@@ -65,6 +67,7 @@ export const constantRouterMap = [
     redirect: "/product/product",
     alwaysShow: true,
     name: "product",
+    index: "3",
     meta: { title: "商品", icon: "el-icon-box" },
     children: [
       {
@@ -104,6 +107,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: "/user/order",
     name: "user",
+    index: "4",
     meta: { title: "用户", icon: "el-icon-user" },
     children: [
       {
@@ -125,6 +129,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: "/finacial/order",
     name: "finacial",
+    index: "5",
     meta: { title: "财务", icon: "el-icon-data-line" },
     children: [
       {
