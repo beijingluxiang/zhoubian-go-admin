@@ -7,97 +7,105 @@
         size="small"
         label-width="90px"
       >
-        <el-form-item v-if="searchFields.orderSn" label="订单编号：">
-          <el-input
-            v-model="searchParams.orderSn"
-            style="width: 150px;"
-            placeholder="订单编号"
-          ></el-input>
-        </el-form-item>
-        <el-form-item v-if="searchFields.receiverKeyword" label="收货人：">
-          <el-input
-            v-model="searchParams.receiverKeyword"
-            style="width: 150px;"
-            placeholder="收货人姓名/手机号码"
-          ></el-input>
-        </el-form-item>
-        <el-form-item v-if="searchFields.createTime" label="提交时间：">
+        <el-form-item
+          v-for="item in searchFieldsList"
+          :key="item.eName"
+          :label="item.name"
+        >
           <el-date-picker
+            v-if="item.type === 'dateTimeRange'"
             style="width: 150px;"
-            v-model="searchParams.createTime"
+            v-model="searchParams[item.eName]"
             value-format="yyyy-MM-dd"
             type="date"
-            placeholder="请选择时间"
+            :placeholder="item.placeholder"
           >
           </el-date-picker>
-        </el-form-item>
-        <el-form-item v-if="searchFields.status" label="订单状态：">
+
+          <el-input
+            v-if="item.type === 'text'"
+            v-model="searchParams[item.eName]"
+            style="width: 150px;"
+            :placeholder="item.placeholder"
+          ></el-input>
+
           <el-select
-            v-model="searchParams.status"
+            v-if="item.type === 'select'"
+            v-model="searchParams[item.eName]"
             style="width: 150px;"
             placeholder="全部"
             clearable
           >
             <el-option
-              v-for="item in statusOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="option in statusOptions"
+              :key="option.value"
+              :label="option.label"
+              :value="option.value"
             >
+              {{ option.label }}
             </el-option>
           </el-select>
         </el-form-item>
       </el-form>
     </div>
     <div style="padding-bottom: 30px;">
-      <el-button
-        style="float:right"
-        type="primary"
-        @click="handleSearchList()"
-        size="small"
-      >
-        查询搜索
-      </el-button>
-      <el-button
-        style="float:right; margin-right: 15px"
-        @click="handleResetSearch()"
-        size="small"
-      >
-        重置
-      </el-button>
+      <div v-for="o in operation" :key="o" style="float:right;">
+        <el-button
+          v-if="o === 'export'"
+          style="float:right; margin-left: 15px"
+          @click="onExport()"
+          size="small"
+        >
+          导出
+        </el-button>
+        <el-button
+          v-if="o === 'reset'"
+          style="float:right; margin-left: 15px"
+          @click="onReset()"
+          size="small"
+        >
+          重置
+        </el-button>
+        <el-button
+          v-if="o === 'search'"
+          style="float:right; margin-left: 15px;"
+          type="primary"
+          @click="onSearch()"
+          size="small"
+        >
+          查询搜索
+        </el-button>
+      </div>
     </div>
   </el-card>
 </template>
 
 <script>
 export default {
-  name: "SidebarItem",
+  name: "search-component",
   props: {
     searchFieldsList: {
       type: Array
+    },
+    operation: {
+      type: Array
     }
   },
-  data: () => {
+  data() {
     return {
       searchParams: {},
-      searchFields: {
-        orderSn: true,
-        receiverKeyword: true,
-        createTime: true,
-        status: true
-      },
-      statusOptions: []
+      statusOptions: [
+        { label: "待付款", value: 0 },
+        { label: "待发货", value: 1 },
+        { label: "已发货", value: 2 },
+        { label: "已完成", value: 3 },
+        { label: "已关闭", value: 4 }
+      ]
     };
   },
   methods: {
-    hasOneShowingChildren(children) {
-      const showingChildren = children.filter(item => {
-        return !item.hidden;
-      });
-      if (showingChildren.length === 1) {
-        return true;
-      }
-      return false;
+    onSearch() {
+      this.$emit("onSearchBtnClicked", this.searchParams);
     }
   }
 };
