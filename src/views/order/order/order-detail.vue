@@ -375,6 +375,17 @@ export default {
       type: Number
     }
   },
+
+  watch: {
+    productId: function(newVal, oldVal) {
+      if (newVal !== oldVal) {
+        getOrderDetail(this.productId).then(response => {
+          this.order = response.data;
+        });
+      }
+    }
+  },
+
   data() {
     return {
       id: null,
@@ -397,6 +408,7 @@ export default {
       logisticsDialogVisible: false
     };
   },
+
   created() {
     // this.id = this.list = this.$route.query.id;
     console.log(this.productId);
@@ -404,6 +416,7 @@ export default {
       this.order = response.data;
     });
   },
+
   filters: {
     formatNull(value) {
       if (value === undefined || value === null || value === "") {

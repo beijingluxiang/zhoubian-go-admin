@@ -51,7 +51,7 @@ export const constantRouterMap = [
         path: "orderSetting",
         name: "orderSetting",
         index: "2-1",
-        component: () => import("@/views/order/order/setting"),
+        component: () => import("@/views/order/order/index"),
         meta: { title: "订单概况", icon: "el-icon-tickets" }
       },
       {

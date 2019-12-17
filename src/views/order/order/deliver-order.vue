@@ -8,14 +8,16 @@
       <el-table
         ref="deliverOrderTable"
         style="width: 100%;"
-        :data="diliveryInfo"
+        :data="deliveryInfo"
         border
       >
         <el-table-column label="订单编号" width="180" align="center">
           <template slot-scope="scope">{{ scope.row.orderSn }}</template>
         </el-table-column>
         <el-table-column label="收货人" width="180" align="center">
-          <template slot-scope="scope">{{ scope.row.receiverName }}</template>
+          <template slot-scope="scope"
+            >{{ scope.row.receiverName }} 12</template
+          >
         </el-table-column>
         <el-table-column label="手机号码" width="160" align="center">
           <template slot-scope="scope">{{ scope.row.receiverPhone }}</template>
@@ -69,7 +71,7 @@ const defaultLogisticsCompanies = [
 export default {
   name: "deliverOrderList",
   props: {
-    diliveryInfo: {
+    deliveryInfo: {
       type: null
     }
   },
@@ -80,7 +82,7 @@ export default {
     };
   },
   created() {
-    this.list = this.$route.query.list;
+    console.log(this.deliveryInfo, "woria");
   },
   methods: {
     cancel() {

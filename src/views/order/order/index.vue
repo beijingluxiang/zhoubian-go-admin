@@ -5,24 +5,30 @@
       :operation="searchOperation"
       @onSearchBtnClicked="searchList"
     ></searchComponent>
+
     <gridComponent
       :columnDefs="orderListColDefs"
       :rowData="orderList"
       @onDeleteOrderBtnClicked="deleteOrder"
       @onViewDetailBtnClicked="viewDetail"
       @onDeliveryBtnClicked="deliveryOrder"
+      @refreshList="refreshList"
     ></gridComponent>
-    <el-dialog title="商品详情" :visible.sync="dialogTableVisible" width="80%">
+
+    <el-dialog
+      title="商品详情"
+      :visible.sync="productDetailVisible"
+      width="80%"
+      top="10px"
+    >
       <orderDetailComponent
         destroy-on-close="true"
         :productId="detailId"
       ></orderDetailComponent>
     </el-dialog>
-    <el-dialog title="物流信息" :visible.sync="dialogTableVisible" width="80%">
-      <deliveryComponent
-        destroy-on-close="true"
-        :deliveryInfo="deliveryInfo"
-      ></deliveryComponent>
+
+    <el-dialog title="物流信息" :visible.sync="deliveryVisible" width="80%">
+      <deliveryComponent :deliveryInfo="deliveryParams"></deliveryComponent>
     </el-dialog>
   </div>
 </template>
@@ -30,8 +36,8 @@
 import { fetchList, deleteOrder } from "@/api/order";
 import searchComponent from "@/views/components/search";
 import gridComponent from "@/views/components/grid";
-import orderDetailComponent from "@/views/order/order/orderDetail.vue";
-import deliveryComponent from "@/views/order/order/delivery-order.vue";
+import orderDetailComponent from "@/views/order/order/order-detail.vue";
+import deliveryComponent from "@/views/order/order/deliver-order.vue";
 export default {
   name: "orderList",
   components: {
@@ -43,9 +49,10 @@ export default {
   data() {
     return {
       orderList: [],
-      deliveryInfo: {},
+      deliveryParams: null,
       searchParams: {},
-      dialogTableVisible: false,
+      productDetailVisible: false,
+      deliveryVisible: false,
       detailId: null,
       orderListColDefs: [
         {
@@ -133,6 +140,13 @@ export default {
       this.orderList = [];
       this.getList();
     },
+    refreshList(param) {
+      for (let key in param) {
+        this.searchParams[key] = param[key];
+      }
+      this.orderList = [];
+      this.getList();
+    },
     getList() {
       this.listLoading = true;
       fetchList(this.searchParams).then(response => {
@@ -162,11 +176,12 @@ export default {
     },
     viewDetail(id) {
       this.detailId = id;
-      this.dialogTableVisible = true;
+      this.productDetailVisible = true;
       console.log("worinima", id);
     },
     deliveryOrder(params) {
-      this.deliveryInfo = params;
+      this.deliveryParams = [params];
+      this.deliveryVisible = true;
       console.log("wocao", params);
     }
     // covertOrder(order) {

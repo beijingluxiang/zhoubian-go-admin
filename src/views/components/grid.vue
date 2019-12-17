@@ -59,7 +59,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="batch-operate-container">
+    <!-- <div class="batch-operate-container">
       <el-select size="small" v-model="operateType" placeholder="批量操作">
         <el-option
           v-for="item in operateOptions"
@@ -78,15 +78,15 @@
       >
         确定
       </el-button>
-    </div>
+    </div> -->
     <div class="pagination-container">
       <el-pagination
         background
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         layout="total, sizes,prev, pager, next,jumper"
-        :current-page.sync="listQuery.pageNum"
-        :page-size="listQuery.pageSize"
+        :current-page.sync="searchParams.pageNum"
+        :page-size="searchParams.pageSize"
         :page-sizes="[5, 10, 15]"
         :total="total"
       >
@@ -120,16 +120,6 @@
 <script>
 import { formatDate } from "@/utils/date";
 import LogisticsDialog from "@/views/oms/order/components/logisticsDialog";
-const defaultListQuery = {
-  pageNum: 1,
-  pageSize: 10,
-  orderSn: null,
-  receiverKeyword: null,
-  status: null,
-  orderType: null,
-  sourceType: null,
-  createTime: null
-};
 export default {
   name: "grid-component",
   props: {
@@ -143,7 +133,10 @@ export default {
   components: { LogisticsDialog },
   data: () => {
     return {
-      listQuery: Object.assign({}, defaultListQuery),
+      searchParams: {
+        pageSize: 5,
+        pageNum: 1
+      },
       listLoading: false,
       list: null,
       total: null,
@@ -215,10 +208,10 @@ export default {
   },
   methods: {
     handleResetSearch() {
-      this.listQuery = Object.assign({}, defaultListQuery);
+      this.searchParams = Object.assign({}, defaultListQuery);
     },
     handleSearchList() {
-      this.listQuery.pageNum = 1;
+      this.searchParams.pageNum = 1;
       this.getList();
     },
     handleSelectionChange(val) {
@@ -290,12 +283,12 @@ export default {
       }
     },
     handleSizeChange(val) {
-      this.listQuery.pageNum = 1;
-      this.listQuery.pageSize = val;
+      this.searchParams.pageNum = 1;
+      this.searchParams.pageSize = val;
       this.getList();
     },
     handleCurrentChange(val) {
-      this.listQuery.pageNum = val;
+      this.searchParams.pageNum = val;
       this.getList();
     },
     handleCloseOrderConfirm() {
@@ -342,6 +335,9 @@ export default {
         deliverySn: null
       };
       return listItem;
+    },
+    getList() {
+      this.$emit("refreshList", this.searchParams);
     }
   }
 };
