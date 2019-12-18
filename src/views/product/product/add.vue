@@ -1,19 +1,44 @@
 <template>
-  <div style="margin-top: 50px">
+  <div style="padding: 20px;">
     <el-form
       :model="value"
       :rules="rules"
+      :inline="true"
+      :label-position="'top'"
       ref="productInfoForm"
       label-width="120px"
-      style="width: 600px"
+      style="width: 100%;"
       size="small"
     >
-      <el-form-item label="商品分类：" prop="productCategoryId">
-        <el-cascader
-          v-model="selectProductCateValue"
-          :options="productCateOptions"
+      <el-form-item label="供应商：" prop="productCategoryId">
+        <el-select
+          v-model="value.brandId"
+          @change="handleBrandChange"
+          placeholder="请选择供应商"
         >
-        </el-cascader>
+          <el-option
+            v-for="item in brandOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="果类：" prop="productCategoryId">
+        <el-select
+          v-model="value.brandId"
+          @change="handleBrandChange"
+          placeholder="请选择供应商"
+        >
+          <el-option
+            v-for="item in brandOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="商品名称：" prop="name">
         <el-input v-model="value.name"></el-input>
@@ -48,12 +73,12 @@
       <el-form-item label="商品库存：">
         <el-input v-model="value.stock"></el-input>
       </el-form-item>
-      <el-form-item style="text-align: center">
+      <el-form-item style="text-align: left">
         <el-button
           type="primary"
           size="medium"
           @click="handleNext('productInfoForm')"
-          >下一步，填写商品促销</el-button
+          >保存</el-button
         >
       </el-form-item>
     </el-form>
@@ -217,4 +242,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.el-form-item--small .el-form-item__label {
+  line-height: 10px;
+}
+</style>
