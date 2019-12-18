@@ -205,4 +205,4 @@ export default {
   }
 };
 </script>
-<style scoped></style>
+<style scoped type="scss"></style>

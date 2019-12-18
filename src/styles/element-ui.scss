@@ -28,11 +28,23 @@
   }
 }
 
-.el-form {
+.upload-product-banner {
+  .el-upload-list {
+    overflow: hidden;
+    width: 100%;
+    li {
+      width: 25%;
+      float: left;
+      margin-right: 20px;
+    }
+  }
+}
+
+.form-product-add {
   .el-form-item {
     .el-form-item__label {
-      padding: 0;
-      line-height: 26px;
+      line-height: 20px;
+      padding-bottom: 0px;
     }
   }
 }
