@@ -22,7 +22,7 @@
               v-for="item in brandOptions"
               :key="item.value"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             >
             </el-option>
           </el-select>
@@ -33,18 +33,18 @@
             >管理供应商</el-button
           >
         </el-form-item>
-        <!-- <el-form-item label="果类：" prop="productCategoryId">
+        <el-form-item label="商品种类：" prop="productCategoryId">
           <el-select
-            v-model="value.categoryId"
+            v-model="value.category"
             @change=""
             @visible-change="categorySelectorOpen"
-            placeholder="选择果类"
+            placeholder="商品种类："
           >
             <el-option
               v-for="item in productCateOptions"
               :key="item.value"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             >
             </el-option>
           </el-select>
@@ -54,7 +54,7 @@
             @click="manageCategory"
             >管理果类</el-button
           >
-        </el-form-item> -->
+        </el-form-item>
         <el-form-item label="商品库存：">
           <el-input v-model="value.inventory"></el-input>
         </el-form-item>
@@ -440,11 +440,25 @@ export default {
       this.dialogImageUrl = file.url;
     },
     onBannerSuccess(response, file, fileList) {
-      this.bannerList = fileList;
+      this.value.bannerList = fileList.map(_el => {
+        return {
+          name: file.name,
+          url: this.dataObj.host + "/" + this.dataObj.dir + "/" + file.name
+        };
+      });
       console.log(response, file, fileList);
     },
     onDetailSuccess(response, file, fileList) {
-      this.detailImgList = fileList;
+      this.value.detailList = fileList.map(_el => {
+        return {
+          name: file.name,
+          url: this.dataObj.host + "/" + this.dataObj.dir + "/" + file.name
+        };
+      });
+      // this.detailImgList.push({
+      //   name: file.name,
+      //   url: this.dataObj.host + "/" + this.dataObj.dir + "/" + file.name
+      // });
       console.log(response, file, fileList);
     },
     handleExceed(file) {
@@ -569,9 +583,84 @@ export default {
 
     submitNow() {
       console.log(this.bannerList, this.detailImgList);
+      const _value = this.value;
+      let params = {
+        albumPics: _value.bannerList.map(_el => _el.url).toString(),
+        brandId: 0,
+        brandName: _value.brand,
+        deleteStatus: 0,
+        detailDesc: "",
+        detailHtml: "",
+        detailMobileHtml: _value.detailList.map(_el => _el.url).toString(),
+        detailTitle: "",
+        feightTemplateId: 0,
+        flashPromotionCount: 0,
+        flashPromotionId: 0,
+        flashPromotionPrice: 0,
+        flashPromotionSort: 0,
+        giftGrowth: 0,
+        giftPoint: 0,
+        keywords: "11",
+        lowStock: 0,
+        memberPriceList: [],
+        name: _value.productName,
+        newStatus: 0,
+        normalF: 0,
+        normalX: 0,
+        normalY: 0,
+        normalZ: 0,
+        note: "11",
+        originalPrice: 0,
+        pic: _value.bannerList[0].url,
+        prefrenceAreaProductRelationList: [],
+        previewStatus: 0,
+        price: 0,
+        productAttributeCategoryId: 17,
+        productAttributeValueList: [],
+        productCategoryId: 56,
+        productCategoryName: _value.category,
+        productFullReductionList: [{ fullPrice: 0, reducePrice: 0 }],
+        productLadderList: [{ count: 0, discount: 0, price: 0 }],
+        productSn: "",
+        promotionEndTime: "",
+        promotionPerLimit: 0,
+        promotionPrice: null,
+        promotionStartTime: "",
+        promotionType: 0,
+        publishStatus: 0,
+        recommandStatus: 0,
+        sale: 0,
+        serviceIds: "",
+        skuStockList: this.productSize.map(_el => {
+          return {
+            sp1: _el.size,
+            price: _el.displayPrice,
+            vipPrice: _el.vipPrice,
+            chengbenProce: _el.cost,
+            fenxiaoPrice: _el.distributePrice
+          };
+        }),
+        sort: 0,
+        stock: _value.inventory,
+        subTitle: "副标题",
+        subjectProductRelationList: [],
+        unit: "",
+        usePointLimit: 0,
+        verifyStatus: 0,
+        vipPrice: 0,
+        vipX: 0,
+        vipY: 0,
+        vipZ: 0,
+        weight: 0
+      };
+      console.log(params, "worinima");
       switch (true) {
         case !this.value.brand: {
           this.$message.error("未选择供应商");
+          break;
+        }
+        case !this.value.category: {
+          this.$message.error("未选择品类");
           break;
         }
         case !this.value.inventory: {
@@ -586,45 +675,31 @@ export default {
           this.$message.error("商品规格未填写完整");
           break;
         }
-        case this.bannerList.length === 0: {
+        case _value.bannerList.length === 0: {
           this.$message.error("未上传商品banner图");
           break;
         }
-        case this.detailImgList.length === 0: {
+        case _value.detailList.length === 0: {
           this.$message.error("未上传商品详情图");
           break;
         }
-        case this.findEmptyValue(this.distributeSetting): {
-          this.$message.error("分佣配比设置未填写完整");
-          break;
-        }
+        // case this.findEmptyValue(this.distributeSetting): {
+        //   this.$message.error("分佣配比设置未填写完整");
+        //   break;
+        // }
         default: {
           this.$confirm("是否要提交该产品", "提示", {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
             type: "warning"
           }).then(() => {
-            if (isEdit) {
-              updateProduct(this.$route.query.id, this.productParam).then(
-                response => {
-                  this.$message({
-                    type: "success",
-                    message: "提交成功",
-                    duration: 1000
-                  });
-                  this.$router.back();
-                }
-              );
-            } else {
-              createProduct(this.productParam).then(response => {
-                this.$message({
-                  type: "success",
-                  message: "提交成功",
-                  duration: 1000
-                });
-                location.reload();
+            createProduct(params).then(response => {
+              this.$message({
+                type: "success",
+                message: "提交成功",
+                duration: 1000
               });
-            }
+            });
           });
         }
       }
