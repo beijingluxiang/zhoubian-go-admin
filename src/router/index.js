@@ -84,22 +84,22 @@ export const constantRouterMap = [
         name: "onSelling",
         index: "3-2",
         component: () => import("@/views/product/product/index"),
-        meta: { title: "出售中的商品", icon: "el-icon-tickets" }
+        meta: { title: "已发布的商品", icon: "el-icon-tickets" }
       },
-      {
-        path: "product",
-        name: "inStore",
-        index: "3-3",
-        component: () => import("@/views/product/product/index"),
-        meta: { title: "仓库中的商品", icon: "el-icon-tickets" }
-      },
-      {
-        path: "productCate",
-        name: "productType",
-        index: "3-4",
-        component: () => import("@/views/product/productCate/index"),
-        meta: { title: "商品分类", icon: "el-icon-tickets" }
-      },
+      // {
+      //   path: "product",
+      //   name: "inStore",
+      //   index: "3-3",
+      //   component: () => import("@/views/product/product/index"),
+      //   meta: { title: "已下架的商品", icon: "el-icon-tickets" }
+      // },
+      // {
+      //   path: "productCate",
+      //   name: "productType",
+      //   index: "3-4",
+      //   component: () => import("@/views/product/productCate/index"),
+      //   meta: { title: "商品分类", icon: "el-icon-tickets" }
+      // },
       {
         path: "product",
         name: "freeProduct",
@@ -133,46 +133,46 @@ export const constantRouterMap = [
       }
     ]
   },
-  {
-    path: "/finacial",
-    component: Layout,
-    redirect: "/finacial/order",
-    name: "finacial",
-    index: "5",
-    meta: { title: "财务", icon: "el-icon-data-line" },
-    children: [
-      {
-        path: "order",
-        name: "finacial",
-        index: "5-1",
-        component: () => import("@/views/finacial/order/index"),
-        meta: { title: "财务概况", icon: "el-icon-tickets" }
-      },
-      {
-        path: "orderDetail",
-        name: "billDetail",
-        index: "5-2",
-        component: () => import("@/views/finacial/order/orderDetail"),
-        meta: { title: "资金明细" },
-        hidden: true
-      },
-      {
-        path: "deliverOrderList",
-        name: "vipBill",
-        index: "5-3",
-        component: () => import("@/views/finacial/order/deliverOrderList"),
-        meta: { title: "会员对账" },
-        hidden: true
-      },
-      {
-        path: "orderSetting",
-        name: "withdrawSetting",
-        index: "5-4",
-        component: () => import("@/views/finacial/order/setting"),
-        meta: { title: "提现设置", icon: "el-icon-tickets" }
-      }
-    ]
-  },
+  // {
+  //   path: "/finacial",
+  //   component: Layout,
+  //   redirect: "/finacial/order",
+  //   name: "finacial",
+  //   index: "5",
+  //   meta: { title: "财务", icon: "el-icon-data-line" },
+  //   children: [
+  //     {
+  //       path: "order",
+  //       name: "finacial",
+  //       index: "5-1",
+  //       component: () => import("@/views/finacial/order/index"),
+  //       meta: { title: "财务概况", icon: "el-icon-tickets" }
+  //     },
+  //     {
+  //       path: "orderDetail",
+  //       name: "billDetail",
+  //       index: "5-2",
+  //       component: () => import("@/views/finacial/order/orderDetail"),
+  //       meta: { title: "资金明细" },
+  //       hidden: true
+  //     },
+  //     {
+  //       path: "deliverOrderList",
+  //       name: "vipBill",
+  //       index: "5-3",
+  //       component: () => import("@/views/finacial/order/deliverOrderList"),
+  //       meta: { title: "会员对账" },
+  //       hidden: true
+  //     },
+  //     {
+  //       path: "orderSetting",
+  //       name: "withdrawSetting",
+  //       index: "5-4",
+  //       component: () => import("@/views/finacial/order/setting"),
+  //       meta: { title: "提现设置", icon: "el-icon-tickets" }
+  //     }
+  //   ]
+  // },
   { path: "*", redirect: "/404", hidden: true }
 ];
 

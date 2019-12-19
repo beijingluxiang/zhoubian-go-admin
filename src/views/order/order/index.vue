@@ -123,6 +123,13 @@ export default {
           name: "订单状态",
           eName: "status",
           type: "select",
+          options: [
+            { label: "待付款", value: 0 },
+            { label: "待发货", value: 1 },
+            { label: "已发货", value: 2 },
+            { label: "已完成", value: 3 },
+            { label: "已关闭", value: 4 }
+          ],
           placeholder: "请输入用户"
         }
       ],

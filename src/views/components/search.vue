@@ -37,7 +37,7 @@
             clearable
           >
             <el-option
-              v-for="option in statusOptions"
+              v-for="option in item.options"
               :key="option.value"
               :label="option.label"
               :value="option.value"
@@ -93,14 +93,9 @@ export default {
   },
   data() {
     return {
-      searchParams: {},
-      statusOptions: [
-        { label: "待付款", value: 0 },
-        { label: "待发货", value: 1 },
-        { label: "已发货", value: 2 },
-        { label: "已完成", value: 3 },
-        { label: "已关闭", value: 4 }
-      ]
+      searchParams: {
+        publishStatus: 1
+      }
     };
   },
   methods: {
