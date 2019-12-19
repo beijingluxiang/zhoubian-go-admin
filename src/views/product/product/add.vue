@@ -442,8 +442,8 @@ export default {
     onBannerSuccess(response, file, fileList) {
       this.value.bannerList = fileList.map(_el => {
         return {
-          name: file.name,
-          url: this.dataObj.host + "/" + this.dataObj.dir + "/" + file.name
+          name: _el.name,
+          url: this.dataObj.host + "/" + this.dataObj.dir + "/" + _el.name
         };
       });
       console.log(response, file, fileList);
@@ -451,8 +451,8 @@ export default {
     onDetailSuccess(response, file, fileList) {
       this.value.detailList = fileList.map(_el => {
         return {
-          name: file.name,
-          url: this.dataObj.host + "/" + this.dataObj.dir + "/" + file.name
+          name: _el.name,
+          url: this.dataObj.host + "/" + this.dataObj.dir + "/" + _el.name
         };
       });
       // this.detailImgList.push({
@@ -582,7 +582,7 @@ export default {
     },
 
     submitNow() {
-      console.log(this.bannerList, this.detailImgList);
+      console.log(this.bannerList, this.detailImgList, _value);
       const _value = this.value;
       let params = {
         albumPics: _value.bannerList.map(_el => _el.url).toString(),
@@ -627,7 +627,7 @@ export default {
         promotionPrice: null,
         promotionStartTime: "",
         promotionType: 0,
-        publishStatus: 0,
+        publishStatus: 1,
         recommandStatus: 0,
         sale: 0,
         serviceIds: "",
