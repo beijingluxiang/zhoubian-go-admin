@@ -48,3 +48,14 @@
     }
   }
 }
+
+.el-table {
+  .el-table__header-wrapper {
+    .columnHeader {
+      th {
+        color: #636363;
+        background: #f2f6fc;
+      }
+    }
+  }
+}

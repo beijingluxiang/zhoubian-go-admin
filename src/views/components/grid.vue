@@ -4,12 +4,14 @@
       <el-table
         ref="orderTable"
         :data="rowData"
+        header-row-class-name="columnHeader"
         style="width: 100%;"
         @selection-change="handleSelectionChange"
         v-loading="listLoading"
         border
       >
         <el-table-column
+          v-if="checkBox"
           type="selection"
           width="60"
           align="center"
@@ -17,13 +19,19 @@
         <el-table-column
           v-for="col in columnDefs"
           :key="col.colId"
+          sortable
           :label="col.name"
           align="center"
         >
           <template slot-scope="scope">{{ scope.row[col.colId] }}</template>
         </el-table-column>
 
-        <el-table-column label="操作" width="200" align="center">
+        <el-table-column
+          v-if="operation"
+          label="操作"
+          width="200"
+          align="center"
+        >
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -79,7 +87,7 @@
         确定
       </el-button>
     </div> -->
-    <div class="pagination-container">
+    <div v-if="pagination" class="pagination-container">
       <el-pagination
         background
         @size-change="handleSizeChange"
@@ -128,6 +136,15 @@ export default {
     },
     rowData: {
       type: Array
+    },
+    pagination: {
+      type: null
+    },
+    operation: {
+      type: null
+    },
+    checkBox: {
+      type: null
     }
   },
   components: { LogisticsDialog },
@@ -206,7 +223,27 @@ export default {
       ]
     };
   },
+
+  created() {
+    this.rowData.forEach(_it => {
+      if (this.columnDefs.find(_el => _el.colId === "receiverDetailAddress")) {
+        _it.receiverDetailAddress =
+          _it.receiverProvince +
+          _it.receiverCity +
+          _it.receiverRegion +
+          _it.receiverDetailAddress.replace("%%", "");
+      }
+      if (this.columnDefs.find(_el => _el.colId === "payType")) {
+        _it.payType =
+          _it.payType === 1 ? "微信" : _it.payType === 2 ? "支付宝" : "未支付";
+      }
+    });
+  },
+
   methods: {
+    headerRowStyle(row) {
+      return {};
+    },
     handleResetSearch() {
       this.searchParams = Object.assign({}, defaultListQuery);
     },
@@ -343,8 +380,18 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .input-width {
   width: 203px;
+}
+.table-container {
+  .el-table {
+    .columnHeader {
+      .th {
+        background: red;
+        color: blue;
+      }
+    }
+  }
 }
 </style>

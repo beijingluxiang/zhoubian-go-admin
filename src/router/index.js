@@ -93,13 +93,20 @@ export const constantRouterMap = [
       //   component: () => import("@/views/product/product/index"),
       //   meta: { title: "已下架的商品", icon: "el-icon-tickets" }
       // },
-      // {
-      //   path: "productCate",
-      //   name: "productType",
-      //   index: "3-4",
-      //   component: () => import("@/views/product/productCate/index"),
-      //   meta: { title: "商品分类", icon: "el-icon-tickets" }
-      // },
+      {
+        path: "productCate",
+        name: "productType",
+        index: "3-4",
+        component: () => import("@/views/product/productCate/index"),
+        meta: { title: "商品分类", icon: "el-icon-tickets" }
+      },
+      {
+        path: "brand",
+        name: "brand",
+        index: "3-3",
+        component: () => import("@/views/product/brand/index"),
+        meta: { title: "供应商", icon: "el-icon-tickets" }
+      },
       {
         path: "product",
         name: "freeProduct",

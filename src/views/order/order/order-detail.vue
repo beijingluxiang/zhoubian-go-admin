@@ -34,106 +34,33 @@
         <span class="color-danger"
           >当前订单状态：{{ order.status | formatStatus }}</span
         >
-        <!-- <div class="operate-button-container" v-show="order.status === 0">
-          <el-button size="mini" @click="showUpdateReceiverDialog"
-            >修改收货人信息</el-button
-          >
-          <el-button size="mini" @click="showCloseOrderDialog"
-            >关闭订单</el-button
-          >
-          <el-button size="mini" @click="showMarkOrderDialog"
-            >备注订单</el-button
-          >
-        </div>
-        <div class="operate-button-container" v-show="order.status === 1">
-          <el-button size="mini" @click="showUpdateReceiverDialog"
-            >修改收货人信息</el-button
-          >
-          <el-button size="mini">取消订单</el-button>
-          <el-button size="mini" @click="showMarkOrderDialog"
-            >备注订单</el-button
-          >
-        </div>
-        <div
-          class="operate-button-container"
-          v-show="order.status === 2 || order.status === 3"
-        >
-          <el-button size="mini" @click="showLogisticsDialog"
-            >订单跟踪</el-button
-          >
-          <el-button size="mini" @click="showMarkOrderDialog"
-            >备注订单</el-button
-          >
-        </div>
-        <div class="operate-button-container" v-show="order.status === 4">
-          <el-button size="mini" @click="handleDeleteOrder">删除订单</el-button>
-          <el-button size="mini" @click="showMarkOrderDialog"
-            >备注订单</el-button
-          >
-        </div> -->
       </div>
       <div style="margin-top: 20px">
         <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
         <span class="font-small">基本信息</span>
       </div>
-      <div class="table-layout">
-        <el-row>
-          <el-col :span="4" class="table-cell-title">订单编号</el-col>
-          <!--          <el-col :span="4" class="table-cell-title">发货单流水号</el-col>-->
-          <el-col :span="4" class="table-cell-title">用户账号</el-col>
-          <el-col :span="4" class="table-cell-title">支付方式</el-col>
-          <!--          <el-col :span="4" class="table-cell-title">订单来源</el-col>-->
-          <!--          <el-col :span="4" class="table-cell-title">订单类型</el-col>-->
-          <el-col :span="4" class="table-cell-title">配送方式</el-col>
-          <el-col :span="4" class="table-cell-title">物流单号</el-col>
-          <el-col :span="4" class="table-cell-title">自动确认收货时间</el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="4" class="table-cell">{{ order.orderSn }}</el-col>
-          <!--          <el-col :span="4" class="table-cell">暂无</el-col>-->
-          <el-col :span="4" class="table-cell">{{
-            order.memberUsername
-          }}</el-col>
-          <el-col :span="4" class="table-cell">{{
-            order.payType | formatPayType
-          }}</el-col>
-          <!--          <el-col :span="4" class="table-cell">{{order.sourceType | formatSourceType}}</el-col>-->
-          <!--          <el-col :span="4" class="table-cell">{{order.orderType | formatOrderType}}</el-col>-->
-          <el-col :span="4" class="table-cell">{{
-            order.deliveryCompany | formatNull
-          }}</el-col>
-          <el-col :span="4" class="table-cell">{{
-            order.deliverySn | formatNull
-          }}</el-col>
-          <el-col :span="4" class="table-cell"
-            >{{ order.autoConfirmDay }}天</el-col
-          >
-        </el-row>
-      </div>
+
+      <gridComponent
+        :columnDefs="orderListColDefs"
+        :rowData="orderList"
+        :pagination="null"
+        :checkBox="null"
+        :operation="null"
+      ></gridComponent>
+
       <div style="margin-top: 20px">
         <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
         <span class="font-small">收货人信息</span>
       </div>
-      <div class="table-layout">
-        <el-row>
-          <el-col :span="6" class="table-cell-title">收货人</el-col>
-          <el-col :span="6" class="table-cell-title">手机号码</el-col>
-          <el-col :span="6" class="table-cell-title">邮政编码</el-col>
-          <el-col :span="6" class="table-cell-title">收货地址</el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="6" class="table-cell">{{ order.receiverName }}</el-col>
-          <el-col :span="6" class="table-cell">{{
-            order.receiverPhone
-          }}</el-col>
-          <el-col :span="6" class="table-cell">{{
-            order.receiverPostCode
-          }}</el-col>
-          <el-col :span="6" class="table-cell">{{
-            order | formatAddress
-          }}</el-col>
-        </el-row>
-      </div>
+
+      <gridComponent
+        :columnDefs="deliveryColDefs"
+        :rowData="orderList"
+        :pagination="null"
+        :checkBox="null"
+        :operation="null"
+      ></gridComponent>
+
       <div style="margin-top: 20px">
         <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
         <span class="font-small">商品信息</span>
@@ -181,167 +108,6 @@
         合计：<span class="color-danger">￥{{ order.totalAmount }}</span>
       </div>
     </el-card>
-    <el-dialog
-      title="修改收货人信息"
-      :visible.sync="receiverDialogVisible"
-      width="40%"
-    >
-      <el-form :model="receiverInfo" ref="receiverInfoForm" label-width="150px">
-        <el-form-item label="收货人姓名：">
-          <el-input
-            v-model="receiverInfo.receiverName"
-            style="width: 200px"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="手机号码：">
-          <el-input v-model="receiverInfo.receiverPhone" style="width: 200px">
-          </el-input>
-        </el-form-item>
-        <el-form-item label="邮政编码：">
-          <el-input
-            v-model="receiverInfo.receiverPostCode"
-            style="width: 200px"
-          >
-          </el-input>
-        </el-form-item>
-        <el-form-item label="所在区域：">
-          <v-distpicker
-            :province="receiverInfo.receiverProvince"
-            :city="receiverInfo.receiverCity"
-            :area="receiverInfo.receiverRegion"
-            @selected="onSelectRegion"
-          ></v-distpicker>
-        </el-form-item>
-        <el-form-item label="详细地址：">
-          <el-input
-            v-model="receiverInfo.receiverDetailAddress"
-            type="textarea"
-            rows="3"
-          >
-          </el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="receiverDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleUpdateReceiverInfo"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
-    <el-dialog
-      title="修改费用信息"
-      :visible.sync="moneyDialogVisible"
-      width="40%"
-    >
-      <div class="table-layout">
-        <el-row>
-          <el-col :span="6" class="table-cell-title">商品合计</el-col>
-          <el-col :span="6" class="table-cell-title">运费</el-col>
-          <el-col :span="6" class="table-cell-title">优惠券</el-col>
-          <el-col :span="6" class="table-cell-title">积分抵扣</el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="6" class="table-cell"
-            >￥{{ order.totalAmount }}</el-col
-          >
-          <el-col :span="6" class="table-cell">
-            <el-input v-model.number="moneyInfo.freightAmount" size="mini"
-              ><template slot="prepend">￥</template></el-input
-            >
-          </el-col>
-          <el-col :span="6" class="table-cell"
-            >-￥{{ order.couponAmount }}</el-col
-          >
-          <el-col :span="6" class="table-cell"
-            >-￥{{ order.integrationAmount }}</el-col
-          >
-        </el-row>
-        <el-row>
-          <el-col :span="6" class="table-cell-title">活动优惠</el-col>
-          <el-col :span="6" class="table-cell-title">折扣金额</el-col>
-          <el-col :span="6" class="table-cell-title">订单总金额</el-col>
-          <el-col :span="6" class="table-cell-title">应付款金额</el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="6" class="table-cell"
-            >-￥{{ order.promotionAmount }}</el-col
-          >
-          <el-col :span="6" class="table-cell">
-            <el-input v-model.number="moneyInfo.discountAmount" size="mini"
-              ><template slot="prepend">-￥</template></el-input
-            >
-          </el-col>
-          <el-col :span="6" class="table-cell">
-            <span class="color-danger"
-              >￥{{ order.totalAmount + moneyInfo.freightAmount }}</span
-            >
-          </el-col>
-          <el-col :span="6" class="table-cell">
-            <span class="color-danger"
-              >￥{{
-                order.payAmount +
-                  moneyInfo.freightAmount -
-                  moneyInfo.discountAmount
-              }}</span
-            >
-          </el-col>
-        </el-row>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="moneyDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleUpdateMoneyInfo"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
-    <el-dialog
-      title="发送站内信"
-      :visible.sync="messageDialogVisible"
-      width="40%"
-    >
-      <el-form :model="message" ref="receiverInfoForm" label-width="150px">
-        <el-form-item label="标题：">
-          <el-input v-model="message.title" style="width: 200px"></el-input>
-        </el-form-item>
-        <el-form-item label="内容：">
-          <el-input v-model="message.content" type="textarea" rows="3">
-          </el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="messageDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleSendMessage">确 定</el-button>
-      </span>
-    </el-dialog>
-    <el-dialog title="关闭订单" :visible.sync="closeDialogVisible" width="40%">
-      <el-form :model="closeInfo" label-width="150px">
-        <el-form-item label="操作备注：">
-          <el-input v-model="closeInfo.note" type="textarea" rows="3">
-          </el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="closeDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleCloseOrder">确 定</el-button>
-      </span>
-    </el-dialog>
-    <el-dialog
-      title="备注订单"
-      :visible.sync="markOrderDialogVisible"
-      width="40%"
-    >
-      <el-form :model="markInfo" label-width="150px">
-        <el-form-item label="操作备注：">
-          <el-input v-model="markInfo.note" type="textarea" rows="3">
-          </el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="markOrderDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleMarkOrder">确 定</el-button>
-      </span>
-    </el-dialog>
-    <logistics-dialog v-model="logisticsDialogVisible"></logistics-dialog>
   </div>
 </template>
 <script>
@@ -367,9 +133,10 @@ const defaultReceiverInfo = {
   receiverRegion: null,
   status: null
 };
+import gridComponent from "@/views/components/grid";
 export default {
   name: "orderDetail",
-  components: { VDistpicker, LogisticsDialog },
+  components: { VDistpicker, LogisticsDialog, gridComponent },
   props: {
     productId: {
       type: Number
@@ -393,6 +160,51 @@ export default {
       receiverDialogVisible: false,
       receiverInfo: Object.assign({}, defaultReceiverInfo),
       moneyDialogVisible: false,
+      orderList: [],
+      orderListColDefs: [
+        {
+          name: "订单编号",
+          colId: "orderSn"
+        },
+        {
+          name: "用户",
+          colId: "memberUsername"
+        },
+        {
+          name: "支付方式",
+          colId: "payType"
+        },
+        {
+          name: "物流公司",
+          colId: "deliveryCompany"
+        },
+        {
+          name: "运单号",
+          colId: "deliverySn"
+        },
+        {
+          name: "自动确认收货时间",
+          colId: "autoConfirmDay"
+        }
+      ],
+      deliveryColDefs: [
+        {
+          name: "收货人",
+          colId: "receiverName"
+        },
+        {
+          name: "手机号码",
+          colId: "receiverPhone"
+        },
+        {
+          name: "邮政编码",
+          colId: "receiverPostCode"
+        },
+        {
+          name: "收货地址",
+          colId: "receiverDetailAddress"
+        }
+      ],
       moneyInfo: {
         orderId: null,
         freightAmount: 0,
@@ -414,6 +226,7 @@ export default {
     console.log(this.productId);
     getOrderDetail(this.productId).then(response => {
       this.order = response.data;
+      this.orderList = [response.data];
     });
   },
 

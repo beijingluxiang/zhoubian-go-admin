@@ -9,6 +9,9 @@
     <gridComponent
       :columnDefs="orderListColDefs"
       :rowData="orderList"
+      :operation="{}"
+      :checkBox="true"
+      :pagination="true"
       @onDeleteOrderBtnClicked="deleteOrder"
       @onViewDetailBtnClicked="viewDetail"
       @onDeliveryBtnClicked="deliveryOrder"
