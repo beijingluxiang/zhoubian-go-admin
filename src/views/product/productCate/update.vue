@@ -1,14 +1,13 @@
-<template> 
-  <product-cate-detail :is-edit='true'></product-cate-detail>
+<template>
+  <div style="height: 300px;">
+    <brand-detail :is-edit="true"></brand-detail>
+  </div>
 </template>
 <script>
-  import ProductCateDetail from './components/ProductCateDetail'
-  export default {
-    name: 'updateProductCate',
-    components: { ProductCateDetail }
-  }
+import BrandDetail from "./components/BrandDetail";
+export default {
+  name: "updateBrand",
+  components: { BrandDetail }
+};
 </script>
-<style>
-</style>
-
-
+<style></style>

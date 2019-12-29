@@ -51,8 +51,8 @@ export const constantRouterMap = [
         path: "orderSetting",
         name: "orderSetting",
         index: "2-1",
-        component: () => import("@/views/order/order/index"),
-        meta: { title: "订单概况", icon: "el-icon-tickets" }
+        component: () => import("@/views/order/order/viewSetting"),
+        meta: { title: "页面设置", icon: "el-icon-tickets" }
       },
       {
         path: "order",
@@ -108,10 +108,10 @@ export const constantRouterMap = [
         meta: { title: "供应商", icon: "el-icon-tickets" }
       },
       {
-        path: "product",
+        path: "vipProduct",
         name: "freeProduct",
         index: "3-5",
-        component: () => import("@/views/product/product/index"),
+        component: () => import("@/views/product/vipProduct/index"),
         meta: { title: "会员半年免费", icon: "el-icon-tickets" }
       }
     ]

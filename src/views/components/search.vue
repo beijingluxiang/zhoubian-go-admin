@@ -101,6 +101,9 @@ export default {
   methods: {
     onSearch() {
       this.$emit("onSearchBtnClicked", this.searchParams);
+    },
+    onExport() {
+      this.$emit("onExportOrder", this.searchParams);
     }
   }
 };

@@ -1,68 +1,39 @@
 <template>
   <div class="app-container" style="padding-bottom: 50px;">
     <el-card class="operate-container" shadow="never">
-      <i class="el-icon-tickets" style="margin-top: 5px"></i>
-      <span style="margin-top: 5px">分类列表</span>
-      <el-button class="btn-add" @click="handleAddProductCate()" size="mini">
+      <i class="el-icon-tickets"></i>
+      <span>供应商列表</span>
+      <el-button class="btn-add" @click="addBrand()" size="mini">
         添加
       </el-button>
     </el-card>
     <div class="table-container">
       <el-table
-        ref="productCateTable"
-        style="width: 100%"
+        ref="brandTable"
         :data="list"
+        style="width: 100%"
+        @selection-change="handleSelectionChange"
         v-loading="listLoading"
         border
       >
+        <el-table-column
+          type="selection"
+          width="60"
+          align="center"
+        ></el-table-column>
         <el-table-column label="编号" width="100" align="center">
           <template slot-scope="scope">{{ scope.row.id }}</template>
         </el-table-column>
-        <el-table-column label="分类名称" align="center">
+        <el-table-column label="供应商名称" align="center">
           <template slot-scope="scope">{{ scope.row.name }}</template>
         </el-table-column>
-        <!-- <el-table-column label="级别" width="100" align="center">
-          <template slot-scope="scope">{{
-            scope.row.level | levelFilter
-          }}</template>
-        </el-table-column> -->
-        <!--        <el-table-column label="商品数量" width="100" align="center">-->
-        <!--          <template slot-scope="scope">{{scope.row.productCount }}</template>-->
-        <!--        </el-table-column>-->
-        <!--        <el-table-column label="数量单位" width="100" align="center">-->
-        <!--          <template slot-scope="scope">{{scope.row.productUnit }}</template>-->
-        <!--        </el-table-column>-->
-        <!--        <el-table-column label="导航栏" width="100" align="center">-->
-        <!--          <template slot-scope="scope">-->
-        <!--            <el-switch-->
-        <!--              @change="handleNavStatusChange(scope.$index, scope.row)"-->
-        <!--              :active-value="1"-->
-        <!--              :inactive-value="0"-->
-        <!--              v-model="scope.row.navStatus">-->
-        <!--            </el-switch>-->
-        <!--          </template>-->
-        <!--        </el-table-column>-->
-        <!--        <el-table-column label="是否显示" width="100" align="center">-->
-        <!--          <template slot-scope="scope">-->
-        <!--            <el-switch-->
-        <!--              @change="handleShowStatusChange(scope.$index, scope.row)"-->
-        <!--              :active-value="1"-->
-        <!--              :inactive-value="0"-->
-        <!--              v-model="scope.row.showStatus">-->
-        <!--            </el-switch>-->
-        <!--          </template>-->
-        <!--        </el-table-column>-->
-        <!--        <el-table-column label="排序" width="100" align="center">-->
-        <!--          <template slot-scope="scope">{{scope.row.sort }}</template>-->
-        <!--        </el-table-column>-->
-
         <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">
-            <!-- <el-button
+            <el-button
               size="mini"
               @click="handleUpdate(scope.$index, scope.row)"
               >编辑
-            </el-button> -->
+            </el-button>
             <el-button
               size="mini"
               type="danger"
@@ -73,20 +44,6 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="pagination-container">
-      <el-pagination
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        layout="total, sizes,prev, pager, next,jumper"
-        :page-size="listQuery.pageSize"
-        :page-sizes="[5, 10, 15]"
-        :current-page.sync="listQuery.pageNum"
-        :total="total"
-      >
-      </el-pagination>
-    </div>
-
     <el-dialog
       class="addBrandDialog"
       :visible.sync="dialogVisibleAdd"
@@ -96,66 +53,139 @@
     >
       <addComponent></addComponent>
     </el-dialog>
+    <el-dialog
+      class="addBrandDialog"
+      :visible.sync="dialogVisibleUpdate"
+      top="10px"
+      append-to-body
+      @closed="dialogClosed"
+    >
+      <addComponent :editingData="editingData"></addComponent>
+    </el-dialog>
   </div>
 </template>
-
 <script>
 import {
-  fetchList,
-  deleteProductCate,
-  updateShowStatus,
-  updateNavStatus
-} from "@/api/productCate";
+  createCategory,
+  getCategory,
+  editCategory,
+  deleteCategory
+} from "@/api/category";
 import addComponent from "@/views/product/productCate/add";
+import updateComponent from "@/views/product/brand/update";
 
 export default {
-  name: "productCateList",
-  components: { addComponent },
+  name: "brandList",
+  components: { addComponent, updateComponent },
   data() {
     return {
+      editingData: "",
       dialogVisibleAdd: false,
+      dialogVisibleUpdate: false,
+      operates: [
+        {
+          label: "显示品牌",
+          value: "showBrand"
+        },
+        {
+          label: "隐藏品牌",
+          value: "hideBrand"
+        }
+      ],
+      operateType: null,
+      listQuery: {
+        keyword: null,
+        pageNum: 1,
+        pageSize: 10
+      },
       list: null,
       total: null,
       listLoading: true,
-      listQuery: {
-        pageNum: 1,
-        pageSize: 5
-      },
-      parentId: 0
+      multipleSelection: []
     };
   },
   created() {
-    this.resetParentId();
     this.getList();
-  },
-  watch: {
-    $route(route) {
-      this.resetParentId();
-      this.getList();
-    }
   },
   methods: {
     dialogClosed() {
       this.getList();
     },
-    resetParentId() {
-      this.listQuery.pageNum = 1;
-      if (this.$route.query.parentId != null) {
-        this.parentId = this.$route.query.parentId;
-      } else {
-        this.parentId = 0;
-      }
-    },
-    handleAddProductCate() {
-      this.dialogVisibleAdd = true;
-    },
     getList() {
       this.listLoading = true;
-      fetchList(this.parentId, this.listQuery).then(response => {
+      getCategory().then(response => {
         this.listLoading = false;
-        this.list = response.data.list;
-        this.total = response.data.total;
+        this.list = response.data;
       });
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+    handleUpdate(index, row) {
+      this.editingData = row;
+      this.dialogVisibleUpdate = true;
+    },
+    handleDelete(index, row) {
+      this.$confirm("是否要删除该品牌", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        deleteCategory(row.id).then(response => {
+          this.$message({
+            message: "删除成功",
+            type: "success",
+            duration: 1000
+          });
+          this.getList();
+        });
+      });
+    },
+    getProductList(index, row) {
+      console.log(index, row);
+    },
+    getProductCommentList(index, row) {
+      console.log(index, row);
+    },
+    handleFactoryStatusChange(index, row) {
+      var data = new URLSearchParams();
+      data.append("ids", row.id);
+      data.append("factoryStatus", row.factoryStatus);
+      updateFactoryStatus(data)
+        .then(response => {
+          this.$message({
+            message: "修改成功",
+            type: "success",
+            duration: 1000
+          });
+        })
+        .catch(error => {
+          if (row.factoryStatus === 0) {
+            row.factoryStatus = 1;
+          } else {
+            row.factoryStatus = 0;
+          }
+        });
+    },
+    handleShowStatusChange(index, row) {
+      let data = new URLSearchParams();
+      data.append("ids", row.id);
+      data.append("showStatus", row.showStatus);
+      updateShowStatus(data)
+        .then(response => {
+          this.$message({
+            message: "修改成功",
+            type: "success",
+            duration: 1000
+          });
+        })
+        .catch(error => {
+          if (row.showStatus === 0) {
+            row.showStatus = 1;
+          } else {
+            row.showStatus = 0;
+          }
+        });
     },
     handleSizeChange(val) {
       this.listQuery.pageNum = 1;
@@ -166,83 +196,53 @@ export default {
       this.listQuery.pageNum = val;
       this.getList();
     },
-    handleNavStatusChange(index, row) {
-      let data = new URLSearchParams();
-      let ids = [];
-      ids.push(row.id);
-      data.append("ids", ids);
-      data.append("navStatus", row.navStatus);
-      updateNavStatus(data).then(response => {
+    searchBrandList() {
+      this.listQuery.pageNum = 1;
+      this.getList();
+    },
+    handleBatchOperate() {
+      console.log(this.multipleSelection);
+      if (this.multipleSelection < 1) {
         this.$message({
-          message: "修改成功",
-          type: "success",
+          message: "请选择一条记录",
+          type: "warning",
           duration: 1000
         });
-      });
-    },
-    handleShowStatusChange(index, row) {
-      let data = new URLSearchParams();
-      let ids = [];
-      ids.push(row.id);
-      data.append("ids", ids);
-      data.append("showStatus", row.showStatus);
-      updateShowStatus(data).then(response => {
-        this.$message({
-          message: "修改成功",
-          type: "success",
-          duration: 1000
-        });
-      });
-    },
-    handleShowNextLevel(index, row) {
-      this.$router.push({
-        path: "/pms/productCate",
-        query: { parentId: row.id }
-      });
-    },
-    handleTransferProduct(index, row) {
-      console.log("handleAddProductCate");
-    },
-    handleUpdate(index, row) {
-      this.$router.push({
-        path: "/pms/updateProductCate",
-        query: { id: row.id }
-      });
-    },
-    handleDelete(index, row) {
-      this.$confirm("是否要删除该品牌", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-        deleteProductCate(row.id).then(response => {
-          this.$message({
-            message: "删除成功",
-            type: "success",
-            duration: 1000
-          });
-          this.getList();
-        });
-      });
-    }
-  },
-  filters: {
-    levelFilter(value) {
-      if (value === 0) {
-        return "一级";
-      } else if (value === 1) {
-        return "二级";
+        return;
       }
-    },
-    disableNextLevel(value) {
-      if (value === 0) {
-        return false;
+      let showStatus = 0;
+      if (this.operateType === "showBrand") {
+        showStatus = 1;
+      } else if (this.operateType === "hideBrand") {
+        showStatus = 0;
       } else {
-        return true;
+        this.$message({
+          message: "请选择批量操作类型",
+          type: "warning",
+          duration: 1000
+        });
+        return;
       }
+      let ids = [];
+      for (let i = 0; i < this.multipleSelection.length; i++) {
+        ids.push(this.multipleSelection[i].id);
+      }
+      let data = new URLSearchParams();
+      data.append("ids", ids);
+      data.append("showStatus", showStatus);
+      updateShowStatus(data).then(response => {
+        this.getList();
+        this.$message({
+          message: "修改成功",
+          type: "success",
+          duration: 1000
+        });
+      });
+    },
+    addBrand() {
+      this.dialogVisibleAdd = true;
     }
   }
 };
 </script>
-
-<style scoped></style>
+<style rel="stylesheet/scss" lang="scss" scoped></style>

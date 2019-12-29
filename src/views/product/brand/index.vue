@@ -27,16 +27,13 @@
         <el-table-column label="供应商名称" align="center">
           <template slot-scope="scope">{{ scope.row.name }}</template>
         </el-table-column>
-        <el-table-column label="供应商首字母" width="100" align="center">
-          <template slot-scope="scope">{{ scope.row.firstLetter }}</template>
-        </el-table-column>
         <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">
-            <!-- <el-button
+            <el-button
               size="mini"
               @click="handleUpdate(scope.$index, scope.row)"
               >编辑
-            </el-button> -->
+            </el-button>
             <el-button
               size="mini"
               type="danger"
@@ -46,19 +43,6 @@
           </template>
         </el-table-column>
       </el-table>
-    </div>
-    <div class="pagination-container">
-      <el-pagination
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        layout="total, sizes,prev, pager, next,jumper"
-        :page-size="listQuery.pageSize"
-        :page-sizes="[5, 10, 15]"
-        :current-page.sync="listQuery.pageNum"
-        :total="total"
-      >
-      </el-pagination>
     </div>
     <el-dialog
       class="addBrandDialog"
@@ -76,17 +60,12 @@
       append-to-body
       @closed="dialogClosed"
     >
-      <addComponent></addComponent>
+      <addComponent :editingData="editingData"></addComponent>
     </el-dialog>
   </div>
 </template>
 <script>
-import {
-  fetchList,
-  updateShowStatus,
-  updateFactoryStatus,
-  deleteBrand
-} from "@/api/brand";
+import { createBrand, getBrand, editBrand, deleteBrand } from "@/api/brand-zy";
 import addComponent from "@/views/product/brand/add";
 import updateComponent from "@/views/product/brand/update";
 
@@ -95,6 +74,7 @@ export default {
   components: { addComponent, updateComponent },
   data() {
     return {
+      editingData: "",
       dialogVisibleAdd: false,
       dialogVisibleUpdate: false,
       operates: [
@@ -128,18 +108,16 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      fetchList(this.listQuery).then(response => {
+      getBrand().then(response => {
         this.listLoading = false;
-        this.list = response.data.list;
-        this.total = response.data.total;
-        this.totalPage = response.data.totalPage;
-        this.pageSize = response.data.pageSize;
+        this.list = response.data;
       });
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
     handleUpdate(index, row) {
+      this.editingData = row;
       this.dialogVisibleUpdate = true;
     },
     handleDelete(index, row) {

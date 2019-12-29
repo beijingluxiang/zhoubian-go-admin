@@ -16,7 +16,12 @@
   </el-card>
 </template>
 <script>
-import { createCategory, getCategory, editCategory } from "@/api/category";
+import {
+  createCategory,
+  getCategory,
+  editCategory,
+  deleteCategory
+} from "@/api/category";
 import SingleUpload from "@/components/Upload/singleUpload";
 const defaultBrand = {
   bigPic: "",
@@ -45,21 +50,20 @@ export default {
     return {
       brand: Object.assign({}, defaultBrand),
       brandName: "",
-      brandId: null,
       rules: {
-        name: [{ required: true, message: "请输入品牌名称", trigger: "blur" }],
+        name: [
+          { required: true, message: "请输入品牌名称", trigger: "blur" },
+          {
+            min: 2,
+            max: 140,
+            message: "长度在 2 到 140 个字符",
+            trigger: "blur"
+          }
+        ],
         logo: [{ required: true, message: "请输入品牌logo", trigger: "blur" }],
         sort: [{ type: "number", message: "排序必须为数字" }]
       }
     };
-  },
-  watch: {
-    editingData: function(val) {
-      if (val) {
-        this.brandName = val.name;
-        this.brandId = val.id;
-      }
-    }
   },
   created() {
     if (this.editingData) {
@@ -74,8 +78,8 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-        if (this.editingData) {
-          editCategory(this.editingData.id, this.brandName).then(response => {
+        if (this.isEdit) {
+          editCategory(this.brandId, this.brandName).then(response => {
             this.$message({
               message: "修改成功",
               type: "success",

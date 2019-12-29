@@ -59,3 +59,20 @@
     }
   }
 }
+
+.viewSettingWrapper {
+  .el-upload-list {
+    .el-upload-list__item {
+      width: 318px;
+    }
+  }
+}
+
+.upload-component {
+  .el-upload-list {
+    .el-upload-list__item {
+      -webkit-transition: none;
+      transition: none;
+    }
+  }
+}

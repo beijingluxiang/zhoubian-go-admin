@@ -4,6 +4,7 @@
       :searchFieldsList="searchFieldsList"
       :operation="searchOperation"
       @onSearchBtnClicked="searchList"
+      @onExportOrder="onExportOrder"
     ></searchComponent>
 
     <gridComponent
@@ -37,6 +38,7 @@
 </template>
 <script>
 import { fetchList, deleteOrder } from "@/api/order";
+import { exportOrder } from "@/api/order-zy";
 import searchComponent from "@/views/components/search";
 import gridComponent from "@/views/components/grid";
 import orderDetailComponent from "@/views/order/order/order-detail.vue";
@@ -163,6 +165,22 @@ export default {
         this.listLoading = false;
         this.orderList = response.data.list;
       });
+    },
+    onExportOrder() {
+      exportOrder(this.searchParams)
+        .then(res => {
+          var fileURL = window.URL.createObjectURL(new Blob([res.data]));
+          var fileLink = document.createElement("a");
+
+          fileLink.href = fileURL;
+          fileLink.setAttribute("download", "");
+          document.body.appendChild(fileLink);
+
+          fileLink.click();
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     deleteOrder(ids) {
       console.log("worinima");

@@ -23,46 +23,57 @@
           :label="col.name"
           align="center"
         >
-          <template slot-scope="scope">{{ scope.row[col.colId] }}</template>
+          <template slot-scope="scope">
+            <div v-if="col.type === 'image'">
+              <img style="height: 80px" :src="scope.row[col.colId]" />
+            </div>
+            <div v-else>
+              {{ scope.row[col.colId] }}
+            </div>
+          </template>
         </el-table-column>
 
-        <el-table-column
-          v-if="operation"
-          label="操作"
-          width="200"
-          align="center"
-        >
+        <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              @click="handleViewOrder(scope.$index, scope.row)"
-              >查看订单</el-button
-            >
-            <el-button
-              size="mini"
-              @click="handleCloseOrder(scope.$index, scope.row)"
-              v-show="scope.row.status === 0"
-              >关闭订单</el-button
-            >
-            <el-button
-              size="mini"
-              @click="handleDeliveryOrder(scope.$index, scope.row)"
-              v-show="scope.row.status === 1"
-              >订单发货</el-button
-            >
-            <el-button
-              size="mini"
-              @click="handleViewLogistics(scope.$index, scope.row)"
-              v-show="scope.row.status === 2 || scope.row.status === 3"
-              >订单跟踪</el-button
-            >
-            <el-button
-              size="mini"
-              type="danger"
-              @click="handleDeleteOrder(scope.$index, scope.row)"
-              v-show="scope.row.status === 4"
-              >删除订单</el-button
-            >
+            <div v-if="operation === 'user'">
+              <el-button
+                size="mini"
+                @click="changeUserClass(scope.$index, scope.row)"
+                >修改会员等级</el-button
+              >
+            </div>
+            <div v-else>
+              <el-button
+                size="mini"
+                @click="handleViewOrder(scope.$index, scope.row)"
+                >查看订单</el-button
+              >
+              <el-button
+                size="mini"
+                @click="handleCloseOrder(scope.$index, scope.row)"
+                v-show="scope.row.status === 0"
+                >关闭订单</el-button
+              >
+              <el-button
+                size="mini"
+                @click="handleDeliveryOrder(scope.$index, scope.row)"
+                v-show="scope.row.status === 1"
+                >订单发货</el-button
+              >
+              <el-button
+                size="mini"
+                @click="handleViewLogistics(scope.$index, scope.row)"
+                v-show="scope.row.status === 2 || scope.row.status === 3"
+                >订单跟踪</el-button
+              >
+              <el-button
+                size="mini"
+                type="danger"
+                @click="handleDeleteOrder(scope.$index, scope.row)"
+                v-show="scope.row.status === 4"
+                >删除订单</el-button
+              >
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -257,6 +268,10 @@ export default {
     handleViewOrder(index, row) {
       // this.$router.push({ path: "/order/orderDetail", query: { id: row.id } });
       this.$emit("onViewDetailBtnClicked", row.id);
+    },
+    changeUserClass(index, row) {
+      // this.$router.push({ path: "/order/orderDetail", query: { id: row.id } });
+      this.$emit("changeUserClass", row.id);
     },
     handleCloseOrder(index, row) {
       this.closeOrder.dialogVisible = true;

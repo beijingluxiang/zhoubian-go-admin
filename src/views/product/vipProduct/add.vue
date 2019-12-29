@@ -55,6 +55,9 @@
             >管理果类</el-button
           >
         </el-form-item>
+        <el-form-item label="商品规格：">
+          <el-input v-model="value.size"></el-input>
+        </el-form-item>
         <el-form-item label="商品库存：">
           <el-input v-model="value.inventory"></el-input>
         </el-form-item>
@@ -62,93 +65,6 @@
         <el-form-item label="商品名称：" style="display: block;">
           <el-input v-model="value.productName"></el-input>
         </el-form-item>
-
-        <div style="padding-right: 10px; padding-bottom: 18px;">
-          <div slot="header" class="clearfix">
-            <span style="font-size: 14px;"
-              >商品规格：<span style="font-size:12px; color: #999999"
-                >佣金是按“利润配比价”为基础来计算</span
-              ></span
-            >
-            <el-button
-              style="float: right; padding: 3px 0"
-              type="text"
-              @click="onAddSize"
-              >添加规格</el-button
-            >
-          </div>
-
-          <el-table style="width: 100%; " :data="productSize" border>
-            <el-table-column label="规格名称" align="center">
-              <template slot-scope="scope">
-                <el-input v-model="scope.row.size"> </el-input>
-              </template>
-            </el-table-column>
-            <el-table-column label="成本价" align="center">
-              <template slot-scope="scope">
-                <el-input v-model="scope.row.chengbenPrice" type="number">
-                  <span
-                    style="line-height: 40px; font-size: 14px;"
-                    slot="suffix"
-                    >元</span
-                  >
-                </el-input>
-              </template>
-            </el-table-column>
-            <el-table-column label="高级会员价" align="center">
-              <template slot-scope="scope">
-                <el-input v-model="scope.row.vipPrice" type="number">
-                  <span
-                    style="line-height: 40px; font-size: 14px;"
-                    slot="suffix"
-                    >元</span
-                  >
-                </el-input>
-              </template>
-            </el-table-column>
-            <el-table-column label="展示价" align="center">
-              <template slot-scope="scope">
-                <el-input v-model="scope.row.price" type="number">
-                  <span
-                    style="line-height: 40px; font-size: 14px;"
-                    slot="suffix"
-                    >元</span
-                  >
-                </el-input>
-              </template>
-            </el-table-column>
-            <el-table-column label="利润配比价" align="center" type="number">
-              <template slot-scope="scope">
-                <el-input v-model="scope.row.fenxiaoPrice">
-                  <span
-                    style="line-height: 40px; font-size: 14px;"
-                    slot="suffix"
-                    >元</span
-                  >
-                </el-input>
-              </template>
-            </el-table-column>
-            <!-- <el-table-column label="是否启用" width="80" align="center">
-              <template slot-scope="scope">
-                <el-switch
-                  v-model="scope.row.active"
-                  active-color="#13ce66"
-                  inactive-color="#c8c8c8"
-                >
-                </el-switch>
-              </template>
-            </el-table-column> -->
-            <el-table-column label="操作" width="80" align="center">
-              <template slot-scope="scope">
-                <el-button
-                  type="text"
-                  @click="onRemoveProductSize(scope.$index, scope.row)"
-                  >删除
-                </el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
 
         <div style="padding-right: 10px; padding-bottom: 18px;">
           <div slot="header" class="clearfix">
@@ -170,77 +86,6 @@
             :imgList="detail.imgList"
             @onImageChanged="onImageChangedDetail"
           ></uploadComponent>
-        </div>
-
-        <div style="padding-right: 10px; padding-bottom: 18px;">
-          <div slot="header" class="clearfix">
-            <span style="font-size: 14px;">分佣配比设置：</span>
-          </div>
-
-          <el-table
-            style="width: 100%; margin-top: 5px;"
-            :data="distributeSetting"
-            border
-          >
-            <el-table-column label="路线" align="center" width="300">
-              <template slot-scope="scope">
-                <div class="color-main">
-                  {{
-                    scope.row.type === 1
-                      ? "路线一：会员C/合伙人/联合创始人"
-                      : "路线二：普通用户"
-                  }}
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column label="联合创始人" align="center">
-              <template slot-scope="scope">
-                <el-input v-model="scope.row.founder">
-                  <span
-                    style="line-height: 40px; font-size: 14px;"
-                    slot="suffix"
-                    >%</span
-                  >
-                </el-input>
-              </template>
-            </el-table-column>
-            <el-table-column label="合伙人" align="center">
-              <template slot-scope="scope">
-                <el-input v-model="scope.row.partner">
-                  <span
-                    style="line-height: 40px; font-size: 14px;"
-                    slot="suffix"
-                    >%</span
-                  >
-                </el-input>
-              </template>
-            </el-table-column>
-            <el-table-column label="会员A" align="center">
-              <template slot-scope="scope">
-                <el-input
-                  v-model="scope.row.vipA"
-                  :disabled="!scope.row.vipA && scope.row.vipA !== 0"
-                >
-                  <span
-                    style="line-height: 40px; font-size: 14px;"
-                    slot="suffix"
-                    >%</span
-                  >
-                </el-input>
-              </template>
-            </el-table-column>
-            <el-table-column label="会员B" align="center">
-              <template slot-scope="scope">
-                <el-input v-model="scope.row.vipB">
-                  <span
-                    style="line-height: 40px; font-size: 14px;"
-                    slot="suffix"
-                    >%</span
-                  >
-                </el-input>
-              </template>
-            </el-table-column>
-          </el-table>
         </div>
 
         <el-form-item style="text-align: left; display:block;">
@@ -274,7 +119,7 @@ import { fetchList as fetchBrandList } from "@/api/brand";
 import { policy } from "@/api/oss";
 import brandComponent from "@/views/product/brand/index";
 import categoryComponent from "@/views/product/productCate/index";
-import { createProduct, getProductList, editProduct } from "@/api/product-zy";
+import { createProduct, getProductList, editProduct } from "@/api/product-vip";
 import { createCategory, getCategory, editCategory } from "@/api/category";
 import { createBrand, getBrand, editBrand } from "@/api/brand-zy";
 import uploadComponent from "@/views/components/upload-image.vue";
@@ -287,6 +132,13 @@ export default {
     }
   },
 
+  watch: {
+    editingData: function(newVal, oldVal) {
+      console.log("hahhaha", newVal);
+
+      this.applyEditingData(newVal);
+    }
+  },
   components: { brandComponent, categoryComponent, uploadComponent },
   data() {
     return {
@@ -305,22 +157,6 @@ export default {
       hasEditCreated: false,
       value: {},
       productSize: [
-        {
-          size: "",
-          chengbenPrice: 0,
-          vipPrice: 0,
-          price: 0,
-          fenxiaoPrice: 0,
-          active: false
-        },
-        {
-          size: "",
-          chengbenPrice: 0,
-          vipPrice: 0,
-          price: 0,
-          fenxiaoPrice: 0,
-          active: false
-        },
         {
           size: "",
           chengbenPrice: 0,
@@ -360,21 +196,11 @@ export default {
       brandOptions: []
     };
   },
-
-  watch: {
-    editingData: function(newVal) {
-      console.log("hahhaha", newVal);
-      this.applyEditingData(newVal);
-    }
-  },
-
   created() {
     this.getProductCateList();
     this.getBrandList();
-    if (this.editingData) {
-      console.log("editingData", this.editingData);
-      this.applyEditingData(this.editingData);
-    }
+
+    this.applyEditingData(this.editingData);
   },
   computed: {
     //商品的编号
@@ -387,6 +213,7 @@ export default {
     applyEditingData(data) {
       if (data) {
         this.value = data;
+        this.value.size = data.productSize[0].size;
         this.productSize = data.productSize;
         this.banner.imgList = data.bannerList.map(_el => {
           return { url: _el };
@@ -405,41 +232,10 @@ export default {
             price: 0,
             fenxiaoPrice: 0,
             active: false
-          },
-          {
-            size: "",
-            chengbenPrice: 0,
-            vipPrice: 0,
-            price: 0,
-            fenxiaoPrice: 0,
-            active: false
-          },
-          {
-            size: "",
-            chengbenPrice: 0,
-            vipPrice: 0,
-            price: 0,
-            fenxiaoPrice: 0,
-            active: false
           }
         ];
         this.banner.imgList = [];
         this.detail.imgList = [];
-        this.distributeSetting = [
-          {
-            type: 1,
-            founder: 0,
-            partner: 0,
-            vipB: 0
-          },
-          {
-            type: 2,
-            founder: 0,
-            partner: 0,
-            vipA: 0,
-            vipB: 0
-          }
-        ];
       }
     },
     onImageChanged(list) {
@@ -548,6 +344,7 @@ export default {
       console.log(this.bannerList, this.detailImgList, _value);
       const _value = this.value;
       let params = {
+        free: true,
         brandId: _value.brandId, // 必填，品牌id，来自于“品牌相关接口”里边的list接口
         categoryId: _value.categoryId, // 必填，类别id，来自于“类别相关接口”里边的list接口
         productName: _value.productName, // 必填，商品名称
@@ -558,10 +355,13 @@ export default {
         bannerList: this.banner.imgList.map(_el => _el.url),
         detailList: this.detail.imgList.map(_el => _el.url),
         distributeSetting: this.distributeSetting,
-        productSize: this.productSize.map(_el => {
-          _el["stock"] = _value.inventory;
-          return _el;
-        })
+        productSize: [
+          {
+            size: _value.size,
+            stock: _value.inventory,
+            skuCode: ""
+          }
+        ]
       };
 
       switch (true) {
@@ -573,6 +373,10 @@ export default {
           this.$message.error("未选择品类");
           break;
         }
+        case !this.value.size: {
+          this.$message.error("未填写规格");
+          break;
+        }
         case !this.value.inventory: {
           this.$message.error("未填写库存");
           break;
@@ -581,27 +385,12 @@ export default {
           this.$message.error("未填写商品名称");
           break;
         }
-        case this.findEmptyValue(this.productSize): {
-          this.$message.error("商品规格未填写完整");
-          break;
-        }
         case this.banner.imgList.length === 0: {
           this.$message.error("未上传商品banner图");
           break;
         }
         case this.detail.imgList.length === 0: {
           this.$message.error("未上传商品详情图");
-          break;
-        }
-        case this.findEmptyValue(
-          JSON.parse(JSON.stringify(this.distributeSetting)).map(_el => {
-            if (_el.type === 1) {
-              _el.vipA = "hide";
-              return _el;
-            }
-          })
-        ): {
-          this.$message.error("分佣配比设置未填写完整");
           break;
         }
         default: {

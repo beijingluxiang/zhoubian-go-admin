@@ -91,7 +91,7 @@
         <el-table-column label="操作" width="160" align="center">
           <template slot-scope="scope">
             <p>
-              <el-button size="mini" @click="handleEditProduct(scope.row)"
+              <el-button size="mini" @click="handleAddProduct(scope.row)"
                 >编辑
               </el-button>
             </p>
@@ -147,10 +147,11 @@
       width="80%"
       @closed="onDialogClosed"
     >
-      <addComponent
+      WORINIMA
+      <addComponent1
         :editingData="editingData"
         @productUpdated="productUpdated"
-      ></addComponent>
+      ></addComponent1>
     </el-dialog>
   </div>
 </template>
@@ -170,13 +171,13 @@ import { fetchList as fetchProductAttrList } from "@/api/productAttr";
 import { fetchList as fetchBrandList } from "@/api/brand";
 import { fetchListWithChildren } from "@/api/productCate";
 import searchComponent from "@/views/components/search";
-import addComponent from "@/views/product/product/add";
+import addComponent1 from "@/views/product/vipProduct/add";
 import {
   createProduct,
   getProductList,
   editProduct,
   deleteProduct
-} from "@/api/product-zy";
+} from "@/api/product-vip";
 
 const defaultListQuery = {
   keyword: null,
@@ -192,7 +193,7 @@ export default {
   name: "productList",
   components: {
     searchComponent,
-    addComponent
+    addComponent1
   },
   data() {
     return {
@@ -328,14 +329,14 @@ export default {
       this.getList();
     },
     handleAddProduct(data) {
-      this.editingData = null;
-      console.log(data, "add");
-      this.editingVisible = true;
-    },
-    handleEditProduct(data) {
-      this.editingData = data;
-      console.log(data, "edit");
-      this.editingVisible = true;
+      if (data) {
+        console.log("worinima", data);
+        this.editingData = data;
+        this.editingVisible = true;
+      } else {
+        this.editingData = null;
+        this.editingVisible = true;
+      }
     },
 
     searchList(params) {
@@ -347,7 +348,6 @@ export default {
 
     onDialogClosed() {
       this.orderList = [];
-      this.editingData = null;
       this.getList();
     },
 
@@ -362,6 +362,7 @@ export default {
     },
     getList() {
       this.listLoading = true;
+      this.listQuery["freeFruit"] = 1;
       getProductList(this.listQuery).then(response => {
         console.log(response, "worinidaye");
         this.listLoading = false;
