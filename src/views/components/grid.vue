@@ -33,7 +33,12 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="200" align="center">
+        <el-table-column
+          v-if="operation"
+          label="操作"
+          width="200"
+          align="center"
+        >
           <template slot-scope="scope">
             <div v-if="operation === 'user'">
               <el-button

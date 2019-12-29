@@ -32,7 +32,10 @@
     </el-dialog>
 
     <el-dialog title="物流信息" :visible.sync="deliveryVisible" width="80%">
-      <deliveryComponent :deliveryInfo="deliveryParams"></deliveryComponent>
+      <deliveryComponent
+        :deliveryInfo="deliveryParams"
+        @deliverySuccessfully="deliverySuccessfully"
+      ></deliveryComponent>
     </el-dialog>
   </div>
 </template>
@@ -146,6 +149,10 @@ export default {
   },
   filters: {},
   methods: {
+    deliverySuccessfully() {
+      this.deliveryVisible = false;
+      this.getList();
+    },
     searchList(params) {
       console.log(params, "worinima");
       this.searchParams = params;
@@ -169,11 +176,11 @@ export default {
     onExportOrder() {
       exportOrder(this.searchParams)
         .then(res => {
-          var fileURL = window.URL.createObjectURL(new Blob([res.data]));
+          var fileURL = window.URL.createObjectURL(new Blob([res]));
           var fileLink = document.createElement("a");
 
           fileLink.href = fileURL;
-          fileLink.setAttribute("download", "");
+          fileLink.setAttribute("download", "file.csv");
           document.body.appendChild(fileLink);
 
           fileLink.click();

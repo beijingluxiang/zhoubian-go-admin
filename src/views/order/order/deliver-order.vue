@@ -95,8 +95,8 @@ export default {
         type: "warning"
       })
         .then(() => {
-          deliveryOrder(this.list).then(response => {
-            this.$router.back();
+          deliveryOrder(this.deliveryInfo).then(response => {
+            this.$emit("deliverySuccessfully");
             this.$message({
               type: "success",
               message: "发货成功!"
