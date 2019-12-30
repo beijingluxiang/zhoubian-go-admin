@@ -3,6 +3,7 @@ export function exportOrder(params) {
   return request({
     url: "/order/list/export",
     method: "get",
+    responseType: "blob",
     params: params
   });
 }

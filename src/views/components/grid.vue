@@ -240,23 +240,41 @@ export default {
     };
   },
 
+  watch: {
+    rowData: function(newVal) {
+      if (newVal) {
+        this.formatData();
+      }
+    }
+  },
+
   created() {
-    this.rowData.forEach(_it => {
-      if (this.columnDefs.find(_el => _el.colId === "receiverDetailAddress")) {
-        _it.receiverDetailAddress =
-          _it.receiverProvince +
-          _it.receiverCity +
-          _it.receiverRegion +
-          _it.receiverDetailAddress.replace("%%", "");
-      }
-      if (this.columnDefs.find(_el => _el.colId === "payType")) {
-        _it.payType =
-          _it.payType === 1 ? "微信" : _it.payType === 2 ? "支付宝" : "未支付";
-      }
-    });
+    this.formatData();
   },
 
   methods: {
+    formatData() {
+      this.rowData.forEach(_it => {
+        if (
+          this.columnDefs.find(_el => _el.colId === "receiverDetailAddress")
+        ) {
+          console.log(_it, "wocaonidaye");
+          _it.receiverDetailAddress =
+            _it.receiverProvince +
+            _it.receiverCity +
+            _it.receiverRegion +
+            _it.receiverDetailAddress.replace("%%", "");
+        }
+        if (this.columnDefs.find(_el => _el.colId === "payType")) {
+          _it.payType =
+            _it.payType === 1
+              ? "微信"
+              : _it.payType === 2
+              ? "支付宝"
+              : "未支付";
+        }
+      });
+    },
     headerRowStyle(row) {
       return {};
     },

@@ -145,9 +145,10 @@ export default {
 
   watch: {
     productId: function(newVal, oldVal) {
-      if (newVal !== oldVal) {
-        getOrderDetail(this.productId).then(response => {
+      if (newVal) {
+        getOrderDetail(newVal).then(response => {
           this.order = response.data;
+          this.orderList = [response.data];
         });
       }
     }

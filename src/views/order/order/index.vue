@@ -173,14 +173,24 @@ export default {
         this.orderList = response.data.list;
       });
     },
+
+    s2ab(s) {
+      var buf = new ArrayBuffer(s.length);
+      var view = new Uint8Array(buf);
+      for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xff;
+      return buf;
+    },
     onExportOrder() {
       exportOrder(this.searchParams)
         .then(res => {
-          var fileURL = window.URL.createObjectURL(new Blob([res]));
+          let blob = new Blob([res], {
+            type: "application/vnd.ms-excel"
+          });
+          var fileURL = window.URL.createObjectURL(blob);
           var fileLink = document.createElement("a");
 
           fileLink.href = fileURL;
-          fileLink.setAttribute("download", "file.csv");
+          fileLink.setAttribute("download", "file.xlsx");
           document.body.appendChild(fileLink);
 
           fileLink.click();
