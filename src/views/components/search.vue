@@ -58,14 +58,14 @@
         >
           导出
         </el-button>
-        <el-button
+        <!-- <el-button
           v-if="o === 'reset'"
           style="float:right; margin-left: 15px"
           @click="onReset()"
           size="small"
         >
           重置
-        </el-button>
+        </el-button> -->
         <el-button
           v-if="o === 'search'"
           style="float:right; margin-left: 15px;"
