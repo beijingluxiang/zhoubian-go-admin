@@ -143,7 +143,7 @@
 
 <script>
 import { formatDate } from "@/utils/date";
-import LogisticsDialog from "@/views/oms/order/components/logisticsDialog";
+import LogisticsDialog from "@/views/order/order/components/logisticsDialog";
 export default {
   name: "grid-component",
   props: {

@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import BrandDetail from "./components/BrandDetail";
+import BrandDetail from "./BrandDetail";
 export default {
   name: "updateBrand",
   components: { BrandDetail }

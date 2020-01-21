@@ -147,7 +147,6 @@
       width="80%"
       @closed="onDialogClosed"
     >
-      WORINIMA
       <addComponent1
         :editingData="editingData"
         @productUpdated="productUpdated"

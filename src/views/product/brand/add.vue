@@ -1,19 +1,26 @@
 <template>
-  <el-card class="form-container" shadow="never">
-    <el-form :model="brand" :rules="rules" ref="brandFrom" label-width="150px">
-      <el-form-item label="供应商名称：" prop="name">
-        <el-input v-model="brandName"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit('brandFrom')"
-          >提交</el-button
-        >
-        <el-button v-if="!isEdit" @click="resetForm('brandFrom')"
-          >重置</el-button
-        >
-      </el-form-item>
-    </el-form>
-  </el-card>
+  <div>
+    <el-card class="form-container" shadow="never">
+      <el-form
+        :model="brand"
+        :rules="rules"
+        ref="brandFrom"
+        label-width="150px"
+      >
+        <el-form-item label="供应商名称：" prop="name">
+          <el-input v-model="brandName"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit('brandFrom')"
+            >提交</el-button
+          >
+          <el-button v-if="!isEdit" @click="resetForm('brandFrom')"
+            >重置</el-button
+          >
+        </el-form-item>
+      </el-form>
+    </el-card>
+  </div>
 </template>
 <script>
 import { createBrand, getBrand, editBrand } from "@/api/brand-zy";

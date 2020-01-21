@@ -45,22 +45,22 @@
       </el-table>
     </div>
     <el-dialog
-      class="addBrandDialog"
       :visible.sync="dialogVisibleAdd"
       top="10px"
-      append-to-body
       @closed="dialogClosed"
     >
-      <addComponent></addComponent>
+      <div style="height: 300px;">
+        <addComponent></addComponent>
+      </div>
     </el-dialog>
     <el-dialog
-      class="addBrandDialog"
       :visible.sync="dialogVisibleUpdate"
       top="10px"
-      append-to-body
       @closed="dialogClosed"
     >
-      <addComponent :editingData="editingData"></addComponent>
+      <div style="height: 300px;">
+        <addComponent :editingData="editingData"></addComponent>
+      </div>
     </el-dialog>
   </div>
 </template>
