@@ -29,157 +29,152 @@ export const constantRouterMap = [
     path: "",
     component: Layout,
     index: "1",
-    redirect: "/home",
+    accountType: "merchant",
+    redirect: "/setting",
     children: [
       {
-        path: "home",
-        name: "home",
-        component: () => import("@/views/home/index"),
-        meta: { title: "首页", icon: "home" }
+        path: "setting",
+        name: "setting",
+        component: () => import("@/views/store/setting"),
+        meta: { title: "店铺设置", icon: "el-icon-monitor" }
       }
     ]
   },
   {
-    path: "/order",
+    path: "/product/category",
     component: Layout,
-    redirect: "/order/order",
-    name: "order",
     index: "2",
-    meta: { title: "订单", icon: "el-icon-goods" },
+    accountType: "merchant",
+    redirect: "",
     children: [
       {
-        path: "orderSetting",
-        name: "orderSetting",
-        index: "2-1",
-        component: () => import("@/views/order/order/viewSetting"),
-        meta: { title: "页面设置", icon: "el-icon-tickets" }
-      },
+        path: "category",
+        name: "category",
+        component: () => import("@/views/product/productCate/index"),
+        meta: { title: "商品分类", icon: "el-icon-shopping-bag-2" }
+      }
+    ]
+  },
+  {
+    path: "/product/manage",
+    component: Layout,
+    index: "3",
+    accountType: "merchant",
+    redirect: "",
+    children: [
+      {
+        path: "manage",
+        name: "manage",
+        component: () => import("@/views/product/product/index"),
+        meta: { title: "商品管理", icon: "el-icon-box" }
+      }
+    ]
+  },
+  {
+    path: "/product/manage",
+    component: Layout,
+    index: "4",
+    accountType: "merchant",
+    redirect: "",
+    children: [
       {
         path: "order",
         name: "order",
-        index: "2-2",
-        component: () => import("@/views/order/order/index"),
+        component: () => import("@/views/order/index"),
         meta: { title: "订单管理", icon: "el-icon-tickets" }
       }
     ]
   },
   {
-    path: "/product",
+    path: "/product/manage",
     component: Layout,
-    redirect: "/product/product",
-    alwaysShow: true,
-    name: "product",
-    index: "3",
-    meta: { title: "商品", icon: "el-icon-box" },
+    index: "5",
+    accountType: "merchant",
+    redirect: "",
     children: [
       {
-        path: "addProduct",
-        name: "publishProduct",
-        index: "3-1",
-        component: () => import("@/views/product/product/add"),
-        meta: { title: "发布商品", icon: "el-icon-tickets" }
-      },
-      {
-        path: "product",
-        name: "onSelling",
-        index: "3-2",
-        component: () => import("@/views/product/product/index"),
-        meta: { title: "已发布的商品", icon: "el-icon-tickets" }
-      },
-      // {
-      //   path: "product",
-      //   name: "inStore",
-      //   index: "3-3",
-      //   component: () => import("@/views/product/product/index"),
-      //   meta: { title: "已下架的商品", icon: "el-icon-tickets" }
-      // },
-      {
-        path: "productCate",
-        name: "productType",
-        index: "3-4",
-        component: () => import("@/views/product/productCate/index"),
-        meta: { title: "商品分类", icon: "el-icon-tickets" }
-      },
-      {
-        path: "brand",
-        name: "brand",
-        index: "3-3",
-        component: () => import("@/views/product/brand/index"),
-        meta: { title: "供应商", icon: "el-icon-tickets" }
-      },
-      {
-        path: "vipProduct",
-        name: "freeProduct",
-        index: "3-5",
-        component: () => import("@/views/product/vipProduct/index"),
-        meta: { title: "会员半年免费", icon: "el-icon-tickets" }
+        path: "refund",
+        name: "refund",
+        component: () => import("@/views/order/index"),
+        meta: { title: "退单管理", icon: "el-icon-money" }
       }
     ]
   },
   {
-    path: "/user",
+    path: "/product/manage",
     component: Layout,
-    redirect: "/user/order",
-    name: "user",
-    index: "4",
-    meta: { title: "用户", icon: "el-icon-user" },
+    index: "6",
+    redirect: "",
+    accountType: "merchant",
     children: [
       {
-        path: "order",
-        name: "userManagement",
-        index: "4-1",
-        component: () => import("@/views/user/order/index"),
-        meta: { title: "用户管理", icon: "el-icon-tickets" }
-      },
-      {
-        path: "orderSetting",
-        name: "vipShareSetting",
-        index: "4-2",
-        component: () => import("@/views/user/order/setting"),
-        meta: { title: "会员分佣设置", icon: "el-icon-tickets" }
+        path: "staff",
+        name: "staff",
+        component: () => import("@/views/user/index"),
+        meta: { title: "员工管理", icon: "el-icon-user" }
       }
     ]
   },
-  // {
-  //   path: "/finacial",
-  //   component: Layout,
-  //   redirect: "/finacial/order",
-  //   name: "finacial",
-  //   index: "5",
-  //   meta: { title: "财务", icon: "el-icon-data-line" },
-  //   children: [
-  //     {
-  //       path: "order",
-  //       name: "finacial",
-  //       index: "5-1",
-  //       component: () => import("@/views/finacial/order/index"),
-  //       meta: { title: "财务概况", icon: "el-icon-tickets" }
-  //     },
-  //     {
-  //       path: "orderDetail",
-  //       name: "billDetail",
-  //       index: "5-2",
-  //       component: () => import("@/views/finacial/order/orderDetail"),
-  //       meta: { title: "资金明细" },
-  //       hidden: true
-  //     },
-  //     {
-  //       path: "deliverOrderList",
-  //       name: "vipBill",
-  //       index: "5-3",
-  //       component: () => import("@/views/finacial/order/deliverOrderList"),
-  //       meta: { title: "会员对账" },
-  //       hidden: true
-  //     },
-  //     {
-  //       path: "orderSetting",
-  //       name: "withdrawSetting",
-  //       index: "5-4",
-  //       component: () => import("@/views/finacial/order/setting"),
-  //       meta: { title: "提现设置", icon: "el-icon-tickets" }
-  //     }
-  //   ]
-  // },
+  {
+    path: "/product/table",
+    component: Layout,
+    index: "7",
+    redirect: "",
+    accountType: "merchant",
+    children: [
+      {
+        path: "table",
+        name: "table",
+        component: () => import("@/views/order/index"),
+        meta: { title: "桌台管理", icon: "el-icon-mobile" }
+      }
+    ]
+  },
+  {
+    path: "/merchant/audit",
+    component: Layout,
+    index: "8",
+    accountType: "maintanence",
+    redirect: "",
+    children: [
+      {
+        path: "audit",
+        name: "audit",
+        component: () => import("@/views/order/index"),
+        meta: { title: "商户审核", icon: "el-icon-mobile" }
+      }
+    ]
+  },
+  {
+    path: "/merchant/info",
+    component: Layout,
+    index: "9",
+    accountType: "maintanence",
+    redirect: "",
+    children: [
+      {
+        path: "info",
+        name: "info",
+        component: () => import("@/views/order/index"),
+        meta: { title: "商户信息", icon: "el-icon-mobile" }
+      }
+    ]
+  },
+  {
+    path: "/merchant/account",
+    component: Layout,
+    index: "10",
+    accountType: "maintanence",
+    redirect: "",
+    children: [
+      {
+        path: "account",
+        name: "account",
+        component: () => import("@/views/order/index"),
+        meta: { title: "账号管理", icon: "el-icon-mobile" }
+      }
+    ]
+  },
   { path: "*", redirect: "/404", hidden: true }
 ];
 

@@ -119,7 +119,6 @@ import {
   updateOrderNote,
   deleteOrder
 } from "@/api/order";
-import LogisticsDialog from "@/views/order/order/components/logisticsDialog";
 import { formatDate } from "@/utils/date";
 import VDistpicker from "v-distpicker";
 const defaultReceiverInfo = {
@@ -136,7 +135,7 @@ const defaultReceiverInfo = {
 import gridComponent from "@/views/components/grid";
 export default {
   name: "orderDetail",
-  components: { VDistpicker, LogisticsDialog, gridComponent },
+  components: { VDistpicker, gridComponent },
   props: {
     productId: {
       type: Number

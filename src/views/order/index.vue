@@ -44,8 +44,8 @@ import { fetchList, deleteOrder } from "@/api/order";
 import { exportOrder } from "@/api/order-zy";
 import searchComponent from "@/views/components/search";
 import gridComponent from "@/views/components/grid";
-import orderDetailComponent from "@/views/order/order/order-detail.vue";
-import deliveryComponent from "@/views/order/order/deliver-order.vue";
+import orderDetailComponent from "@/views/order/order-detail.vue";
+import deliveryComponent from "@/views/order/deliver-order.vue";
 export default {
   name: "orderList",
   components: {

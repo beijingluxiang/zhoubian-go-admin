@@ -16,18 +16,6 @@
       @changeUserClass="changeUserClass"
     ></gridComponent>
 
-    <el-dialog
-      title="商品详情"
-      :visible.sync="productDetailVisible"
-      width="80%"
-      top="10px"
-    >
-      <orderDetailComponent
-        destroy-on-close="true"
-        :productId="detailId"
-      ></orderDetailComponent>
-    </el-dialog>
-
     <el-dialog title="修改用户等级" :visible.sync="userVisible" width="60%">
       <div style="text-align: center;">
         <el-select v-model="newUserClass" placeholder="请选择用户等级">
@@ -54,15 +42,11 @@ import { fetchList, deleteOrder } from "@/api/order";
 import { getUserList, setUserClass } from "@/api/user-zy";
 import searchComponent from "@/views/components/search";
 import gridComponent from "@/views/components/grid";
-import orderDetailComponent from "@/views/order/order/order-detail.vue";
-import deliveryComponent from "@/views/order/order/deliver-order.vue";
 export default {
   name: "orderList",
   components: {
     searchComponent,
-    gridComponent,
-    orderDetailComponent,
-    deliveryComponent
+    gridComponent
   },
   data() {
     return {

@@ -137,13 +137,11 @@
         >
       </span>
     </el-dialog>
-    <logistics-dialog v-model="logisticsDialogVisible"></logistics-dialog>
   </div>
 </template>
 
 <script>
 import { formatDate } from "@/utils/date";
-import LogisticsDialog from "@/views/order/order/components/logisticsDialog";
 export default {
   name: "grid-component",
   props: {
@@ -163,7 +161,6 @@ export default {
       type: null
     }
   },
-  components: { LogisticsDialog },
   data: () => {
     return {
       searchParams: {
@@ -304,9 +301,7 @@ export default {
       let listItem = this.covertOrder(row);
       this.$emit("onDeliveryBtnClicked", listItem);
     },
-    handleViewLogistics(index, row) {
-      this.logisticsDialogVisible = true;
-    },
+
     handleDeleteOrder(index, row) {
       let ids = [];
       ids.push(row.id);

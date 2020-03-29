@@ -2,7 +2,7 @@
   <div class="menu-wrapper">
     <template
       v-for="(item, index) in routes"
-      v-if="!item.hidden && item.children"
+      v-if="!item.hidden && item.children && item.accountType === accountType"
     >
       <router-link
         v-if="
@@ -17,10 +17,7 @@
           :index="item.index"
           :class="{ 'submenu-title-noDropdown': !isNest }"
         >
-          <svg-icon
-            v-if="item.children[0].meta && item.children[0].meta.icon"
-            :icon-class="item.children[0].meta.icon"
-          ></svg-icon>
+          <i :class="item.children[0].meta.icon"></i>
           <span
             v-if="item.children[0].meta && item.children[0].meta.title"
             slot="title"
@@ -80,6 +77,11 @@ export default {
       default: false
     }
   },
+  data: () => {
+    return {
+      accountType: "merchant" // merchant  maintanence
+    };
+  },
   methods: {
     hasOneShowingChildren(children) {
       const showingChildren = children.filter(item => {
@@ -93,3 +95,15 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.el-menu-item {
+  height: 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  line-height: 40px;
+}
+
+.sidebar-container {
+  width: 146px;
+}
+</style>
