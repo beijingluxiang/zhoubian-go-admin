@@ -1,29 +1,27 @@
 <template>
   <div>
-    <div style="padding-right: 10px; padding-bottom: 5px;">
-      <div slot="header" class="clearfix">
+    <div>
+      <div slot="header">
         <span style="font-size: 14px;">{{ title }}</span>
       </div>
       <el-card shadow="false" style="margin-top: 5px;">
         <el-upload
           class="upload-component"
-          action="http://youxiaoguojingang.oss-cn-beijing.aliyuncs.com"
+          action="http://udbeing-test.oss-cn-hangzhou.aliyuncs.com"
           :data="dataObj"
           multiple
           list-type="picture-card"
-          :file-list="imgList"
+          :file-list="dataImgList"
           :before-upload="beforeUpload"
           :on-remove="handleRemove"
           :on-success="onUploadSuccess"
           :on-preview="handlePreview"
           :on-change="handleChange"
-          :limit="10"
+          :limit="limit"
           :on-exceed="handleExceed"
         >
           <i class="el-icon-plus"></i>
-          <div slot="tip" class="el-upload__tip">
-            规格为 1080*500，大小尽量压缩，至少3张
-          </div>
+          <div slot="tip" class="el-upload__tip"></div>
         </el-upload>
       </el-card>
     </div>
@@ -41,6 +39,9 @@ export default {
     },
     imgList: {
       type: null
+    },
+    limit: {
+      type: null
     }
   },
   name: "orderList",
@@ -55,20 +56,30 @@ export default {
         dir: "",
         host: ""
       },
+      dataImgList: [],
       uploadName: "",
       dialogImageUrl: null,
       dialogVisible: false
     };
   },
-  created() {},
+  created() {
+    let newArr = this.imgList.map(_el => {
+      return {
+        image: _el,
+        url: _el
+      };
+    });
+    this.dataImgList = newArr;
+    console.log(newArr, "hahahwori");
+  },
   filters: {},
   methods: {
     handleChange(file, fileList) {
-      file.url = this.uploadName;
+      file = this.uploadName;
+      console.log(file, fileList);
       this.$emit("onImageChanged", fileList);
     },
     handleRemove(file, fileList) {
-      this.$emit("onImageChanged", fileList);
       this.$emit("onImageRemove", file);
     },
     handlePreview(file) {
@@ -78,7 +89,7 @@ export default {
 
     onUploadSuccess(response, file, fileList) {
       file.url = this.uploadName;
-      this.$emit("onImageUpload", file);
+      // this.$emit("onImageUpload", file);
     },
     handleExceed(file) {
       console.log(file);

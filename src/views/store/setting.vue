@@ -1,77 +1,11 @@
 <template>
-  <div class="viewSettingWrapper">
-    <el-form
-      :model="ruleForm"
-      :rules="rules"
-      ref="ruleForm"
-      label-width="100px"
-      class="demo-ruleForm"
-    >
-      <el-form-item label="活动名称" prop="name">
-        <el-input v-model="ruleForm.name"></el-input>
-      </el-form-item>
-      <el-form-item label="活动区域" prop="region">
-        <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
-          <el-option label="区域一" value="shanghai"></el-option>
-          <el-option label="区域二" value="beijing"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="活动时间" required>
-        <el-col :span="11">
-          <el-form-item prop="date1">
-            <el-date-picker
-              type="date"
-              placeholder="选择日期"
-              v-model="ruleForm.date1"
-              style="width: 100%;"
-            ></el-date-picker>
-          </el-form-item>
-        </el-col>
-        <el-col class="line" :span="2">-</el-col>
-        <el-col :span="11">
-          <el-form-item prop="date2">
-            <el-time-picker
-              placeholder="选择时间"
-              v-model="ruleForm.date2"
-              style="width: 100%;"
-            ></el-time-picker>
-          </el-form-item>
-        </el-col>
-      </el-form-item>
-      <el-form-item label="即时配送" prop="delivery">
-        <el-switch v-model="ruleForm.delivery"></el-switch>
-      </el-form-item>
-      <el-form-item label="活动性质" prop="type">
-        <el-checkbox-group v-model="ruleForm.type">
-          <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-          <el-checkbox label="地推活动" name="type"></el-checkbox>
-          <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-          <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="特殊资源" prop="resource">
-        <el-radio-group v-model="ruleForm.resource">
-          <el-radio label="线上品牌商赞助"></el-radio>
-          <el-radio label="线下场地免费"></el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="活动形式" prop="desc">
-        <el-input type="textarea" v-model="ruleForm.desc"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')"
-          >立即创建</el-button
-        >
-        <el-button @click="resetForm('ruleForm')">重置</el-button>
-      </el-form-item>
-    </el-form>
-    <uploadComponent
-      :title="upload.title"
-      :imgList="upload.imgList"
-      @onImageChanged="onImageChanged"
-      @onImageRemove="onImageRemove"
-      @onImageUpload="onImageUpload"
-    ></uploadComponent>
+  <div
+    class="viewSettingWrapper"
+    style="background: #f0f0f0; width: 100%; overflow:hidden;"
+  >
+    <div style="width: 75%; margin: 0 auto;">
+      <form-creater :formSchema="formSchema"></form-creater>
+    </div>
   </div>
 </template>
 <script>
@@ -81,9 +15,10 @@ import {
   deleteIndexBanner
 } from "@/api/home";
 import uploadComponent from "@/views/components/upload-image.vue";
+import formCreater from "@/views/components/formCreater.vue";
 export default {
   name: "orderList",
-  components: { uploadComponent },
+  components: { uploadComponent, formCreater },
   data() {
     return {
       bannerList: [],
@@ -92,53 +27,144 @@ export default {
         imgList: [],
         summitParams: []
       },
-      ruleForm: {
+      formData: {
         name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: ""
+        address: ""
       },
-      rules: {
-        name: [
-          { required: true, message: "请输入活动名称", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
-        ],
-        region: [
-          { required: true, message: "请选择活动区域", trigger: "change" }
-        ],
-        date1: [
-          {
-            type: "date",
-            required: true,
-            message: "请选择日期",
-            trigger: "change"
-          }
-        ],
-        date2: [
-          {
-            type: "date",
-            required: true,
-            message: "请选择时间",
-            trigger: "change"
-          }
-        ],
-        type: [
-          {
-            type: "array",
-            required: true,
-            message: "请至少选择一个活动性质",
-            trigger: "change"
-          }
-        ],
-        resource: [
-          { required: true, message: "请选择活动资源", trigger: "change" }
-        ],
-        desc: [{ required: true, message: "请填写活动形式", trigger: "blur" }]
-      }
+      formSchema: [
+        {
+          name: "店铺名称",
+          eName: "name",
+          type: "text",
+          rules: [
+            { required: true, message: "请输入店铺名称", trigger: "blur" }
+          ]
+        },
+        {
+          name: "满减活动：满(元)",
+          eName: "top",
+          type: "text",
+          span: 12,
+          rules: [
+            { required: false, message: "请输入店铺名称", trigger: "blur" }
+          ]
+        },
+        {
+          name: "减(元)",
+          eName: "minus",
+          type: "text",
+          span: 12,
+          rules: [
+            { required: false, message: "请输入店铺名称", trigger: "blur" }
+          ]
+        },
+
+        {
+          name: "店铺地址",
+          eName: "address",
+          type: "text",
+          rules: [
+            { required: true, message: "请输入店铺地址", trigger: "blur" }
+          ]
+        },
+        {
+          name: "联系电话",
+          eName: "phone",
+          type: "text",
+          rules: [
+            { required: true, message: "请输入店铺地址", trigger: "blur" }
+          ]
+        },
+        {
+          name: "营业时间",
+          eName: "openTime",
+          type: "timeRange",
+          rules: [{ required: true }],
+          children: [
+            {
+              eName: "start",
+              rules: [{ required: true, message: "开始时间", trigger: "blur" }]
+            },
+            {
+              eName: "end",
+              rules: [{ required: true, message: "结束时间", trigger: "blur" }]
+            }
+          ]
+        },
+        {
+          name: "店铺logo",
+          eName: "logo",
+          type: "image",
+          rules: [{ required: true, message: "选择轮播图", trigger: "blur" }]
+        },
+        {
+          name: "轮播图",
+          eName: "banner",
+          type: "images",
+          rules: [{ required: true, message: "选择轮播图", trigger: "blur" }]
+        },
+        {
+          name: "是否开通堂食",
+          eName: "diningRoom",
+          type: "switch",
+          span: "8",
+          rules: [{ required: true, trigger: "blur" }]
+        },
+        {
+          name: "是否开通自提",
+          eName: "pickup",
+          type: "switch",
+          span: "8",
+          rules: [{ required: true, trigger: "blur" }]
+        },
+        {
+          name: "是否开通配送",
+          eName: "delivery",
+          type: "switch",
+          span: "8",
+          rules: [{ required: true, trigger: "blur" }]
+        },
+        {
+          name: "配送费用(元)",
+          eName: "deliveryFee",
+          condition: "delivery",
+          type: "text",
+          span: "8",
+          rules: [{ required: true, trigger: "blur" }]
+        },
+        {
+          name: "起送金额(元)",
+          eName: "deliveryLimitation",
+          condition: "delivery",
+          type: "text",
+          span: "8",
+          rules: [{ required: true, trigger: "blur" }]
+        },
+        {
+          name: "配送区域(公里)",
+          eName: "deliveryRange",
+          condition: "delivery",
+          type: "text",
+          span: "8",
+          rules: [{ required: true, trigger: "blur" }]
+        },
+        {
+          name: "配送时间段",
+          eName: "deliveryTimeRange",
+          condition: "delivery",
+          type: "timeRange",
+          children: [
+            {
+              eName: "deliveryStart",
+              rules: [{ required: true, message: "开始时间", trigger: "blur" }]
+            },
+            {
+              eName: "deliveryEnd",
+              rules: [{ required: true, message: "结束时间", trigger: "blur" }]
+            }
+          ]
+        }
+      ]
     };
   },
   created() {

@@ -63,8 +63,14 @@
 .viewSettingWrapper {
   .el-upload-list {
     .el-upload-list__item {
-      width: 318px;
+      width: 135px;
+      height: 95px;
     }
+  }
+  .el-upload--picture-card {
+    width: 135px;
+    height: 95px;
+    line-height: 100px;
   }
 }
 
