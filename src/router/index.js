@@ -50,7 +50,7 @@ export const constantRouterMap = [
       {
         path: "category",
         name: "category",
-        component: () => import("@/views/product/productCate/index"),
+        component: () => import("@/views/category/index"),
         meta: { title: "商品分类", icon: "el-icon-shopping-bag-2" }
       }
     ]
@@ -65,7 +65,7 @@ export const constantRouterMap = [
       {
         path: "manage",
         name: "manage",
-        component: () => import("@/views/product/product/index"),
+        component: () => import("@/views/product/index"),
         meta: { title: "商品管理", icon: "el-icon-box" }
       }
     ]

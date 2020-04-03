@@ -1,5 +1,5 @@
 <template>
-  <el-card class="form-container" shadow="never">
+  <el-card class="form-container" style="width: 600px;" shadow="never">
     <el-form :model="brand" :rules="rules" ref="brandFrom" label-width="150px">
       <el-form-item label="供应商名称：" prop="name">
         <el-input v-model="brandName"></el-input>

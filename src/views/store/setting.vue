@@ -14,11 +14,10 @@ import {
   createIndexBanner,
   deleteIndexBanner
 } from "@/api/home";
-import uploadComponent from "@/views/components/upload-image.vue";
 import formCreater from "@/views/components/formCreater.vue";
 export default {
   name: "orderList",
-  components: { uploadComponent, formCreater },
+  components: { formCreater },
   data() {
     return {
       bannerList: [],
@@ -26,10 +25,6 @@ export default {
         title: "首页banner图设置",
         imgList: [],
         summitParams: []
-      },
-      formData: {
-        name: "",
-        address: ""
       },
       formSchema: [
         {
@@ -107,21 +102,21 @@ export default {
           name: "是否开通堂食",
           eName: "diningRoom",
           type: "switch",
-          span: "8",
+          span: 8,
           rules: [{ required: true, trigger: "blur" }]
         },
         {
           name: "是否开通自提",
           eName: "pickup",
           type: "switch",
-          span: "8",
+          span: 8,
           rules: [{ required: true, trigger: "blur" }]
         },
         {
           name: "是否开通配送",
           eName: "delivery",
           type: "switch",
-          span: "8",
+          span: 8,
           rules: [{ required: true, trigger: "blur" }]
         },
         {
@@ -129,7 +124,7 @@ export default {
           eName: "deliveryFee",
           condition: "delivery",
           type: "text",
-          span: "8",
+          span: 8,
           rules: [{ required: true, trigger: "blur" }]
         },
         {
@@ -137,7 +132,7 @@ export default {
           eName: "deliveryLimitation",
           condition: "delivery",
           type: "text",
-          span: "8",
+          span: 8,
           rules: [{ required: true, trigger: "blur" }]
         },
         {
@@ -145,7 +140,7 @@ export default {
           eName: "deliveryRange",
           condition: "delivery",
           type: "text",
-          span: "8",
+          span: 8,
           rules: [{ required: true, trigger: "blur" }]
         },
         {

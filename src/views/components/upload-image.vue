@@ -42,6 +42,9 @@ export default {
     },
     limit: {
       type: null
+    },
+    id: {
+      type: null
     }
   },
   name: "orderList",
@@ -75,9 +78,8 @@ export default {
   filters: {},
   methods: {
     handleChange(file, fileList) {
-      file = this.uploadName;
-      console.log(file, fileList);
-      this.$emit("onImageChanged", fileList);
+      const _arr = fileList.map(_el => _el.url);
+      this.$emit("onImageChanged", { eName: this.id, list: _arr });
     },
     handleRemove(file, fileList) {
       this.$emit("onImageRemove", file);

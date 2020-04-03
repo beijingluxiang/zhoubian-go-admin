@@ -75,12 +75,11 @@ import {
   editCategory,
   deleteCategory
 } from "@/api/category";
-import addComponent from "@/views/product/productCate/add";
-import updateComponent from "@/views/product/brand/update";
+import addComponent from "@/views/category/add";
 
 export default {
   name: "brandList",
-  components: { addComponent, updateComponent },
+  components: { addComponent },
   data() {
     return {
       editingData: "",

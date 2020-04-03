@@ -1,26 +1,27 @@
-import request from '@/utils/request'
+import request from "@/utils/request";
 
-export function login(username, password) {
+export function login(username, password, role) {
   return request({
-    url: '/admin/login',
-    method: 'post',
+    url: "/admin/login",
+    method: "post",
     data: {
       username,
-      password
+      password,
+      role
     }
-  })
+  });
 }
 
 export function getInfo() {
   return request({
-    url: '/admin/info',
-    method: 'get',
-  })
+    url: "/admin/info",
+    method: "get"
+  });
 }
 
 export function logout() {
   return request({
-    url: '/admin/logout',
-    method: 'post'
-  })
+    url: "/admin/logout",
+    method: "post"
+  });
 }
