@@ -27,6 +27,9 @@
             <div v-if="col.type === 'image'">
               <img style="height: 80px" :src="scope.row[col.colId]" />
             </div>
+            <div v-if="col.type === 'dateTime'">
+              {{ scope.row[col.colId] | formatTime }}
+            </div>
             <div v-else>
               {{ scope.row[col.colId] }}
             </div>
@@ -34,75 +37,77 @@
         </el-table-column>
 
         <el-table-column
-          v-if="operation"
+          v-if="operations"
           label="操作"
-          width="200"
           align="center"
+          width="160px"
         >
           <template slot-scope="scope">
-            <div v-if="operation === 'user'">
-              <el-button
-                size="mini"
-                @click="changeUserClass(scope.$index, scope.row)"
-                >修改会员等级</el-button
+            <div style="overflow:hidden;">
+              <div
+                v-for="item in operations"
+                :key="item"
+                style="float:left; margin-right: 10px;"
               >
-            </div>
-            <div v-else>
-              <el-button
-                size="mini"
-                @click="handleViewOrder(scope.$index, scope.row)"
-                >查看订单</el-button
-              >
-              <el-button
-                size="mini"
-                @click="handleCloseOrder(scope.$index, scope.row)"
-                v-show="scope.row.status === 0"
-                >关闭订单</el-button
-              >
-              <el-button
-                size="mini"
-                @click="handleDeliveryOrder(scope.$index, scope.row)"
-                v-show="scope.row.status === 1"
-                >订单发货</el-button
-              >
-              <el-button
-                size="mini"
-                @click="handleViewLogistics(scope.$index, scope.row)"
-                v-show="scope.row.status === 2 || scope.row.status === 3"
-                >订单跟踪</el-button
-              >
-              <el-button
-                size="mini"
-                type="danger"
-                @click="handleDeleteOrder(scope.$index, scope.row)"
-                v-show="scope.row.status === 4"
-                >删除订单</el-button
-              >
+                <div v-if="item === 'user'">
+                  <el-button
+                    size="mini"
+                    @click="onOperate(scope.$index, scope.row, item)"
+                    >修改会员等级</el-button
+                  >
+                </div>
+                <div v-if="item === 'check'">
+                  <el-button
+                    size="mini"
+                    @click="onOperate(scope.$index, scope.row, item)"
+                    >查看</el-button
+                  >
+                </div>
+                <div v-if="item === 'edit'">
+                  <el-button
+                    size="mini"
+                    @click="onOperate(scope.$index, scope.row, item)"
+                    >编辑</el-button
+                  >
+                </div>
+                <div v-if="item === 'close'">
+                  <el-button
+                    size="mini"
+                    @click="onOperate(scope.$index, scope.row, item)"
+                    v-show="scope.row.status === 0"
+                    >关闭</el-button
+                  >
+                </div>
+                <div v-if="item === 'delivery'">
+                  <el-button
+                    size="mini"
+                    @click="onOperate(scope.$index, scope.row, item)"
+                    v-show="scope.row.status === 1"
+                    >发货</el-button
+                  >
+                </div>
+                <div v-if="item === 'follow'">
+                  <el-button
+                    size="mini"
+                    @click="onOperate(scope.$index, scope.row, item)"
+                    v-show="scope.row.status === 2 || scope.row.status === 3"
+                    >跟踪</el-button
+                  >
+                </div>
+                <div v-if="item === 'delete'">
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="onOperate(scope.$index, scope.row, item)"
+                    >删除</el-button
+                  >
+                </div>
+              </div>
             </div>
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <!-- <div class="batch-operate-container">
-      <el-select size="small" v-model="operateType" placeholder="批量操作">
-        <el-option
-          v-for="item in operateOptions"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
-      <el-button
-        style="margin-left: 20px"
-        class="search-button"
-        @click="handleBatchOperate()"
-        type="primary"
-        size="small"
-      >
-        确定
-      </el-button>
-    </div> -->
     <div v-if="pagination" class="pagination-container">
       <el-pagination
         background
@@ -141,7 +146,6 @@
 </template>
 
 <script>
-import { formatDate } from "@/utils/date";
 export default {
   name: "grid-component",
   props: {
@@ -154,7 +158,7 @@ export default {
     pagination: {
       type: null
     },
-    operation: {
+    operations: {
       type: null
     },
     checkBox: {
@@ -272,86 +276,21 @@ export default {
         }
       });
     },
-    headerRowStyle(row) {
-      return {};
+
+    onOperate(index, row, type) {
+      console.log(index, row, type);
+      this.$emit("onOperate", { id: row.id, data: row, type: type });
     },
-    handleResetSearch() {
-      this.searchParams = Object.assign({}, defaultListQuery);
-    },
-    handleSearchList() {
-      this.searchParams.pageNum = 1;
-      this.getList();
-    },
+
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-    handleViewOrder(index, row) {
-      // this.$router.push({ path: "/order/orderDetail", query: { id: row.id } });
-      this.$emit("onViewDetailBtnClicked", row.id);
-    },
-    changeUserClass(index, row) {
-      // this.$router.push({ path: "/order/orderDetail", query: { id: row.id } });
-      this.$emit("changeUserClass", row.id);
-    },
+
     handleCloseOrder(index, row) {
       this.closeOrder.dialogVisible = true;
       this.closeOrder.orderIds = [row.id];
     },
-    handleDeliveryOrder(index, row) {
-      let listItem = this.covertOrder(row);
-      this.$emit("onDeliveryBtnClicked", listItem);
-    },
 
-    handleDeleteOrder(index, row) {
-      let ids = [];
-      ids.push(row.id);
-      this.deleteOrder(ids);
-    },
-    handleBatchOperate() {
-      if (this.multipleSelection == null || this.multipleSelection.length < 1) {
-        this.$message({
-          message: "请选择要操作的订单",
-          type: "warning",
-          duration: 1000
-        });
-        return;
-      }
-      if (this.operateType === 1) {
-        //批量发货
-        let list = [];
-        for (let i = 0; i < this.multipleSelection.length; i++) {
-          if (this.multipleSelection[i].status === 1) {
-            list.push(this.covertOrder(this.multipleSelection[i]));
-          }
-        }
-        if (list.length === 0) {
-          this.$message({
-            message: "选中订单中没有可以发货的订单",
-            type: "warning",
-            duration: 1000
-          });
-          return;
-        }
-        this.$router.push({
-          path: "/order/deliverOrderList",
-          query: { list: list }
-        });
-      } else if (this.operateType === 2) {
-        //关闭订单
-        this.closeOrder.orderIds = [];
-        for (let i = 0; i < this.multipleSelection.length; i++) {
-          this.closeOrder.orderIds.push(this.multipleSelection[i].id);
-        }
-        this.closeOrder.dialogVisible = true;
-      } else if (this.operateType === 3) {
-        //删除订单
-        let ids = [];
-        for (let i = 0; i < this.multipleSelection.length; i++) {
-          ids.push(this.multipleSelection[i].id);
-        }
-        this.deleteOrder(ids);
-      }
-    },
     handleSizeChange(val) {
       this.searchParams.pageNum = 1;
       this.searchParams.pageSize = val;
@@ -384,28 +323,7 @@ export default {
         });
       });
     },
-    deleteOrder(ids) {
-      this.$emit("onDeleteOrderBtnClicked", ids);
-      console.log("wocao");
-    },
-    covertOrder(order) {
-      let address =
-        order.receiverProvince +
-        order.receiverCity +
-        order.receiverRegion +
-        order.receiverDetailAddress;
-      let listItem = {
-        orderId: order.id,
-        orderSn: order.orderSn,
-        receiverName: order.receiverName,
-        receiverPhone: order.receiverPhone,
-        receiverPostCode: order.receiverPostCode,
-        address: address,
-        deliveryCompany: null,
-        deliverySn: null
-      };
-      return listItem;
-    },
+
     getList() {
       this.$emit("refreshList", this.searchParams);
     }
@@ -425,6 +343,12 @@ export default {
         color: blue;
       }
     }
+  }
+}
+.operation-wrapper {
+  div {
+    float: left;
+    width: 40px;
   }
 }
 </style>

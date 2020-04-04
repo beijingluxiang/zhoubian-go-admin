@@ -61,7 +61,7 @@
   </div>
 </template>
 <script>
-import { deliveryOrder } from "@/api/order";
+import { deliveryOrder } from "@/api/order-zy";
 const defaultLogisticsCompanies = [
   "顺丰快递",
   "圆通快递",

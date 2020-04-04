@@ -1,11 +1,11 @@
 <template>
   <el-card shadow="never">
-    <div>
+    <div style="float:left;">
       <el-form
         :inline="true"
         :model="searchParams"
         size="small"
-        label-width="90px"
+        label-width="70px"
       >
         <el-form-item
           v-for="item in searchFieldsList"
@@ -14,7 +14,7 @@
         >
           <el-date-picker
             v-if="item.type === 'dateTimeRange'"
-            style="width: 150px;"
+            style="width: 100px;"
             v-model="searchParams[item.eName]"
             value-format="yyyy-MM-dd"
             type="date"
@@ -25,14 +25,14 @@
           <el-input
             v-if="item.type === 'text'"
             v-model="searchParams[item.eName]"
-            style="width: 150px;"
+            style="width: 100px;"
             :placeholder="item.placeholder"
           ></el-input>
 
           <el-select
             v-if="item.type === 'select'"
             v-model="searchParams[item.eName]"
-            style="width: 150px;"
+            style="width: 100px;"
             placeholder="全部"
             clearable
           >
@@ -48,7 +48,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <div style="padding-bottom: 30px;">
+    <div style="float:right;">
       <div v-for="o in operation" :key="o" style="float:right;">
         <el-button
           v-if="o === 'export'"

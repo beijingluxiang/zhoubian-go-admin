@@ -17,7 +17,7 @@
     ></gridComponent>
 
     <el-dialog
-      title="商品详情"
+      title="退款详情"
       :visible.sync="productDetailVisible"
       width="80%"
       top="10px"
@@ -27,32 +27,23 @@
         :productId="detailId"
       ></orderDetailComponent>
     </el-dialog>
-
-    <el-dialog title="物流信息" :visible.sync="deliveryVisible" width="80%">
-      <deliveryComponent
-        :deliveryInfo="deliveryParams"
-        @deliverySuccessfully="deliverySuccessfully"
-      ></deliveryComponent>
-    </el-dialog>
   </div>
 </template>
 <script>
-import { exportOrder, getOrderList, deleteOrder } from "@/api/order-zy";
+import { exportOrder, getRefundList, deleteOrder } from "@/api/order-zy";
 import searchComponent from "@/views/components/search";
 import gridComponent from "@/views/components/grid";
-import orderDetailComponent from "@/views/order/order-detail.vue";
-import deliveryComponent from "@/views/order/deliver-order.vue";
+import orderDetailComponent from "@/views/refund/order-detail.vue";
 export default {
   name: "orderList",
   components: {
     searchComponent,
     gridComponent,
-    orderDetailComponent,
-    deliveryComponent
+    orderDetailComponent
   },
   data() {
     return {
-      operations: ["check", "delete"],
+      operations: ["check"],
       orderList: [],
       deliveryParams: null,
       searchParams: {},
@@ -61,25 +52,29 @@ export default {
       detailId: null,
       orderListColDefs: [
         {
-          name: "订单",
+          name: "退单编号",
+          colId: "refundId"
+        },
+        {
+          name: "订单编号",
           colId: "orderSn"
+        },
+        {
+          name: "退款状态",
+          colId: "refundStatusDesc"
         },
         {
           name: "订单类型",
           colId: "orderTypeDesc"
         },
         {
-          name: "订单金额",
-          colId: "payAmount"
+          name: "退款金额",
+          colId: "refundAmount"
         },
         {
-          name: "下单时间",
+          name: "退款时间",
           type: "dateTime",
-          colId: "createTime"
-        },
-        {
-          name: "桌台名称",
-          colId: "tableName"
+          colId: "refundFinishTime"
         },
         {
           name: "订单状态",
@@ -96,34 +91,22 @@ export default {
       ],
       searchFieldsList: [
         {
-          name: "订单编号",
+          name: "退单编号",
           eName: "orderSn",
           type: "text",
           placeholder: "请选择时间"
         },
         {
-          name: "桌台名称",
-          eName: "tableName",
-          type: "select",
-          options: [
-            { label: "桌台1", value: 0 },
-            { label: "桌台2", value: 1 },
-            { label: "桌台3", value: 2 },
-            { label: "桌台4", value: 3 },
-            { label: "桌台5", value: 4 }
-          ],
-          placeholder: "请选择桌台名称"
+          name: "订单编号",
+          eName: "refundId",
+          type: "text",
+          placeholder: "请选择时间"
         },
         {
-          name: "订单状态",
+          name: "退款状态",
           eName: "status",
           type: "select",
           options: [
-            { label: "待付款", value: 0 },
-            { label: "待发货", value: 1 },
-            { label: "已发货", value: 2 },
-            { label: "已完成", value: 3 },
-            { label: "已关闭", value: 4 },
             { label: "退款中", value: 11 },
             { label: "退款完成", value: 12 },
             { label: "退款拒绝", value: 13 }
@@ -142,10 +125,10 @@ export default {
           placeholder: "请输入用户"
         },
         {
-          name: "收货人",
-          eName: "receiverKeyword",
-          type: "text",
-          placeholder: "收货人姓名或者手机"
+          name: "退款时间",
+          eName: "refundIdTime",
+          type: "dateTimeRange",
+          placeholder: "退款时间"
         }
       ],
       searchOperation: ["search", "reset"]
@@ -156,22 +139,6 @@ export default {
   },
   filters: {},
   methods: {
-    onOperate(params) {
-      const _id = params.id;
-      const _type = params.type;
-      const _data = params.data;
-      switch (_type) {
-        case "check": {
-          this.detailId = _id;
-          this.productDetailVisible = true;
-          break;
-        }
-        case "delete": {
-          this.deleteOrder([_id]);
-          break;
-        }
-      }
-    },
     deliverySuccessfully() {
       this.deliveryVisible = false;
       this.getList();
@@ -191,7 +158,7 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      getOrderList(this.searchParams).then(response => {
+      getRefundList(this.searchParams).then(response => {
         this.listLoading = false;
         this.orderList = response.data.list;
       });
@@ -242,10 +209,17 @@ export default {
         });
       });
     },
-    viewDetail(id) {
-      this.detailId = id;
-      this.productDetailVisible = true;
-      console.log("worinima", id);
+    onOperate(params) {
+      const _id = params.id;
+      const _type = params.type;
+      const _data = params.data;
+      switch (_type) {
+        case "check": {
+          this.detailId = _id;
+          this.productDetailVisible = true;
+          break;
+        }
+      }
     },
     deliveryOrder(params) {
       this.deliveryParams = [params];

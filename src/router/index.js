@@ -95,7 +95,7 @@ export const constantRouterMap = [
       {
         path: "refund",
         name: "refund",
-        component: () => import("@/views/order/index"),
+        component: () => import("@/views/refund/index"),
         meta: { title: "退单管理", icon: "el-icon-money" }
       }
     ]
@@ -125,7 +125,7 @@ export const constantRouterMap = [
       {
         path: "table",
         name: "table",
-        component: () => import("@/views/order/index"),
+        component: () => import("@/views/table/index"),
         meta: { title: "桌台管理", icon: "el-icon-mobile" }
       }
     ]

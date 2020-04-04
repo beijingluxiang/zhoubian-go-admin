@@ -177,25 +177,16 @@ export default {
           }
           case "timeRange": {
             _el.children.forEach(_child => {
-              _rules[_child.eName] = _child.rules;
               _formData[_child.eName] = "";
             });
             break;
           }
           case "images": {
-            _formData[_el.eName] = [
-              "https://i.loli.net/2020/03/22/U8H75KMXWmbJBiL.jpg",
-              "https://i.loli.net/2020/03/22/RJLK6DgmXrx4OBZ.jpg",
-              "https://i.loli.net/2020/03/22/z4m3gBdUWqvkKHs.jpg"
-            ];
+            _formData[_el.eName] = [];
             break;
           }
           case "image": {
-            _formData[_el.eName] = [
-              "https://i.loli.net/2020/03/22/U8H75KMXWmbJBiL.jpg",
-              "https://i.loli.net/2020/03/22/RJLK6DgmXrx4OBZ.jpg",
-              "https://i.loli.net/2020/03/22/z4m3gBdUWqvkKHs.jpg"
-            ];
+            _formData[_el.eName] = [];
             break;
           }
         }

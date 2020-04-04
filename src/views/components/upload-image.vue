@@ -66,14 +66,15 @@ export default {
     };
   },
   created() {
-    let newArr = this.imgList.map(_el => {
-      return {
-        image: _el,
-        url: _el
-      };
-    });
-    this.dataImgList = newArr;
-    console.log(newArr, "hahahwori");
+    if (Array.isArray(this.imgList)) {
+      let newArr = this.imgList.map(_el => {
+        return {
+          image: _el,
+          url: _el
+        };
+      });
+      this.dataImgList = newArr;
+    }
   },
   filters: {},
   methods: {

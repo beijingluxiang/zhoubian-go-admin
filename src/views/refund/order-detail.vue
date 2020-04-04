@@ -1,29 +1,5 @@
 <template>
   <div class="detail-container">
-    <div>
-      <el-steps
-        :active="formatStepStatus(order.status)"
-        finish-status="success"
-        align-center
-      >
-        <el-step
-          title="提交订单"
-          :description="formatTime(order.createTime)"
-        ></el-step>
-        <el-step
-          title="支付订单"
-          :description="formatTime(order.paymentTime)"
-        ></el-step>
-        <el-step
-          title="平台发货"
-          :description="formatTime(order.deliveryTime)"
-        ></el-step>
-        <el-step
-          title="确认收货"
-          :description="formatTime(order.receiveTime)"
-        ></el-step>
-      </el-steps>
-    </div>
     <el-card shadow="never" style="margin-top: 15px">
       <div class="operate-container">
         <i class="el-icon-warning color-danger" style="margin-left: 20px"></i>
@@ -36,19 +12,6 @@
 
       <gridComponent
         :columnDefs="orderListColDefs"
-        :rowData="orderList"
-        :pagination="null"
-        :checkBox="null"
-        :operation="null"
-      ></gridComponent>
-
-      <div style="margin-top: 20px">
-        <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
-        <span class="font-small">收货人信息</span>
-      </div>
-
-      <gridComponent
-        :columnDefs="deliveryColDefs"
         :rowData="orderList"
         :pagination="null"
         :checkBox="null"
@@ -93,14 +56,22 @@
           </template>
         </el-table-column>
       </el-table>
-      <div style="float: right;margin: 20px">
+      <div style="float: left;margin: 20px">
         合计：<span class="color-danger">￥{{ order.totalAmount }}</span>
+      </div>
+      <div style="float: right;margin: 20px">
+        <el-button size="mini" @click="refund(order.id, 1)">
+          同意退款
+        </el-button>
+        <el-button size="mini" type="danger" @click="refund(order.id, 0)">
+          拒绝退款
+        </el-button>
       </div>
     </el-card>
   </div>
 </template>
 <script>
-import { getOrderDetail } from "@/api/order-zy";
+import { getOrderDetail, refundMoney } from "@/api/order-zy";
 import { formatDate } from "@/utils/date";
 import VDistpicker from "v-distpicker";
 const defaultReceiverInfo = {
@@ -145,25 +116,29 @@ export default {
       orderList: [],
       orderListColDefs: [
         {
-          name: "订单",
+          name: "退单编号",
+          colId: "refundId"
+        },
+        {
+          name: "订单编号",
           colId: "orderSn"
+        },
+        {
+          name: "退款状态",
+          colId: "status"
         },
         {
           name: "订单类型",
           colId: "orderTypeDesc"
         },
         {
-          name: "订单金额",
-          colId: "payAmount"
+          name: "退款金额",
+          colId: "refundAmount"
         },
         {
-          name: "下单时间",
-          colId: "createTime",
-          type: "dateTime"
-        },
-        {
-          name: "桌台名称",
-          colId: "tableName"
+          name: "退款时间",
+          type: "dateTime",
+          colId: "refundFinishTime"
         },
         {
           name: "订单状态",
@@ -175,20 +150,6 @@ export default {
         },
         {
           name: "配送地址",
-          colId: "receiverDetailAddress"
-        }
-      ],
-      deliveryColDefs: [
-        {
-          name: "收货人",
-          colId: "receiverName"
-        },
-        {
-          name: "手机号码",
-          colId: "receiverPhone"
-        },
-        {
-          name: "收货地址",
           colId: "receiverDetailAddress"
         }
       ],
@@ -256,15 +217,27 @@ export default {
         //待付款、已关闭、无限订单
         return 1;
       }
+    },
+    refund(id, type) {
+      refundMoney(id, type)
+        .then(res => {
+          console.log();
+        })
+        .catch(err => {
+          $message("操作失败");
+        });
     }
   }
 };
 </script>
 <style scoped>
+.el-dialog__body {
+  padding-top: 0;
+}
+
 .detail-container {
   width: 100%;
   padding: 0px 20px 20px 20px;
-  margin: 20px auto;
 }
 
 .operate-container {

@@ -4,16 +4,15 @@
     style="background: #f0f0f0; width: 100%; overflow:hidden;"
   >
     <div style="width: 75%; margin: 0 auto;">
-      <form-creater :formSchema="formSchema"></form-creater>
+      <form-creater
+        :formSchema="formSchema"
+        :formDataProp="formData"
+      ></form-creater>
     </div>
   </div>
 </template>
 <script>
-import {
-  fetchIndexBanner,
-  createIndexBanner,
-  deleteIndexBanner
-} from "@/api/home";
+import { getInfo, updateInfo } from "@/api/store-setting";
 import formCreater from "@/views/components/formCreater.vue";
 export default {
   name: "orderList",
@@ -26,6 +25,7 @@ export default {
         imgList: [],
         summitParams: []
       },
+      formData: {},
       formSchema: [
         {
           name: "店铺名称",
@@ -37,8 +37,8 @@ export default {
         },
         {
           name: "满减活动：满(元)",
-          eName: "top",
-          type: "text",
+          eName: "fullDeductionThreshold",
+          type: "number",
           span: 12,
           rules: [
             { required: false, message: "请输入店铺名称", trigger: "blur" }
@@ -46,8 +46,8 @@ export default {
         },
         {
           name: "减(元)",
-          eName: "minus",
-          type: "text",
+          eName: "fullDeduction",
+          type: "number",
           span: 12,
           rules: [
             { required: false, message: "请输入店铺名称", trigger: "blur" }
@@ -64,7 +64,7 @@ export default {
         },
         {
           name: "联系电话",
-          eName: "phone",
+          eName: "shopNumber",
           type: "text",
           rules: [
             { required: true, message: "请输入店铺地址", trigger: "blur" }
@@ -77,11 +77,11 @@ export default {
           rules: [{ required: true }],
           children: [
             {
-              eName: "start",
+              eName: "openTimeStartStr",
               rules: [{ required: true, message: "开始时间", trigger: "blur" }]
             },
             {
-              eName: "end",
+              eName: "openTimeEndStr",
               rules: [{ required: true, message: "结束时间", trigger: "blur" }]
             }
           ]
@@ -94,51 +94,57 @@ export default {
         },
         {
           name: "轮播图",
-          eName: "banner",
+          eName: "bannerList",
           type: "images",
           rules: [{ required: true, message: "选择轮播图", trigger: "blur" }]
         },
         {
           name: "是否开通堂食",
-          eName: "diningRoom",
+          eName: "allowEatIndoor",
           type: "switch",
+          active: 1,
+          inActive: 0,
           span: 8,
           rules: [{ required: true, trigger: "blur" }]
         },
         {
           name: "是否开通自提",
-          eName: "pickup",
+          eName: "allowSelfTake",
           type: "switch",
+          active: 1,
+          inActive: 0,
           span: 8,
           rules: [{ required: true, trigger: "blur" }]
         },
         {
           name: "是否开通配送",
-          eName: "delivery",
+          eName: "allowDelivery",
           type: "switch",
+          active: 1,
+          inActive: 0,
           span: 8,
           rules: [{ required: true, trigger: "blur" }]
         },
         {
           name: "配送费用(元)",
           eName: "deliveryFee",
-          condition: "delivery",
+          condition: "allowDelivery",
           type: "text",
           span: 8,
           rules: [{ required: true, trigger: "blur" }]
         },
         {
           name: "起送金额(元)",
-          eName: "deliveryLimitation",
-          condition: "delivery",
+          eName: "startDeliveryFee",
+          condition: "allowDelivery",
           type: "text",
           span: 8,
           rules: [{ required: true, trigger: "blur" }]
         },
         {
           name: "配送区域(公里)",
-          eName: "deliveryRange",
-          condition: "delivery",
+          eName: "deliveryArea",
+          condition: "allowDelivery",
           type: "text",
           span: 8,
           rules: [{ required: true, trigger: "blur" }]
@@ -146,15 +152,15 @@ export default {
         {
           name: "配送时间段",
           eName: "deliveryTimeRange",
-          condition: "delivery",
+          condition: "allowDelivery",
           type: "timeRange",
           children: [
             {
-              eName: "deliveryStart",
+              eName: "deliveryTimeStartStr",
               rules: [{ required: true, message: "开始时间", trigger: "blur" }]
             },
             {
-              eName: "deliveryEnd",
+              eName: "deliveryTimeEndStr",
               rules: [{ required: true, message: "结束时间", trigger: "blur" }]
             }
           ]
@@ -162,8 +168,9 @@ export default {
       ]
     };
   },
-  created() {
-    this.getIndexBanner();
+  created() {},
+  mounted() {
+    this.getStoreInfo();
   },
   filters: {},
   methods: {
@@ -183,13 +190,13 @@ export default {
         this.getIndexBanner();
       });
     },
-    getIndexBanner() {
-      fetchIndexBanner().then(res => {
+    getStoreInfo() {
+      getInfo().then(res => {
         const _data = res.data;
-        if (_data.length > 0) {
+        if (_data) {
           console.log(_data);
           // this.upload.imgList = [];
-          this.upload.imgList = _data;
+          this.formData = _data;
         }
       });
     }

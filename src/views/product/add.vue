@@ -15,9 +15,9 @@
     <el-dialog :visible.sync="dialogVisible" top="10px">
       <img width="100%" :src="dialogImageUrl" alt="" />
     </el-dialog>
-    <el-dialog :visible.sync="brandManagementVisible" top="10px" width="80%">
+    <!-- <el-dialog :visible.sync="brandManagementVisible" top="10px" width="80%">
       <brandComponent></brandComponent>
-    </el-dialog>
+    </el-dialog> -->
     <el-dialog :visible.sync="categoryManagementVisible" top="10px" width="80%">
       <categoryComponent></categoryComponent>
     </el-dialog>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import brandComponent from "@/views/product/brand/index";
+// import brandComponent from "@/views/product/brand/index";
 import categoryComponent from "@/views/category/index";
 import { createProduct, getProductList, editProduct } from "@/api/product-zy";
 import { createCategory, getCategory, editCategory } from "@/api/category";
@@ -42,7 +42,7 @@ export default {
   },
 
   components: {
-    brandComponent,
+    // brandComponent,
     categoryComponent,
     uploadComponent,
     formCreater
