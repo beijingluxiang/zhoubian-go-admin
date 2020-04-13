@@ -1,7 +1,7 @@
 <template>
   <el-card class="form-container" style="width: 600px;" shadow="never">
     <el-form :model="brand" :rules="rules" ref="brandFrom" label-width="150px">
-      <el-form-item label="供应商名称：" prop="name">
+      <el-form-item label="商品分类：" prop="name">
         <el-input v-model="brandName"></el-input>
       </el-form-item>
       <el-form-item>
@@ -47,8 +47,8 @@ export default {
       brandName: "",
       brandId: null,
       rules: {
-        name: [{ required: true, message: "请输入品牌名称", trigger: "blur" }],
-        logo: [{ required: true, message: "请输入品牌logo", trigger: "blur" }],
+        name: [{ required: true, message: "请输入商品名称", trigger: "blur" }],
+        logo: [{ required: true, message: "请输入商品logo", trigger: "blur" }],
         sort: [{ type: "number", message: "排序必须为数字" }]
       }
     };

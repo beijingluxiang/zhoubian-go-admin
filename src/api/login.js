@@ -25,3 +25,11 @@ export function logout() {
     method: "post"
   });
 }
+
+export function changePassword(data) {
+  return request({
+    url: "/admin/updatePassword",
+    method: "post",
+    data: data
+  });
+}

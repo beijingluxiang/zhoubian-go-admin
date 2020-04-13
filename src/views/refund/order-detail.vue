@@ -221,10 +221,11 @@ export default {
     refund(id, type) {
       refundMoney(id, type)
         .then(res => {
-          console.log();
+          this.$message("操作成功");
+          this.$emit("refundProcessed");
         })
         .catch(err => {
-          $message("操作失败");
+          this.$message("操作失败");
         });
     }
   }

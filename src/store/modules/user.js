@@ -1,5 +1,6 @@
 import { login, logout, getInfo } from "@/api/login";
 import { getToken, setToken, removeToken } from "@/utils/auth";
+import { setSupport, getSupport, setCookie, getCookie } from "@/utils/support";
 
 const user = {
   state: {
@@ -35,6 +36,7 @@ const user = {
             const data = response.data;
             const tokenStr = data.token;
             setToken(tokenStr);
+            setCookie("role", data.role);
             commit("SET_TOKEN", tokenStr);
             resolve();
           })

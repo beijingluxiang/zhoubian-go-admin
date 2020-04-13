@@ -66,6 +66,7 @@
 </template>
 
 <script>
+import { setSupport, getSupport, setCookie, getCookie } from "@/utils/support";
 export default {
   name: "SidebarItem",
   props: {
@@ -75,6 +76,14 @@ export default {
     isNest: {
       type: Boolean,
       default: false
+    }
+  },
+  created() {
+    if (getCookie("role") === "1") {
+      this.accountType = "merchant";
+    } else {
+      this.accountType = "maintanence";
+      console.log(getCookie("role"), "hah");
     }
   },
   data: () => {

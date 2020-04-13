@@ -1,11 +1,11 @@
 <template>
   <el-card shadow="never">
-    <div style="float:left;">
+    <div style="float:left; width: 85%;">
       <el-form
         :inline="true"
         :model="searchParams"
-        size="small"
-        label-width="70px"
+        size="mini"
+        label-width="90px"
       >
         <el-form-item
           v-for="item in searchFieldsList"
@@ -54,26 +54,26 @@
           v-if="o === 'export'"
           style="float:right; margin-left: 15px"
           @click="onExport()"
-          size="small"
+          size="mini"
         >
           导出
         </el-button>
-        <!-- <el-button
+        <el-button
           v-if="o === 'reset'"
           style="float:right; margin-left: 15px"
           @click="onReset()"
-          size="small"
+          size="mini"
         >
           重置
-        </el-button> -->
+        </el-button>
         <el-button
           v-if="o === 'search'"
           style="float:right; margin-left: 15px;"
           type="primary"
           @click="onSearch()"
-          size="small"
+          size="mini"
         >
-          查询搜索
+          搜索
         </el-button>
       </div>
     </div>
@@ -93,12 +93,14 @@ export default {
   },
   data() {
     return {
-      searchParams: {
-        publishStatus: 1
-      }
+      searchParams: {}
     };
   },
   methods: {
+    onReset() {
+      this.searchParams = {};
+      this.$emit("onSearchBtnClicked", this.searchParams);
+    },
     onSearch() {
       this.$emit("onSearchBtnClicked", this.searchParams);
     },

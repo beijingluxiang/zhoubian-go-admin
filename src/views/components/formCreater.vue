@@ -1,18 +1,18 @@
 <template>
   <div
-    style="padding: 40px; background: white; width: 100%; overflow:hidden; border-radius: 6px;"
+    style="background: white; width: 100%; overflow:hidden; border-radius: 6px;"
   >
     <el-form
       :model="formData"
       :rules="rules"
       ref="formCreater"
-      label-width="150px"
+      :label-width="labelWidth || isMobile ? '80px' : '150px'"
       class="demo-formData"
     >
       <el-col v-for="item in formSchema" :span="item.span" :key="item.eName">
         <el-form-item
           v-if="item.condition ? formData[item.condition] : true"
-          :label="item.name"
+          :label="item.type !== 'checkBox' ? item.name : ''"
           :prop="item.eName"
         >
           <el-input
@@ -25,17 +25,26 @@
             v-model="formData[item.eName]"
           ></el-input>
           <div v-if="item.type === 'timeRange'">
-            <el-time-picker
+            <el-time-select
               v-model="formData[item.children[0].eName]"
+              :picker-options="{
+                start: '00:00',
+                step: '00:30',
+                end: '24:00'
+              }"
               placeholder="开始时间"
             >
-            </el-time-picker>
-            —
-            <el-time-picker
+            </el-time-select>
+            <el-time-select
               v-model="formData[item.children[1].eName]"
+              :picker-options="{
+                start: '00:00',
+                step: '00:30',
+                end: '24:00'
+              }"
               placeholder="结束时间"
             >
-            </el-time-picker>
+            </el-time-select>
           </div>
           <div v-if="item.type === 'images'">
             <uploadComponent
@@ -60,6 +69,11 @@
             >
             </el-switch>
           </div>
+          <div v-if="item.type === 'checkBox'">
+            <el-checkbox v-model="formData[item.eName]">{{
+              item.name
+            }}</el-checkbox>
+          </div>
           <div v-if="item.type === 'selector'">
             <el-select v-model="formData[item.eName]" placeholder="请选择">
               <el-option
@@ -75,11 +89,18 @@
       </el-col>
     </el-form>
     <el-col>
-      <div style="text-align:center; padding-top: 20px;">
-        <el-button type="primary" @click="submitForm('formCreater')"
-          >保存</el-button
+      <div
+        v-for="item in formBtn"
+        :key="item.eName"
+        style="text-align:center; padding-top: 20px;"
+      >
+        <el-button
+          type="primary"
+          :style="{ width: item.width }"
+          @click="submitForm('formCreater', item.eName)"
         >
-        <el-button @click="resetForm('formCreater')">重置</el-button>
+          {{ item.name }}
+        </el-button>
       </div>
     </el-col>
   </div>
@@ -99,6 +120,15 @@ export default {
       type: null
     },
     formDataProp: {
+      type: null
+    },
+    formBtn: {
+      type: null
+    },
+    isMobile: {
+      type: null
+    },
+    labelWidth: {
       type: null
     }
   },
@@ -157,11 +187,13 @@ export default {
   created() {
     if (this.formDataProp) {
       this.formData = this.formDataProp;
+      console.log(this.formDataProp, "hahhforlsdfjlskd");
     } else {
       this.initFormData();
     }
     this.initFormRules();
   },
+
   methods: {
     initFormData() {
       const _formData = {};
@@ -213,14 +245,16 @@ export default {
     },
 
     uploadChange(params) {
+      console.log(params, "uploadchagne");
       if (params) {
-        this.formData[params.eName] = params.list;
+        this.formData[params.eName] = params.images;
       }
     },
-    submitForm(formName) {
+
+    submitForm(formName, type) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$emit("formSubmit", this.formData);
+          this.$emit("formSubmit", { data: this.formData, type: type });
         } else {
           console.log("error submit!!");
           return false;

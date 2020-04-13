@@ -1,9 +1,10 @@
 import request from "@/utils/request";
 
-export function getTableList() {
+export function getTableList(params) {
   return request({
     url: "/admin/shop/table/list/",
-    method: "get"
+    method: "get",
+    params: params
   });
 }
 

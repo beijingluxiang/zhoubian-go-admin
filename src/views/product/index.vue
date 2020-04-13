@@ -49,7 +49,7 @@
             <p>{{ scope.row.name }}</p>
           </template>
         </el-table-column>
-        <el-table-column label="商品图片" width="120" align="center">
+        <el-table-column label="商品图片" width="180" align="center">
           <template slot-scope="scope"
             ><img style="height: 80px" :src="scope.row.banner[0]"
           /></template>
@@ -76,7 +76,7 @@
         <el-table-column label="库存" width="100" align="center">
           <template slot-scope="scope">{{ scope.row.inventory }}</template>
         </el-table-column>
-        <el-table-column label="操作" width="160" align="center">
+        <el-table-column label="操作" width="80" align="center">
           <template slot-scope="scope">
             <p>
               <el-button size="mini" @click="handleEditProduct(scope.row)"
@@ -95,26 +95,6 @@
         </el-table-column>
       </el-table>
     </div>
-    <!-- <div class="batch-operate-container">
-      <el-select size="small" v-model="operateType" placeholder="批量操作">
-        <el-option
-          v-for="item in operates"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
-      <el-button
-        style="margin-left: 20px"
-        class="search-button"
-        @click="handleBatchOperate()"
-        type="primary"
-        size="small"
-      >
-        确定
-      </el-button>
-    </div> -->
     <div class="pagination-container">
       <el-pagination
         background
@@ -357,7 +337,7 @@ export default {
     handlePublishStatusChange(index, row) {
       let ids = [];
       ids.push(row.id);
-      this.updatePublishStatus(row.publishStatus, ids);
+      this.updatePublishStatus(row.status, ids);
     },
 
     handleDelete(index, row) {

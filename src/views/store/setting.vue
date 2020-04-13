@@ -1,12 +1,25 @@
 <template>
-  <div
-    class="viewSettingWrapper"
-    style="background: #f0f0f0; width: 100%; overflow:hidden;"
-  >
+  <div class="viewSettingWrapper" style="width: 100%; overflow:hidden;">
     <div style="width: 75%; margin: 0 auto;">
+      <div style="margin-left: 150px; margin-bottom: 20px;">
+        <el-popover placement="top-start" title="" width="250" trigger="hover">
+          <div style="text-align:center;">
+            <div style="font-size: 12px; text-align: center; padding: 10px 0;">
+              店铺二维码，右键保存到本地
+            </div>
+            <img style="width: 200px;" :src="qrcodeUrl" />
+          </div>
+          <el-button slot="reference">查看店铺二维码</el-button>
+        </el-popover>
+        <span style="color: red; font-size: 12px; margin-left: 20px;"
+          >店铺二维码不可修改，如有疑问请联系运维人员</span
+        >
+      </div>
       <form-creater
         :formSchema="formSchema"
         :formDataProp="formData"
+        :formBtn="formBtn"
+        @formSubmit="onFormSubmit"
       ></form-creater>
     </div>
   </div>
@@ -20,11 +33,13 @@ export default {
   data() {
     return {
       bannerList: [],
+      qrcodeUrl: "",
       upload: {
         title: "首页banner图设置",
         imgList: [],
         summitParams: []
       },
+      formBtn: [{ name: "保存", eName: "save", width: "200px" }],
       formData: {},
       formSchema: [
         {
@@ -74,7 +89,6 @@ export default {
           name: "营业时间",
           eName: "openTime",
           type: "timeRange",
-          rules: [{ required: true }],
           children: [
             {
               eName: "openTimeStartStr",
@@ -103,7 +117,7 @@ export default {
           eName: "allowEatIndoor",
           type: "switch",
           active: 1,
-          inActive: 0,
+          inactive: 0,
           span: 8,
           rules: [{ required: true, trigger: "blur" }]
         },
@@ -112,7 +126,7 @@ export default {
           eName: "allowSelfTake",
           type: "switch",
           active: 1,
-          inActive: 0,
+          inactive: 0,
           span: 8,
           rules: [{ required: true, trigger: "blur" }]
         },
@@ -121,7 +135,7 @@ export default {
           eName: "allowDelivery",
           type: "switch",
           active: 1,
-          inActive: 0,
+          inactive: 0,
           span: 8,
           rules: [{ required: true, trigger: "blur" }]
         },
@@ -168,12 +182,19 @@ export default {
       ]
     };
   },
-  created() {},
-  mounted() {
+  created() {
     this.getStoreInfo();
   },
+  mounted() {},
   filters: {},
   methods: {
+    onFormSubmit(params) {
+      updateInfo(params.data).then(res => {
+        if (res) {
+          this.$message("店铺设置保存成功");
+        }
+      });
+    },
     onImageChanged(fileList) {},
     onImageRemove(file) {
       if (file.id) {
@@ -193,6 +214,7 @@ export default {
     getStoreInfo() {
       getInfo().then(res => {
         const _data = res.data;
+        this.qrcodeUrl = _data.qrcodeUrl;
         if (_data) {
           console.log(_data);
           // this.upload.imgList = [];

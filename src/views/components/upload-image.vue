@@ -6,27 +6,51 @@
       </div>
       <el-card shadow="false" style="margin-top: 5px;">
         <el-upload
+          v-if="showImgList.length !== limit"
           class="upload-component"
-          action="http://udbeing-test.oss-cn-hangzhou.aliyuncs.com"
+          action="http://gogogo-test.oss-cn-hangzhou.aliyuncs.com"
           :data="dataObj"
           multiple
-          list-type="picture-card"
-          :file-list="dataImgList"
+          :show-file-list="false"
           :before-upload="beforeUpload"
-          :on-remove="handleRemove"
           :on-success="onUploadSuccess"
-          :on-preview="handlePreview"
           :on-change="handleChange"
-          :limit="limit"
           :on-exceed="handleExceed"
         >
-          <i class="el-icon-plus"></i>
-          <div slot="tip" class="el-upload__tip"></div>
+          <div style="text-align:left;">
+            <el-button size="small" type="primary">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip" style="line-height: 30px;">
+              只能上传jpg/png文件，且不超过500kb
+            </div>
+          </div>
         </el-upload>
+        <div style="overflow:hidden;">
+          <div
+            class="imageWrapper"
+            v-for="(img, index) in showImgList"
+            :key="index"
+            style="float:left; width: 200px; height: 200px; overflow:hidden; padding: 10px; background: #f0f0f0; margin-right: 10px; position: relative; margin-bottom: 10px;"
+          >
+            <div
+              class="icons"
+              style="position: absolute; right: 0; width: 100%; height: 100%; background: rgba(0,0,0,.3); color: white; line-height: 200px; font-size: 20px; cursor: pointer; text-align:center;"
+            >
+              <i
+                style="margin-right: 20px;"
+                class="el-icon-search"
+                @click="handlePreview(img.image)"
+              ></i>
+              <i class="el-icon-delete" @click="handleRemove(index, img)"></i>
+            </div>
+            <img style="width: 100%;" :src="img.image" />
+          </div>
+        </div>
       </el-card>
     </div>
     <el-dialog :visible.sync="dialogVisible" top="10px">
-      <img width="100%" :src="dialogImageUrl" alt="" />
+      <div style="padding: 20px;">
+        <img width="100%" :src="dialogImageUrl" alt="" />
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -57,59 +81,84 @@ export default {
         key: "",
         ossaccessKeyId: "",
         dir: "",
-        host: ""
+        host: "",
+        success_action_status: "",
+        callback: null
       },
-      dataImgList: [],
+      showImgList: [],
       uploadName: "",
       dialogImageUrl: null,
       dialogVisible: false
     };
   },
+
+  watch: {
+    imgList: function(val) {
+      console.log(val, "worinimamfskdfajdsf");
+      if (val) {
+        let newArr = val.map(_el => {
+          return {
+            image: _el.image || _el,
+            id: _el.id || ""
+          };
+        });
+        this.showImgList = newArr;
+      }
+    }
+  },
+
   created() {
     if (Array.isArray(this.imgList)) {
       let newArr = this.imgList.map(_el => {
         return {
-          image: _el,
-          url: _el
+          image: _el.image || _el,
+          id: _el.id || ""
         };
       });
-      this.dataImgList = newArr;
+      this.showImgList = newArr;
     }
   },
-  filters: {},
+
   methods: {
     handleChange(file, fileList) {
-      const _arr = fileList.map(_el => _el.url);
-      this.$emit("onImageChanged", { eName: this.id, list: _arr });
-    },
-    handleRemove(file, fileList) {
-      this.$emit("onImageRemove", file);
-    },
-    handlePreview(file) {
-      this.dialogVisible = true;
-      this.dialogImageUrl = file.url;
+      console.log(file, fileList, "changeed");
     },
 
-    onUploadSuccess(response, file, fileList) {
-      file.url = this.uploadName;
-      // this.$emit("onImageUpload", file);
+    handleRemove(index, image) {
+      this.showImgList.splice(index, 1);
+      this.$emit("onImageChanged", {
+        eName: this.id,
+        id: image.id || "",
+        images: this.showImgList.map(_el => _el.image),
+        type: "remove"
+      });
     },
-    handleExceed(file) {
-      console.log(file);
+
+    onUploadSuccess(response) {
+      console.log("wirinimachenggongle", response);
+      const _image = response.data.filename;
+      let _arr = this.showImgList.map(_el => _el.image);
+      _arr.push(_image);
+      this.$emit("onImageChanged", {
+        eName: this.id,
+        images: _arr,
+        img: _image,
+        type: "upload"
+      });
     },
+
+    handleExceed(file) {},
 
     handlePreview(file) {
       this.dialogVisible = true;
-      this.dialogImageUrl = file.url;
+      this.dialogImageUrl = file;
     },
 
     beforeUpload(file) {
-      console.log(file, "worinimabi");
       const _name = file.name;
       const _split = _name.split(".");
       const _timeStamp = Date.now();
       const _newName = _split[0] + "_" + _timeStamp + "." + _split[1];
-      console.log(_timeStamp, _newName);
 
       let _self = this;
       return new Promise((resolve, reject) => {
@@ -121,6 +170,8 @@ export default {
             _self.dataObj.key = response.data.dir + _newName;
             _self.dataObj.dir = response.data.dir;
             _self.dataObj.host = response.data.host;
+            _self.dataObj["success_action_status"] = "200";
+            _self.dataObj.callback = response.data.callback;
             _self.uploadName =
               response.data.host + "/" + response.data.dir + _newName;
             resolve(true);
@@ -134,4 +185,15 @@ export default {
   }
 };
 </script>
-<style scoped type="scss"></style>
+<style scoped lang="scss">
+.imageWrapper {
+  .icons {
+    top: -100%;
+  }
+  &:hover {
+    .icons {
+      top: 0;
+    }
+  }
+}
+</style>

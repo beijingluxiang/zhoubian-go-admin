@@ -20,6 +20,7 @@
       :operations="operations"
       :checkBox="true"
       :pagination="true"
+      @onPaginationChange="onPaginationChange"
       @onOperate="onGridOperate"
     ></gridComponent>
 
@@ -31,12 +32,13 @@
     >
       <div
         class="viewSettingWrapper"
-        style="background: #f0f0f0; width: 100%; overflow:hidden; padding: 20px 0;"
+        style="width: 100%; overflow:hidden; padding: 20px 0;"
       >
         <div style="width: 90%; margin: 0 auto;">
           <form-creater
             :formSchema="formSchema"
             :formDataProp="formData"
+            :formBtn="formBtn"
             @formSubmit="submitNow"
           ></form-creater>
         </div>
@@ -67,7 +69,10 @@ export default {
   },
   data() {
     return {
-      operations: ["edit", "delete"],
+      operations: [
+        { name: "编辑", eName: "edit", type: "mormal" },
+        { name: "删除", eName: "delete", type: "primary" }
+      ],
       addTableShow: false,
       orderList: [],
       deliveryParams: null,
@@ -90,10 +95,11 @@ export default {
         },
         {
           name: "二维码",
+          type: "image",
           colId: "qrcodeUrl"
         },
         {
-          name: "操作",
+          name: "创建时间",
           type: "dateTime",
           colId: "createTime"
         }
@@ -102,7 +108,7 @@ export default {
         {
           name: "桌台名称",
           eName: "tableName",
-          type: "select",
+          type: "text",
           options: [
             { label: "桌台1", value: 0 },
             { label: "桌台2", value: 1 },
@@ -124,6 +130,7 @@ export default {
         }
       ],
       searchOperation: ["search", "reset"],
+      formBtn: [{ name: "保存", eName: "save", width: "200px" }],
       formData: null,
       formSchema: [
         {
@@ -177,7 +184,7 @@ export default {
     },
 
     submitNow(params) {
-      createTable(params)
+      createTable(params.data)
         .then(res => {
           this.addTableShow = false;
           this.getList();
@@ -197,9 +204,20 @@ export default {
     getList() {
       this.listLoading = true;
       getTableList(this.searchParams).then(response => {
+        const _data = response.data;
         this.listLoading = false;
-        this.orderList = response.data.tableList;
+        this.orderList = {
+          list: _data.list,
+          totalPage: _data.totalPage,
+          total: _data.total
+        };
       });
+    },
+
+    onPaginationChange(params) {
+      this.searchParams["pageSize"] = params.pageSize;
+      this.searchParams["pageNum"] = params.pageNum;
+      this.getList();
     },
 
     handleAddTable() {

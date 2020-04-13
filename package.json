@@ -1,7 +1,7 @@
 {
-  "name": "mall-admin-web",
+  "name": "zhoubiango-admin",
   "version": "1.0.0",
-  "description": "mall后台管理前端",
+  "description": "周边GO管理后台",
   "author": "macro",
   "private": true,
   "scripts": {

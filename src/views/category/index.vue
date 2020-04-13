@@ -2,7 +2,7 @@
   <div class="app-container" style="padding-bottom: 50px;">
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
-      <span>供应商列表</span>
+      <span>商品分类</span>
       <el-button class="btn-add" @click="addBrand()" size="mini">
         添加
       </el-button>
@@ -24,7 +24,7 @@
         <el-table-column label="编号" width="100" align="center">
           <template slot-scope="scope">{{ scope.row.id }}</template>
         </el-table-column>
-        <el-table-column label="供应商名称" align="center">
+        <el-table-column label="商品分类" align="center">
           <template slot-scope="scope">{{ scope.row.name }}</template>
         </el-table-column>
         <el-table-column label="操作" width="200" align="center">

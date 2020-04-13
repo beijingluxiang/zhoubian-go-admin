@@ -16,7 +16,7 @@ export function getInfo() {
 
 export function updateInfo(data) {
   return request({
-    url: "/admin/shop/table/update",
+    url: "/admin/shop/update",
     method: "post",
     data: data
   });

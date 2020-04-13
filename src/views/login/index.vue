@@ -11,7 +11,7 @@
         <div style="text-align: center">
           <el-image class="logo" :src="logoUrl"></el-image>
         </div>
-        <h2 class="login-title color-main">优小果管理后台</h2>
+        <h2 class="login-title color-main">周边-GO管理后台</h2>
         <el-form-item prop="username">
           <el-input
             name="username"

@@ -66,6 +66,18 @@
       }
     }
   }
+  .el-table__body-wrapper {
+    .el-table__body {
+      .el-table__row {
+        td {
+          padding: 5px 0;
+          .cell {
+            text-align: left;
+          }
+        }
+      }
+    }
+  }
 }
 
 .viewSettingWrapper {

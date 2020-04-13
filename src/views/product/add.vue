@@ -1,13 +1,11 @@
 <template>
-  <div style="padding: 20px; background: #f0f0f0;">
-    <div
-      class="viewSettingWrapper"
-      style="background: #f0f0f0; width: 100%; overflow:hidden;"
-    >
+  <div style="padding: 20px;">
+    <div class="viewSettingWrapper" style="width: 100%; overflow:hidden;">
       <div style="width: 90%; margin: 0 auto;">
         <form-creater
           :formSchema="formSchema"
           :formDataProp="formData"
+          :formBtn="formBtn"
           @formSubmit="submitNow"
         ></form-creater>
       </div>
@@ -117,6 +115,7 @@ export default {
       selectProductCateValue: [],
       productCateOptions: [],
       brandOptions: [],
+      formBtn: [{ name: "保存", eName: "save", width: "200px" }],
       formData: null,
       formSchema: [
         {
@@ -381,7 +380,7 @@ export default {
           cancelButtonText: "取消",
           type: "warning"
         }).then(() => {
-          editProduct(this.editingData.id, params).then(response => {
+          editProduct(this.editingData.id, params.data).then(response => {
             this.$emit("productUpdated");
             this.$message({
               type: "success",
@@ -396,7 +395,7 @@ export default {
           cancelButtonText: "取消",
           type: "warning"
         }).then(() => {
-          createProduct(params).then(response => {
+          createProduct(params.data).then(response => {
             this.$emit("productUpdated");
             this.$message({
               type: "success",

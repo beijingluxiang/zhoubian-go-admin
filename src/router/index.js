@@ -5,19 +5,8 @@ Vue.use(Router);
 
 /* Layout */
 import Layout from "../views/layout/Layout";
+import LayoutPhone from "../views/layout/Layout-phone";
 
-/**
- * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
- * alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
- *                                if not set alwaysShow, only more than one route under the children
- *                                it will becomes nested mode, otherwise not show the root menu
- * redirect: noredirect           if `redirect:noredirect` will no redirct in the breadcrumb
- * name:'router-name'             the name is used by <keep-alive> (must set!!!)
- * meta : {
-    title: 'title'               the name show in submenu and breadcrumb (recommend set)
-    icon: 'svg-name'             the icon show in the sidebar,
-  }
- **/
 export const constantRouterMap = [
   {
     path: "/login",
@@ -100,21 +89,21 @@ export const constantRouterMap = [
       }
     ]
   },
-  {
-    path: "/product/manage",
-    component: Layout,
-    index: "6",
-    redirect: "",
-    accountType: "merchant",
-    children: [
-      {
-        path: "staff",
-        name: "staff",
-        component: () => import("@/views/user/index"),
-        meta: { title: "员工管理", icon: "el-icon-user" }
-      }
-    ]
-  },
+  // {
+  //   path: "/product/manage",
+  //   component: Layout,
+  //   index: "6",
+  //   redirect: "",
+  //   accountType: "merchant",
+  //   children: [
+  //     {
+  //       path: "staff",
+  //       name: "staff",
+  //       component: () => import("@/views/user/index"),
+  //       meta: { title: "员工管理", icon: "el-icon-user" }
+  //     }
+  //   ]
+  // },
   {
     path: "/product/table",
     component: Layout,
@@ -131,47 +120,78 @@ export const constantRouterMap = [
     ]
   },
   {
-    path: "/merchant/audit",
+    path: "/merchant/indexSetting",
     component: Layout,
     index: "8",
     accountType: "maintanence",
     redirect: "",
     children: [
       {
-        path: "audit",
-        name: "audit",
-        component: () => import("@/views/order/index"),
-        meta: { title: "商户审核", icon: "el-icon-mobile" }
+        path: "setting",
+        name: "setting",
+        component: () => import("@/views/index-setting/index"),
+        meta: { title: "首页设置", icon: "el-icon-monitor" }
       }
     ]
   },
   {
-    path: "/merchant/info",
+    path: "/merchant/audit",
     component: Layout,
     index: "9",
     accountType: "maintanence",
     redirect: "",
     children: [
       {
-        path: "info",
-        name: "info",
-        component: () => import("@/views/order/index"),
-        meta: { title: "商户信息", icon: "el-icon-mobile" }
+        path: "audit",
+        name: "audit",
+        component: () => import("@/views/merchant-audit/index"),
+        meta: { title: "商户审核", icon: "el-icon-folder-checked" }
       }
     ]
   },
   {
-    path: "/merchant/account",
+    path: "/merchant/info",
     component: Layout,
     index: "10",
     accountType: "maintanence",
     redirect: "",
     children: [
       {
-        path: "account",
-        name: "account",
-        component: () => import("@/views/order/index"),
-        meta: { title: "账号管理", icon: "el-icon-mobile" }
+        path: "info",
+        name: "info",
+        component: () => import("@/views/merchant-info/index"),
+        meta: { title: "商户信息", icon: "el-icon-document" }
+      }
+    ]
+  },
+  // {
+  //   path: "/merchant/account",
+  //   component: Layout,
+  //   index: "10",
+  //   accountType: "maintanence",
+  //   redirect: "",
+  //   children: [
+  //     {
+  //       path: "account",
+  //       name: "account",
+  //       component: () => import("@/views/merchant-account/index"),
+  //       meta: { title: "账号管理", icon: "el-icon-mobile" }
+  //     }
+  //   ]
+  // },
+  {
+    path: "/merchant/register",
+    component: LayoutPhone,
+    index: "11",
+    accountType: "maintanence",
+    redirect: "",
+    hidden: true,
+    children: [
+      {
+        path: "register",
+        name: "register",
+        component: () => import("@/views/register/index"),
+        meta: { title: "商户申请", icon: "el-icon-mobile" }
       }
     ]
   },

@@ -13,6 +13,7 @@
       :operations="operations"
       :checkBox="true"
       :pagination="true"
+      @onPaginationChange="onPaginationChange"
       @onOperate="onOperate"
     ></gridComponent>
 
@@ -52,7 +53,10 @@ export default {
   },
   data() {
     return {
-      operations: ["check", "delete"],
+      operations: [
+        { name: "查看", eName: "check", type: "mormal" },
+        { name: "删除", eName: "delete", type: "primary" }
+      ],
       orderList: [],
       deliveryParams: null,
       searchParams: {},
@@ -86,12 +90,17 @@ export default {
           colId: "statusDesc"
         },
         {
-          name: "配送手机号",
+          name: "收货人",
+          colId: "receiverName"
+        },
+        {
+          name: "收货人手机号",
           colId: "receiverPhone"
         },
         {
           name: "配送地址",
-          colId: "receiverDetailAddress"
+          colId: "receiverDetailAddress",
+          width: "200px"
         }
       ],
       searchFieldsList: [
@@ -99,7 +108,7 @@ export default {
           name: "订单编号",
           eName: "orderSn",
           type: "text",
-          placeholder: "请选择时间"
+          placeholder: "订单编号"
         },
         {
           name: "桌台名称",
@@ -128,7 +137,7 @@ export default {
             { label: "退款完成", value: 12 },
             { label: "退款拒绝", value: 13 }
           ],
-          placeholder: "请输入用户"
+          placeholder: "订单状态"
         },
         {
           name: "订单类型",
@@ -139,13 +148,13 @@ export default {
             { label: "自提", value: 1 },
             { label: "堂食", value: 2 }
           ],
-          placeholder: "请输入用户"
+          placeholder: "订单类型"
         },
         {
-          name: "收货人",
+          name: "收货人信息",
           eName: "receiverKeyword",
           type: "text",
-          placeholder: "收货人姓名或者手机"
+          placeholder: "姓名/手机号"
         }
       ],
       searchOperation: ["search", "reset"]
@@ -192,9 +201,20 @@ export default {
     getList() {
       this.listLoading = true;
       getOrderList(this.searchParams).then(response => {
+        const _data = response.data;
         this.listLoading = false;
-        this.orderList = response.data.list;
+        this.orderList = {
+          list: _data.list,
+          totalPage: _data.totalPage,
+          total: _data.total
+        };
       });
+    },
+
+    onPaginationChange(params) {
+      this.searchParams["pageSize"] = params.pageSize;
+      this.searchParams["pageNum"] = params.pageNum;
+      this.getList();
     },
 
     s2ab(s) {

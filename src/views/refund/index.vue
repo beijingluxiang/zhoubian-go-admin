@@ -13,6 +13,7 @@
       :operations="operations"
       :checkBox="true"
       :pagination="true"
+      @onPaginationChange="onPaginationChange"
       @onOperate="onOperate"
     ></gridComponent>
 
@@ -25,6 +26,7 @@
       <orderDetailComponent
         destroy-on-close="true"
         :productId="detailId"
+        @refundProcessed="refundProcessed"
       ></orderDetailComponent>
     </el-dialog>
   </div>
@@ -43,7 +45,7 @@ export default {
   },
   data() {
     return {
-      operations: ["check"],
+      operations: [{ name: "查看", eName: "check", type: "mormal" }],
       orderList: [],
       deliveryParams: null,
       searchParams: {},
@@ -139,6 +141,9 @@ export default {
   },
   filters: {},
   methods: {
+    refundProcessed() {
+      this.productDetailVisible = false;
+    },
     deliverySuccessfully() {
       this.deliveryVisible = false;
       this.getList();
@@ -159,9 +164,20 @@ export default {
     getList() {
       this.listLoading = true;
       getRefundList(this.searchParams).then(response => {
+        const _data = response.data;
         this.listLoading = false;
-        this.orderList = response.data.list;
+        this.orderList = {
+          list: _data.list,
+          totalPage: _data.totalPage,
+          total: _data.total
+        };
       });
+    },
+
+    onPaginationChange(params) {
+      this.searchParams["pageSize"] = params.pageSize;
+      this.searchParams["pageNum"] = params.pageNum;
+      this.getList();
     },
 
     s2ab(s) {
