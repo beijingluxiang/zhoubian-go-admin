@@ -25,16 +25,17 @@
     >
       <orderDetailComponent
         destroy-on-close="true"
+        @operationSuccess="operationSuccess"
         :productId="detailId"
       ></orderDetailComponent>
     </el-dialog>
 
-    <el-dialog title="物流信息" :visible.sync="deliveryVisible" width="80%">
+    <!-- <el-dialog title="物流信息" :visible.sync="deliveryVisible" width="80%">
       <deliveryComponent
         :deliveryInfo="deliveryParams"
-        @deliverySuccessfully="deliverySuccessfully"
+        @operationSuccess="operationSuccess"
       ></deliveryComponent>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 <script>
@@ -181,12 +182,11 @@ export default {
         }
       }
     },
-    deliverySuccessfully() {
-      this.deliveryVisible = false;
+    operationSuccess() {
+      this.productDetailVisible = false;
       this.getList();
     },
     searchList(params) {
-      console.log(params, "worinima");
       this.searchParams = params;
       this.orderList = [];
       this.getList();

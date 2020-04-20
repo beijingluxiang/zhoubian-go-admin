@@ -35,6 +35,7 @@
               placeholder="开始时间"
             >
             </el-time-select>
+            -
             <el-time-select
               v-model="formData[item.children[1].eName]"
               :picker-options="{
@@ -74,13 +75,59 @@
               item.name
             }}</el-checkbox>
           </div>
+
           <div v-if="item.type === 'selector'">
-            <el-select v-model="formData[item.eName]" placeholder="请选择">
+            <el-select
+              style="width: 100%;"
+              v-model="formData[item.eName]"
+              placeholder="请选择"
+            >
               <el-option
                 v-for="item in item.options"
                 :key="item.id"
                 :label="item.name"
                 :value="item.id"
+              >
+              </el-option>
+            </el-select>
+          </div>
+
+          <div v-if="item.type === 'chooseCity'">
+            <el-select
+              style="width: 100%;"
+              v-model="formData[item.eName]"
+              filterable
+              remote
+              reserve-keyword
+              placeholder="请搜索并选择城市"
+              :remote-method="onCitySearched"
+            >
+              <el-option
+                v-for="item in cityOptions"
+                :key="item.id"
+                :label="item.fullname"
+                :value="item"
+              >
+              </el-option>
+            </el-select>
+          </div>
+
+          <div v-if="item.type === 'chooseLocation'">
+            <el-select
+              v-model="formData[item.eName]"
+              style="width: 100%;"
+              filterable
+              remote
+              reserve-keyword
+              placeholder="请搜索并选择详细地址"
+              @change="onLocationChanged"
+              :remote-method="onLocationSearched"
+            >
+              <el-option
+                v-for="item in locationOptions"
+                :key="item.id"
+                :label="item.address"
+                :value="item"
               >
               </el-option>
             </el-select>
@@ -108,6 +155,12 @@
 
 <script>
 import uploadComponent from "@/views/components/upload-image.vue";
+import {
+  getInfo,
+  updateInfo,
+  searchCity,
+  searchLocation
+} from "@/api/store-setting";
 import {
   fetchIndexBanner,
   createIndexBanner,
@@ -145,6 +198,8 @@ export default {
   data() {
     return {
       formData: {},
+      cityOptions: [],
+      locationOptions: [],
       rules: {
         name: [
           { required: true, message: "请输入活动名称", trigger: "blur" },
@@ -263,6 +318,29 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+    onCitySearched(params) {
+      console.log(params, "hhh");
+      searchCity(params).then(res => {
+        if (Array.isArray(res.result)) {
+          this.cityOptions = res.result[0];
+        }
+      });
+    },
+    onLocationSearched(params) {
+      console.log(this.formData.address, "hhh");
+      searchLocation(params).then(res => {
+        if (Array.isArray(res.data)) {
+          this.locationOptions = res.data;
+        }
+      });
+    },
+    onLocationChanged(params) {
+      if (params) {
+        this.formData["address"] = params.address;
+        this.formData["city"] = params.city;
+        this.formData["location"] = params.location;
+      }
     }
   }
 };

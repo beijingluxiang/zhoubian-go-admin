@@ -100,7 +100,9 @@ export default {
       if (newVal) {
         getOrderDetail(newVal).then(response => {
           this.order = response.data;
-          this.orderList = [response.data];
+          this.orderList = {
+            list: [response.data]
+          };
         });
       }
     }
@@ -174,7 +176,9 @@ export default {
     console.log(this.productId);
     getOrderDetail(this.productId).then(response => {
       this.order = response.data;
-      this.orderList = [response.data];
+      this.orderList = {
+        list: [response.data]
+      };
     });
   },
 

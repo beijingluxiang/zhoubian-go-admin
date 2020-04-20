@@ -25,7 +25,7 @@
     ></gridComponent>
 
     <el-dialog
-      title="添加桌台"
+      :title="dialogTitle"
       :visible.sync="addTableShow"
       width="50%"
       top="10px"
@@ -69,6 +69,8 @@ export default {
   },
   data() {
     return {
+      dialogTitle: "添加桌台",
+      editTable: false,
       operations: [
         { name: "编辑", eName: "edit", type: "mormal" },
         { name: "删除", eName: "delete", type: "primary" }
@@ -91,7 +93,7 @@ export default {
         },
         {
           name: "状态",
-          colId: "status"
+          colId: "statusDesc"
         },
         {
           name: "二维码",
@@ -164,6 +166,8 @@ export default {
       switch (_type) {
         case "edit": {
           this.formData = _data;
+          this.editTable = true;
+          this.dialogTitle = "编辑桌台";
           this.addTableShow = true;
           break;
         }
@@ -184,14 +188,24 @@ export default {
     },
 
     submitNow(params) {
-      createTable(params.data)
-        .then(res => {
+      console.log(params, "ahahahha");
+      if (this.editTable) {
+        updateTable(params.data.id, params.data.status).then(res => {
           this.addTableShow = false;
+          this.editTable = false;
+          this.$message("修改成功");
           this.getList();
-        })
-        .catch(err => {
-          console.log(err);
         });
+      } else {
+        createTable(params.data)
+          .then(res => {
+            this.addTableShow = false;
+            this.getList();
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     },
 
     searchList(params) {
@@ -221,6 +235,7 @@ export default {
     },
 
     handleAddTable() {
+      this.dialogTitle = "添加桌台";
       this.addTableShow = true;
     }
   }

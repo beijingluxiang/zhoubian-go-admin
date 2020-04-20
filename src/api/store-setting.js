@@ -22,6 +22,27 @@ export function updateInfo(data) {
   });
 }
 
+export function searchCity(keyword) {
+  return request({
+    url: `/admin/shop/getCity`,
+    method: "post",
+    data: {
+      keyword: keyword
+    }
+  });
+}
+
+export function searchLocation(keyword) {
+  return request({
+    url: `/admin/shop/getLocation`,
+    method: "post",
+    data: {
+      region: null,
+      keyword: keyword
+    }
+  });
+}
+
 // export function createProduct(data) {
 //   return request({
 //     url: "/admin/product/create",

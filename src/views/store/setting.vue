@@ -25,7 +25,12 @@
   </div>
 </template>
 <script>
-import { getInfo, updateInfo } from "@/api/store-setting";
+import {
+  getInfo,
+  updateInfo,
+  searchCity,
+  searchLocation
+} from "@/api/store-setting";
 import formCreater from "@/views/components/formCreater.vue";
 export default {
   name: "orderList",
@@ -68,22 +73,25 @@ export default {
             { required: false, message: "请输入店铺名称", trigger: "blur" }
           ]
         },
-
         {
-          name: "店铺地址",
+          name: "省市区位",
           eName: "address",
+          type: "chooseLocation",
+          options: [],
+          rules: [{ required: true, message: "所在区位", trigger: "blur" }]
+        },
+        {
+          name: "详细地址",
+          eName: "addressDetail",
           type: "text",
-          rules: [
-            { required: true, message: "请输入店铺地址", trigger: "blur" }
-          ]
+          options: [],
+          rules: [{ required: true, message: "详细地址", trigger: "blur" }]
         },
         {
           name: "联系电话",
           eName: "shopNumber",
           type: "text",
-          rules: [
-            { required: true, message: "请输入店铺地址", trigger: "blur" }
-          ]
+          rules: [{ required: true, message: "联系电话", trigger: "blur" }]
         },
         {
           name: "营业时间",
@@ -189,6 +197,15 @@ export default {
   filters: {},
   methods: {
     onFormSubmit(params) {
+      const _data = params.data;
+      if (
+        !_data.allowEatIndoor &&
+        !_data.allowSelfTake &&
+        !_data.allowDelivery
+      ) {
+        this.$message({ message: "必须选择一种发货方式", type: "warning" });
+        return;
+      }
       updateInfo(params.data).then(res => {
         if (res) {
           this.$message("店铺设置保存成功");

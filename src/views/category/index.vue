@@ -1,12 +1,8 @@
 <template>
   <div class="app-container" style="padding-bottom: 50px;">
-    <el-card class="operate-container" shadow="never">
-      <i class="el-icon-tickets"></i>
-      <span>商品分类</span>
-      <el-button class="btn-add" @click="addBrand()" size="mini">
-        添加
-      </el-button>
-    </el-card>
+    <el-button class="btn-add" @click="addBrand()" size="mini">
+      添加
+    </el-button>
     <div class="table-container">
       <el-table
         ref="brandTable"

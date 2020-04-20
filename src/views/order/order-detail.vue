@@ -1,6 +1,6 @@
 <template>
   <div class="detail-container">
-    <div>
+    <!-- <div>
       <el-steps
         :active="formatStepStatus(order.status)"
         finish-status="success"
@@ -23,7 +23,7 @@
           :description="formatTime(order.receiveTime)"
         ></el-step>
       </el-steps>
-    </div>
+    </div> -->
     <el-card shadow="never" style="margin-top: 15px">
       <div class="operate-container">
         <i class="el-icon-warning color-danger" style="margin-left: 20px"></i>
@@ -93,14 +93,19 @@
           </template>
         </el-table-column>
       </el-table>
-      <div style="float: right;margin: 20px">
+      <div style="float: left;margin: 20px">
         合计：<span class="color-danger">￥{{ order.totalAmount }}</span>
+      </div>
+      <div v-if="order.status === 0" style="float: right;margin: 20px">
+        <el-button size="mini" type="danger" @click="closeOrder(order.id)">
+          取消订单
+        </el-button>
       </div>
     </el-card>
   </div>
 </template>
 <script>
-import { getOrderDetail } from "@/api/order-zy";
+import { getOrderDetail, closeOrder } from "@/api/order-zy";
 import { formatDate } from "@/utils/date";
 import VDistpicker from "v-distpicker";
 const defaultReceiverInfo = {
@@ -129,7 +134,9 @@ export default {
       if (newVal) {
         getOrderDetail(newVal).then(response => {
           this.order = response.data;
-          this.orderList = [response.data];
+          this.orderList = {
+            list: [response.data]
+          };
         });
       }
     }
@@ -168,14 +175,6 @@ export default {
         {
           name: "订单状态",
           colId: "statusDesc"
-        },
-        {
-          name: "配送手机号",
-          colId: "receiverPhone"
-        },
-        {
-          name: "配送地址",
-          colId: "receiverDetailAddress"
         }
       ],
       deliveryColDefs: [
@@ -213,7 +212,9 @@ export default {
     console.log(this.productId);
     getOrderDetail(this.productId).then(response => {
       this.order = response.data;
-      this.orderList = [response.data];
+      this.orderList = {
+        list: [response.data]
+      };
     });
   },
 
@@ -256,6 +257,20 @@ export default {
         //待付款、已关闭、无限订单
         return 1;
       }
+    },
+    closeOrder(id) {
+      this.$confirm("是否取消订单?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        closeOrder([id]).then(res => {
+          if (res) {
+            this.$message("操作成功");
+            this.$emit("operationSuccess");
+          }
+        });
+      });
     }
   }
 };

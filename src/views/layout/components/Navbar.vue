@@ -9,8 +9,15 @@
       <breadcrumb></breadcrumb>
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img class="user-avatar" :src="avatar" />
-          <i class="el-icon-caret-bottom"></i>
+          <img
+            style="width: 30px; height: 30px; overflow:hidden; border-radius: 100px;"
+            class="user-avatar"
+            :src="avatar"
+          />
+          <span>
+            {{ userName }}
+          </span>
+          <i class="el-icon-caret-bottom" style="top: 19px;"></i>
         </div>
         <el-dropdown-menu class="user-dropdown" slot="dropdown">
           <el-dropdown-item>
@@ -68,6 +75,7 @@ export default {
   data() {
     return {
       avatar,
+      userName: getCookie("username"),
       changePasswordShow: false,
       formBtn: [{ name: "保存", eName: "save", width: "200px" }],
       formData: null,

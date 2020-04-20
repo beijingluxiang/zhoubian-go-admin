@@ -32,11 +32,13 @@ export function getOrderDetail(id) {
   });
 }
 
-export function closeOrder(params) {
+export function closeOrder(ids) {
   return request({
     url: "/admin/order/update/close",
     method: "post",
-    params: params
+    params: {
+      ids: ids.toString()
+    }
   });
 }
 
