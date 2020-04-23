@@ -237,7 +237,7 @@ export default {
           break;
         }
         case "disable": {
-          this.$confirm("是否拒绝商家申请?", "提示", {
+          this.$confirm("是否禁用该商户?", "提示", {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
             type: "warning"
@@ -251,7 +251,7 @@ export default {
           break;
         }
         case "enable": {
-          this.$confirm("是否同意商家申请?", "提示", {
+          this.$confirm("是否启用该商户?", "提示", {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
             type: "warning"

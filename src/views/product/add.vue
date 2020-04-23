@@ -134,14 +134,14 @@ export default {
             { required: true, message: "纯数字，不能低于0", trigger: "blur" }
           ]
         },
-        {
-          name: "商品原价",
-          eName: "originalPrice",
-          type: "number",
-          rules: [
-            { required: true, message: "纯数字，不能低于0", trigger: "blur" }
-          ]
-        },
+        // {
+        //   name: "商品原价",
+        //   eName: "originalPrice",
+        //   type: "number",
+        //   rules: [
+        //     { required: true, message: "纯数字，不能低于0", trigger: "blur" }
+        //   ]
+        // },
         {
           name: "商品库存",
           eName: "inventory",
@@ -165,7 +165,7 @@ export default {
           eName: "category",
           type: "selector",
           options: [],
-          rules: [{ required: true, message: "选择轮播图", trigger: "blur" }]
+          rules: [{ required: true, message: "选择商品分类", trigger: "blur" }]
         },
         {
           name: "商品图片",

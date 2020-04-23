@@ -82,7 +82,7 @@ export default {
         },
         {
           name: "联系电话",
-          colId: "conatact"
+          colId: "contact"
         },
         {
           name: "商户号",

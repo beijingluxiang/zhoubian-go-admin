@@ -153,7 +153,7 @@ export default {
           condition: "allowDelivery",
           type: "text",
           span: 8,
-          rules: [{ required: true, trigger: "blur" }]
+          rules: [{ required: true, message: "配送费用", trigger: "blur" }]
         },
         {
           name: "起送金额(元)",
@@ -161,7 +161,7 @@ export default {
           condition: "allowDelivery",
           type: "text",
           span: 8,
-          rules: [{ required: true, trigger: "blur" }]
+          rules: [{ required: true, message: "起送金额", trigger: "blur" }]
         },
         {
           name: "配送区域(公里)",
@@ -169,7 +169,7 @@ export default {
           condition: "allowDelivery",
           type: "text",
           span: 8,
-          rules: [{ required: true, trigger: "blur" }]
+          rules: [{ required: true, message: "起送金额", trigger: "blur" }]
         },
         {
           name: "配送时间段",

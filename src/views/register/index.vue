@@ -138,10 +138,14 @@ export default {
     submitNow(params) {
       register(params.data)
         .then(res => {
-          this.$message("注册成功，请关闭次页面");
+          this.$message("已提交申请，请关闭此页面");
         })
         .catch(err => {
-          this.$message("注册失败，请联系管理员");
+          if (err) {
+            this.$message(err);
+          } else {
+            this.$message("提交失败，请联系管理员");
+          }
           console.log(err);
         });
     }

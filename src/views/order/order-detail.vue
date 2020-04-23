@@ -27,7 +27,10 @@
     <el-card shadow="never" style="margin-top: 15px">
       <div class="operate-container">
         <i class="el-icon-warning color-danger" style="margin-left: 20px"></i>
-        <span class="color-danger">当前订单状态：{{ order.statusDesc }}</span>
+        <span class="color-danger">当前订单状态：{{ order.statusDesc }} </span>
+        <span class="color-danger" style="margin-left: 20px;">
+          {{ order.remainPayTimeDesc }}</span
+        >
       </div>
       <div style="margin-top: 20px">
         <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
@@ -94,7 +97,13 @@
         </el-table-column>
       </el-table>
       <div style="float: left;margin: 20px">
-        合计：<span class="color-danger">￥{{ order.totalAmount }}</span>
+        合计：<span style="margin-right: 10px;" class="color-danger"
+          >￥{{ order.totalAmount }}</span
+        >
+        配送费用：<span class="color-danger" style="margin-right: 10px;"
+          >+￥{{ order.freightAmount }}</span
+        >
+        满减：<span class="color-danger">-￥{{ order.promotionAmount }}</span>
       </div>
       <div v-if="order.status === 0" style="float: right;margin: 20px">
         <el-button size="mini" type="danger" @click="closeOrder(order.id)">
