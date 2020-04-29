@@ -78,7 +78,13 @@ export default {
           eName: "address",
           type: "chooseLocation",
           options: [],
-          rules: [{ required: true, message: "所在区位", trigger: "blur" }]
+          rules: [
+            {
+              required: true,
+              message: "请搜索并选择省市区位，以便计算商店和用户的距离",
+              trigger: "blur"
+            }
+          ]
         },
         {
           name: "详细地址",
@@ -197,7 +203,12 @@ export default {
   filters: {},
   methods: {
     onFormSubmit(params) {
+      console.log(params, "wuhahahha");
       const _data = params.data;
+      if (!_data.address) {
+        this.$message({ message: "必须搜索并选择省市区位", type: "warning" });
+        return;
+      }
       if (
         !_data.allowEatIndoor &&
         !_data.allowSelfTake &&

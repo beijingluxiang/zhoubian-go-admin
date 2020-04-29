@@ -94,15 +94,15 @@ export default {
       searchFieldsList: [
         {
           name: "退单编号",
-          eName: "orderSn",
+          eName: "refundId",
           type: "text",
-          placeholder: "请选择时间"
+          placeholder: "退单编号"
         },
         {
           name: "订单编号",
-          eName: "refundId",
+          eName: "orderSn",
           type: "text",
-          placeholder: "请选择时间"
+          placeholder: "订单编号"
         },
         {
           name: "退款状态",
@@ -113,7 +113,7 @@ export default {
             { label: "退款完成", value: 12 },
             { label: "退款拒绝", value: 13 }
           ],
-          placeholder: "请输入用户"
+          placeholder: "退款状态"
         },
         {
           name: "订单类型",
@@ -124,7 +124,7 @@ export default {
             { label: "自提", value: 1 },
             { label: "堂食", value: 2 }
           ],
-          placeholder: "请输入用户"
+          placeholder: "订单类型"
         },
         {
           name: "退款时间",

@@ -78,7 +78,7 @@
         </el-table-column>
         <el-table-column label="操作" width="80" align="center">
           <template slot-scope="scope">
-            <p>
+            <p style="margin-bottom: 5px;">
               <el-button size="mini" @click="handleEditProduct(scope.row)"
                 >编辑
               </el-button>
@@ -283,8 +283,20 @@ export default {
       this.getList();
     },
     handleAddProduct(data) {
+      this.editingData = {
+        banner: [],
+        category: null,
+        categoryName: null,
+        details: [],
+        id: null,
+        inventory: null,
+        name: null,
+        originalPrice: null,
+        price: null,
+        status: null,
+        unit: null
+      };
       this.editingVisible = true;
-      this.editingData = null;
     },
     handleEditProduct(data) {
       this.editingData = data;

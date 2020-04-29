@@ -13,9 +13,6 @@
     <el-dialog :visible.sync="dialogVisible" top="10px">
       <img width="100%" :src="dialogImageUrl" alt="" />
     </el-dialog>
-    <!-- <el-dialog :visible.sync="brandManagementVisible" top="10px" width="80%">
-      <brandComponent></brandComponent>
-    </el-dialog> -->
     <el-dialog :visible.sync="categoryManagementVisible" top="10px" width="80%">
       <categoryComponent></categoryComponent>
     </el-dialog>
@@ -193,16 +190,49 @@ export default {
 
   watch: {
     editingData: function(newVal) {
-      this.formData = newVal;
+      console.log(newVal, "hahahwowowoowo");
+      if (newVal) {
+        this.formData = newVal;
+      } else {
+        this.formData = {
+          banner: [],
+          category: null,
+          categoryName: null,
+          details: [],
+          id: null,
+          inventory: null,
+          name: null,
+          originalPrice: null,
+          price: null,
+          status: null,
+          unit: null
+        };
+      }
     }
   },
 
-  created() {},
+  created() {
+    console.log("worinima");
+  },
 
   mounted() {
     this.getProductCateList();
     if (this.editingData) {
       this.formData = this.editingData;
+    } else {
+      this.formData = {
+        banner: [],
+        category: null,
+        categoryName: null,
+        details: [],
+        id: null,
+        inventory: null,
+        name: null,
+        originalPrice: null,
+        price: null,
+        status: null,
+        unit: null
+      };
     }
   },
 
@@ -374,7 +404,7 @@ export default {
       if (!params) {
         return;
       }
-      if (this.editingData) {
+      if (this.editingData.id) {
         this.$confirm("是否要修改该产品", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
